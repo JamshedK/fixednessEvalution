@@ -1,7 +1,6 @@
 import {useState, useRef, useContext} from 'react';
 import send_message_icon from "../assets/msg_entry/send_message_icon.svg"
 import microphone_icon from "../assets/msg_entry/microphone_icon.svg"
-import TaskContext from '../context/task-context';
 import AuthContext from '../context/auth-context';
 import { db } from '../firebase-config';
 import { addDoc, collection } from 'firebase/firestore';
@@ -13,7 +12,6 @@ const MsgEntry = (props) => {
     const [typingStartTime, setTypingStartTime] = useState(null); // Timestamp for when user starts typing
 
     const textRef = useRef();  
-    const taskCtx = useContext(TaskContext)
     const authCtx = useContext(AuthContext)
 
     const handleTextareaChange = () => {
@@ -32,7 +30,6 @@ const MsgEntry = (props) => {
 
     const sendPrompt = async (e) => {
         const newMessage = textRef.current.value
-        props.setMsgEntryText('')
         if (newMessage.trim() != ''){
             // Save the prompt to Firestore database
             try {
@@ -42,7 +39,6 @@ const MsgEntry = (props) => {
                 const docRef = await addDoc(promptRef, {
                         id: promptID,
                         ratingID: null,
-                        taskID: taskCtx?.taskID || '',
                         responseTo: props.responseID,
                         prompt: newMessage,
                         userID: authCtx?.user.uid || '', 
