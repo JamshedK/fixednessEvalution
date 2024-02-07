@@ -1,0 +1,27 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@import "../node_modules/highlight.js/styles/monokai.css";
+
+
+html, body {
+    height: 100%;
+    overscroll-behavior-y: none;
+    overscroll-behavior-x: none;
+    background-color: #2f4454;
+  }
+
+
+pre code {
+    padding: 5px;
+    border: 1px solid #ddd;
+    display: block;
+    white-space: pre-wrap;
+}
+
+code {
+    background-color: #171717;
+    border: 1px solid #ddd;
+    padding: 0px 5px 0px 5px;
+    border-radius: 5px;
+}
