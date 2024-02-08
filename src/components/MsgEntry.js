@@ -24,10 +24,6 @@ const MsgEntry = (props) => {
         }
     };
 
-    if(props.msgEntryText){
-        textRef.current.value = props.msgEntryText
-    }
-
     const sendPrompt = async (e) => {
         const newMessage = textRef.current.value
         if (newMessage.trim() != ''){
@@ -38,7 +34,6 @@ const MsgEntry = (props) => {
                 props.setPromptID(promptID)
                 const docRef = await addDoc(promptRef, {
                         id: promptID,
-                        ratingID: null,
                         responseTo: props.responseID,
                         prompt: newMessage,
                         userID: authCtx?.user.uid || '', 

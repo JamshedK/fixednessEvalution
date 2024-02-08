@@ -7,12 +7,9 @@ import { openai } from '../openai-config';
 import user_profile from '../assets/chatbox/user_profile.svg'
 import ai_profile from '../assets/chatbox/ai_profile.svg'
 import { collection, query, orderBy, getDocs, where, addDoc } from 'firebase/firestore';
-import TaskContext from '../context/task-context';
 import AuthContext from '../context/auth-context';
 import { db } from '../firebase-config';
 import { uid } from 'uid';
-import FavouritesContext from '../context/favorites-context';
-import QueContext from '../context/que-context';
 import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 
