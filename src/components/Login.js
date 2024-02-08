@@ -1,14 +1,19 @@
 import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithEmailAndPassword, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
 import { auth } from "../firebase-config";
+import { db } from "../firebase-config";
 import AuthContext from "../context/auth-context";
+import TaskContext from "../context/task-context";
+
 
 const Login = () => {
     const navigate = useNavigate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const authCtx = useContext(AuthContext);
+    const taskCtx = useContext(TaskContext)
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -31,9 +36,21 @@ const Login = () => {
         try {
             const userCredential = await signInWithPopup(auth, provider);
             const user = userCredential.user;
-            console.log("Logged in user (Google):", user);
+
+            // Check if the user document exists in Firestore
+            const userDocRef = doc(db, 'users', user.uid);
+            const userDocSnap = await getDoc(userDocRef);
+            if (!userDocSnap.exists()) {
+                // User document does not exist, indicating a new user
+                taskCtx.setLLMTask(user);
+            }
+            else{
+                console.log('User already exists, so not assigning an LLM task')
+            }
+
             // Login the user
-            authCtx.login(user);
+            authCtx.login(user) ;
+
             // Redirect to home page after successful login
             navigate("/");
         } catch (error) {

@@ -41,10 +41,10 @@ export const AuthContextProvider = (props) => {
     
     
 
-    const login = (user) => {
+    const login = async (user) => {
         setUser(user);
         localStorage.setItem("user", JSON.stringify(user));
-        addUserToFirestore(user); // Add or update the user in Firestore
+        await addUserToFirestore(user); // Add or update the user in Firestore
       };
     
     const logout = () => {

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 import AuthContext from "../context/auth-context";
+import TaskContext from "../context/task-context";
 
 const SignUp = () => {
     const navigate = useNavigate();
@@ -10,6 +11,7 @@ const SignUp = () => {
     const [password, setPassword] = useState("");
     const [verifyPassword, setVerifyPassword] = useState("");
     const authCtx = useContext(AuthContext)
+    const taskCtx = useContext(TaskContext)
 
     const handleSignUp = async (e) => {
         e.preventDefault();
@@ -24,6 +26,8 @@ const SignUp = () => {
             console.log("Signed up user:", user);
             // login the user
             authCtx.login(user)
+            // assing a task to the user
+            taskCtx.setLLMTask(user);
             // Redirect to login page after successful sign up
             navigate("/");
         } catch (error) {
