@@ -1,7 +1,7 @@
 import React, { useState, createContext, useEffect, useContext } from 'react';
 import { db } from '../firebase-config';
-import { collection, getDocs, doc, updateDoc } from 'firebase/firestore';
-
+import { collection, getDocs, doc, updateDoc, getDoc } from 'firebase/firestore';
+import AuthContext from './auth-context';
 const TaskContext = createContext({
     LLMTask: null,
     SearchEngineTask: null,
@@ -11,14 +11,31 @@ const TaskContext = createContext({
 });
 
 export const TaskContextProvider = (props) => {
-    const [LLMTask, setLLMTaskState] = useState(() => {
-        const savedLLMTask = localStorage.getItem('LLMTask');
-        return savedLLMTask ? JSON.parse(savedLLMTask) : null;
-    });
-    const [SearchEngineTask, setSearchEngineTaskState] = useState(() => {
-        const savedSearchEngineTask = localStorage.getItem('SearchEngineTask');
-        return savedSearchEngineTask ? JSON.parse(savedSearchEngineTask) : null;
-    });
+    const [LLMTask, setLLMTaskState] = useState(null)
+    const [SearchEngineTask, setSearchEngineTaskState] = useState(null)
+
+    const authCtx = useContext(AuthContext);
+
+
+    useEffect(() => {
+      const fetchAssignedTask = async () => {
+          if (authCtx.user && authCtx.user.uid) {
+              const userDocRef = doc(db, 'users', authCtx.user.uid);
+              try {
+                  const docSnap = await getDoc(userDocRef);
+                  if (docSnap.exists() && docSnap.data().assignedTask) {
+                      setLLMTaskState(docSnap.data().assignedTask);
+                  } else {
+                      console.log("No assigned LLMTask found or user does not exist.");
+                  }
+              } catch (error) {
+                  console.error("Error fetching user's assigned task:", error);
+              }
+          }
+      };
+
+      fetchAssignedTask();
+  }, [authCtx.user]); 
 
   // Function to fetch tasks from Firestore and set a random LLMTask
   const setLLMTask = async (user) => {
