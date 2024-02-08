@@ -22,10 +22,6 @@ function ChatBox (){
     const [promptResponseArray, setPromptResponseArray] = useState([])
     const authCtx = useContext(AuthContext)
 
-    // gpt related states
-    const [promptSuggestions, setPromptSuggestions] = useState([])
-    const [questionsSuggestions, setQuestionsSuggestions] = useState([])
-
     const bgObj = {"user": "bg-[#3c586e]",
                     "ai": "bg-[#2f4454]"}
                 
@@ -66,7 +62,6 @@ function ChatBox (){
             const promptRef = collection(db, 'chatsIndividual');
             await addDoc(promptRef, {
                 id: tempResponseID,
-                ratingID: null,
                 prompt: message.content,
                 responseTo: promptID,
                 userID: authCtx?.user.uid || '',
@@ -128,12 +123,12 @@ function ChatBox (){
     });
 
     return(
-        <div className="bg-[#2f4454] flex w-full h-full justify-center flex-col" >         
+        <div className="bg-[#2f4454] flex w-full h-full flex-col" >         
             <div className='w-full mb-56'>
                 {messageComponents}
                 {isLoading && <Prompt text='Loading...' bgColor={bgObj.ai} profile_image={ai_profile} />}
             </div>
-            <div className='fixed bottom-0 mb-8 w-[50%] flex flex-col left-[60%] transform -translate-x-1/2 '>
+            <div className='fixed bottom-0 mb-8 w-[50%] flex flex-col left-[50%] transform -translate-x-1/2 '>
                 <MsgEntry 
                     setPromptID = {setPromptID}
                     responseID = {responseID}

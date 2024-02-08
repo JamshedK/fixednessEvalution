@@ -9,7 +9,7 @@ import { db } from "../firebase-config";
 const Navbar = (props) => {
 
     return(
-        <div className="bg-[#142838] w-80 h-screen sticky flex top-0 flex-col text-[18px] pb-10 pt-10 justify-between" >
+        <div className="bg-[#142838] w-[25%] h-screen sticky flex top-0 flex-col text-[18px] pb-10 pt-10 justify-between" >
             <div className="pl-8 text-white">
                 <label className ='' >Current task</label>
             </div>
