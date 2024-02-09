@@ -3,6 +3,7 @@ import { useContext } from "react";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 import { doc, setDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import TaskContext from "../context/task-context";
 
 const NoteBox = (props) => {
     const textRef = useRef(null);
@@ -11,10 +12,12 @@ const NoteBox = (props) => {
     const [savedNote, setSavedNote] = useState(""); // Optional, to store the saved noteText
 
     const authCtx = useContext(AuthContext)
+    const taskCtx = useContext(TaskContext)
 
     const handleTextareaChange = (e) => {
         const value = e.target.value;
         setNoteText(value);
+        taskCtx.setNoteText(value)
         if (value.trim().length > 0) { // Show save button when there's input
             setIsSaveButtonVisible(true);
         } else {
@@ -42,6 +45,9 @@ const NoteBox = (props) => {
                     notesArray: arrayUnion(noteObject)
                 }, { merge: true });
                 setIsSaveButtonVisible(false);
+                taskCtx.setShowSaveButton(false)
+                taskCtx.setShowEditNoteReminder(false)
+                taskCtx.setShowPopUp(false)
                 console.log("Note saved successfully");
             } catch (error) {
                 console.error("Error saving note:", error);
@@ -61,7 +67,7 @@ const NoteBox = (props) => {
                 value={noteText} // Control the input with the state
                 onChange={handleTextareaChange}
             />
-            {isSaveButtonVisible && (
+            {(isSaveButtonVisible || taskCtx.showSaveButton)  && (
                 <div className="flex flex-row justify-around mt-8">
                     <button
                         className="bg-white px-3 py-1 rounded-sm"

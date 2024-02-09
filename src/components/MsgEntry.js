@@ -5,6 +5,7 @@ import AuthContext from '../context/auth-context';
 import { db } from '../firebase-config';
 import { addDoc, collection } from 'firebase/firestore';
 import { uid } from 'uid';
+import TaskContext from '../context/task-context';
 
 const MsgEntry = (props) => {
      
@@ -13,6 +14,7 @@ const MsgEntry = (props) => {
 
     const textRef = useRef();  
     const authCtx = useContext(AuthContext)
+    const taskCtx = useContext(TaskContext)
 
     const handleTextareaChange = () => {
         if (textRef.current) {
@@ -25,35 +27,42 @@ const MsgEntry = (props) => {
     };
 
     const sendPrompt = async (e) => {
-        const newMessage = textRef.current.value
-        if (newMessage.trim() != ''){
-            // Save the prompt to Firestore database
-            try {
-                const promptRef = collection(db, 'chatsIndividual');
-                const promptID = uid()
-                props.setPromptID(promptID)
-                const docRef = await addDoc(promptRef, {
-                        id: promptID,
-                        responseTo: props.responseID,
-                        prompt: newMessage,
-                        userID: authCtx?.user.uid || '', 
-                        role: 'user',
-                        typingStartTime,
-                        typingEndTime: new Date(),
-                    });
-                props.setPrompt(newMessage)
-                const updatedMessagesArray = [...props.promptResponseArray, {role: "user", content: newMessage, id: promptID}];
-                // get the response from API
-                props.setPromptResponseArray(updatedMessagesArray);
-                textRef.current.value = '';
-                handleTextareaChange()
-                // get API response
-                await props.getAPIResponse(updatedMessagesArray, promptID);
-                window.scrollTo(0, document.documentElement.scrollHeight);
-            } catch (error) {
-                console.error("Error saving prompt:", error);
+        if (taskCtx.showEditNoteReminder){
+            taskCtx.setShowPopUp(true)
+        }
+        else{
+            const newMessage = textRef.current.value
+            if (newMessage.trim() != ''){
+                // Save the prompt to Firestore database
+                try {
+                    const promptRef = collection(db, 'chatsIndividual');
+                    const promptID = uid()
+                    props.setPromptID(promptID)
+                    const docRef = await addDoc(promptRef, {
+                            id: promptID,
+                            responseTo: props.responseID,
+                            prompt: newMessage,
+                            userID: authCtx?.user.uid || '', 
+                            role: 'user',
+                            typingStartTime,
+                            typingEndTime: new Date(),
+                        });
+                    props.setPrompt(newMessage)
+                    const updatedMessagesArray = [...props.promptResponseArray, {role: "user", content: newMessage, id: promptID}];
+                    // get the response from API
+                    props.setPromptResponseArray(updatedMessagesArray);
+                    textRef.current.value = '';
+                    handleTextareaChange()
+                    // get API response
+                    await props.getAPIResponse(updatedMessagesArray, promptID);
+                    window.scrollTo(0, document.documentElement.scrollHeight);
+
+                    taskCtx.setShowEditNoteReminder(true)
+                } catch (error) {
+                    console.error("Error saving prompt:", error);
+                }
+            setTypingStartTime(null); // Reset typing start time when message is sent
             }
-        setTypingStartTime(null); // Reset typing start time when message is sent
         }
     }
 
@@ -82,7 +91,7 @@ const MsgEntry = (props) => {
             >
                 <img src={send_message_icon}/>
             </button>
-
+                            
         </div>
     );
 }

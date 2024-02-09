@@ -12,6 +12,8 @@ import { db } from '../firebase-config';
 import { uid } from 'uid';
 import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
+import TaskContext from '../context/task-context';
+import EditNoteReminder from './EditNoteReminder';
 
 function ChatBox (){
     const [prompt, setPrompt] = useState('')
@@ -20,7 +22,9 @@ function ChatBox (){
     const [responseID, setResponseID] = useState('')
     const [isLoading, setIsLoading] = useState(false);
     const [promptResponseArray, setPromptResponseArray] = useState([])
+
     const authCtx = useContext(AuthContext)
+    const taskCtx = useContext(TaskContext)
 
     const bgObj = {"user": "bg-[#3c586e]",
                     "ai": "bg-[#2f4454]"}
@@ -135,8 +139,14 @@ function ChatBox (){
                     setPromptResponseArray={setPromptResponseArray} 
                     promptResponseArray={promptResponseArray}
                     setPrompt={setPrompt} 
-                    getAPIResponse={getAPIResponse}/>
+                    getAPIResponse={getAPIResponse}
+                />
             </div>
+            {taskCtx.showPopUp && 
+                    <div className='fixed top-0 left-0 w-screen h-screen flex items-center justify-center'>
+                        <EditNoteReminder />
+                    </div>
+                }
         </div>
     );
 

@@ -5,15 +5,25 @@ import AuthContext from './auth-context';
 const TaskContext = createContext({
     LLMTask: null,
     SearchEngineTask: null,
+    showEditNoteReminder: false, // Default value
+    showPopUp: null,  // you need showEditNoteReminder and showPopUp because otherwise you won't be able to display the popup properly
+    showSaveButton: null, // if user clicks on Edit your draft
+    noteText: null,
     setLLMTask: () => {},
     setSearchEngineTask: () => {},
-
+    setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
+    setShowPopUp: () => {},
+    setShowSaveButton: () => {},
+    setNoteText: () => {},
 });
 
 export const TaskContextProvider = (props) => {
     const [LLMTask, setLLMTaskState] = useState(null)
     const [SearchEngineTask, setSearchEngineTaskState] = useState(null)
-
+    const [showEditNoteReminder, setShowEditNoteReminderState] = useState(false);
+    const [showPopUp, setShowPopUpState] = useState(false)
+    const [showSaveButton, setShowSaveButtonState] = useState(false)
+    const [noteText, setNoteTextState] = useState('')
     const authCtx = useContext(AuthContext);
 
 
@@ -50,7 +60,6 @@ export const TaskContextProvider = (props) => {
         // Randomly select a task
         const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
         setLLMTaskState(randomTask);
-        localStorage.setItem('LLMTask', JSON.stringify(randomTask));
 
         // Assign the random task to the current user in the 'users' collection
         if (user && user.uid) {
@@ -67,18 +76,43 @@ export const TaskContextProvider = (props) => {
   };
 
 
+    // Function to update showEditNoteReminder state
+    const setShowEditNoteReminder = (value) => {
+      setShowEditNoteReminderState(value);
+    };  
+    
+    const setShowPopUp = (value) => {
+      setShowPopUpState(value)
+    }
+
+    const setShowSaveButton = (value) => {
+      setShowSaveButtonState(value)
+    }
+
+    const setNoteText = (text) => {
+      setNoteTextState(text)
+    }
+
     // Function to set SearchEngineTask and save to localStorage
     const setSearchEngineTask = (task) => {
         setSearchEngineTaskState(task);
-        localStorage.setItem('SearchEngineTask', JSON.stringify(task));
     };
 
     const contextValue = {
-        LLMTask,
-        SearchEngineTask,
-        setLLMTask,
-        setSearchEngineTask,
+      LLMTask,
+      SearchEngineTask,
+      showEditNoteReminder,
+      showPopUp, 
+      showSaveButton,
+      noteText,
+      setLLMTask,
+      setSearchEngineTask,
+      setShowEditNoteReminder,
+      setShowPopUp,
+      setShowSaveButton,
+      setNoteText,
     };
+  
 
     return (
         <TaskContext.Provider value={contextValue}>
