@@ -14,6 +14,7 @@ import ReactMarkdown from 'react-markdown';
 import hljs from 'highlight.js';
 import TaskContext from '../context/task-context';
 import EditNoteReminder from './EditNoteReminder';
+import RatePrompt from './RatePrompts';
 
 function ChatBox (){
     const [prompt, setPrompt] = useState('')
@@ -142,11 +143,16 @@ function ChatBox (){
                     getAPIResponse={getAPIResponse}
                 />
             </div>
-            {taskCtx.showPopUp && 
+            {taskCtx.showPopUp && !taskCtx.isRatingNeeded && 
                     <div className='fixed top-0 left-0 w-screen h-screen flex items-center justify-center'>
                         <EditNoteReminder />
                     </div>
                 }
+            {taskCtx.showRatingPopUp && 
+                <div className='fixed top-0 left-0 w-screen h-screen flex items-center justify-center'>
+                    <RatePrompt promptID={responseID} />
+                </div>
+            }
         </div>
     );
 

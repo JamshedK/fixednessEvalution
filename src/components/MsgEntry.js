@@ -27,7 +27,10 @@ const MsgEntry = (props) => {
     };
 
     const sendPrompt = async (e) => {
-        if (taskCtx.showEditNoteReminder){
+        if(taskCtx.isRatingNeeded){
+            taskCtx.setShowRatingPopUp(true)
+        }
+        else if (taskCtx.showEditNoteReminder){
             taskCtx.setShowPopUp(true)
         }
         else{
@@ -56,7 +59,7 @@ const MsgEntry = (props) => {
                     // get API response
                     await props.getAPIResponse(updatedMessagesArray, promptID);
                     window.scrollTo(0, document.documentElement.scrollHeight);
-
+                    taskCtx.setIsRatingNeeded(true)
                     taskCtx.setShowEditNoteReminder(true)
                 } catch (error) {
                     console.error("Error saving prompt:", error);

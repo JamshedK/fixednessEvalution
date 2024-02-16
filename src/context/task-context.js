@@ -8,13 +8,19 @@ const TaskContext = createContext({
     showEditNoteReminder: false, // Default value
     showPopUp: null,  // you need showEditNoteReminder and showPopUp because otherwise you won't be able to display the popup properly
     showSaveButton: null, // if user clicks on Edit your draft
+    isRatingNeeded: null, 
+    showRatingPopUp: null,
     noteText: null,
+    showEndTaskPopUp: false,
     setLLMTask: () => {},
     setSearchEngineTask: () => {},
     setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
     setShowPopUp: () => {},
     setShowSaveButton: () => {},
     setNoteText: () => {},
+    setShowEndTaskPopUp: () => {},
+    setIsRatingNeeded: () => {},
+    setShowRatingPopUp: () =>{},
 });
 
 export const TaskContextProvider = (props) => {
@@ -24,6 +30,9 @@ export const TaskContextProvider = (props) => {
     const [showPopUp, setShowPopUpState] = useState(false)
     const [showSaveButton, setShowSaveButtonState] = useState(false)
     const [noteText, setNoteTextState] = useState('')
+    const [showEndTaskPopUp, setShowEndTaskPopUpState] = useState(false);
+    const [isRatingNeeded, setIsRatingNeededState] = useState(false);
+    const [showRatingPopUp, setShowRatingPopUpState] = useState(false) 
     const authCtx = useContext(AuthContext);
 
 
@@ -93,6 +102,18 @@ export const TaskContextProvider = (props) => {
       setNoteTextState(text)
     }
 
+    const setShowEndTaskPopUp = (text) => {
+      setShowEndTaskPopUpState(text)
+    }
+
+    const setIsRatingNeeded = (text) => {
+      setIsRatingNeededState(text)
+    }
+
+    const setShowRatingPopUp = (text) => {
+      setShowRatingPopUpState(text)
+    }
+
     // Function to set SearchEngineTask and save to localStorage
     const setSearchEngineTask = (task) => {
         setSearchEngineTaskState(task);
@@ -105,12 +126,18 @@ export const TaskContextProvider = (props) => {
       showPopUp, 
       showSaveButton,
       noteText,
+      showEndTaskPopUp,
+      isRatingNeeded,
+      showRatingPopUp,
       setLLMTask,
       setSearchEngineTask,
       setShowEditNoteReminder,
       setShowPopUp,
       setShowSaveButton,
       setNoteText,
+      setShowEndTaskPopUp,
+      setIsRatingNeeded,
+      setShowRatingPopUp,
     };
   
 
