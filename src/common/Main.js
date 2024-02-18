@@ -1,9 +1,9 @@
 import { useContext, useState } from 'react';
-import Navbar from '../components/navbar';
-import Chatbox from '../components/chatbox';
-import NoteBar from '../components/NoteBar';
+import Navbar from '../chat/navbar';
+import Chatbox from '../chat/chatbox';
+import NoteBar from '../chat/NoteBar';
 import TaskContext from '../context/task-context';
-import EndTaskPopUp from '../components/EndTaskPopUp';
+import EndTaskPopUp from '../chat/EndTaskPopUp';
 import MainSearchPage from '../bing/MainSearchPage';
 
 const Main = () => {
