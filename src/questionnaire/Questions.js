@@ -87,6 +87,21 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
           </div>
         ))}
       </div>
+      {/* TODO: Implement these if you get time*/}
+      {/* <div className="flex flex-row justify-around mt-16">
+        <button
+          className="bg-[#142838] px-6 py-2 rounded-2xl"
+          //   onClick={handleSubmit}
+        >
+          {"< Previous"}
+        </button>
+        <button
+          className="bg-[#142838] px-6 py-2 rounded-2xl"
+          //   onClick={handleSubmit}
+        >
+          {"Next >"}
+        </button>
+      </div> */}
     </div>
   );
 };
