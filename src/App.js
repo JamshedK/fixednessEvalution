@@ -1,9 +1,10 @@
 import { useContext } from 'react';
 import {Route, Routes } from 'react-router-dom';
-import SignUp from './components/SignUp';
+import SignUp from './chat/SignUp';
 import Main from './common/Main';
-import Login from './components/Login';
+import Login from './chat/Login';
 import AuthContext from './context/auth-context';
+import QuestionnnaireMain from './questionnaire/QuestionnaireMain';
 
 function App() {
     const authCtx = useContext(AuthContext)
@@ -15,6 +16,7 @@ function App() {
             <Route path="/" element={isLoggedIn ? <Main/> : <Login />} />
             <Route path="/signup" element={<SignUp/>}/>
             <Route path="/login" element={<Login/>}/>
+            <Route path='/pre-task' element={<QuestionnnaireMain/>}/>
           </Routes>
       </div>
     );

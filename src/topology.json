@@ -1,0 +1,134 @@
+[
+    {
+      "intention_type": "Identify search information",
+      "intention_list": [
+        {
+          "short_text": "Identify something to get started",
+          "long_text": "For instance, find good query terms or prompt structure"
+        },
+        {
+          "short_text": "Identify something more to search",
+          "long_text": "Explore a target topic more broadly"
+        },
+        {
+          "short_text": "Identify something new or unexpected",
+          "long_text": "Identify and explore new information and advice that are completely new or unexpected, and unlikely to be retrieved or generated with users’ own queries or prompts (e.g. in order to think out of the box or facilitate brainstorming)"
+        }
+      ]
+    },
+    {
+      "intention_type": "Learn",
+      "intention_list": [
+        {
+          "short_text": "Learn domain knowledge",
+          "long_text": "Learn about the topic of a search"
+        },
+        {
+          "short_text": "Learn database content",
+          "long_text": "Learn the type of information/resources available at a particular website or source – e.g., a government database, a Q&A site, a flight and hotel booking platform"
+        }
+      ]
+    },
+    {
+      "intention_type": "Find",
+      "intention_list": [
+        {
+          "short_text": "Find a known item",
+          "long_text": "Searching for an item that you were familiar with in advance."
+        },
+        {
+          "short_text": "Find specific information",
+          "long_text": "Finding a predetermined piece of information."
+        },
+        {
+          "short_text": "Find items sharing a named characteristic",
+          "long_text": "Finding items with something in common."
+        },
+        {
+          "short_text": "Find items without predefined criteria",
+          "long_text": "Finding items that will be useful for a task, but which haven't been specified in advance."
+        }
+      ]
+    },
+    {
+      "intention_type": "Access an item or set of items",
+      "intention_list": [
+        {
+          "short_text": "Access a specific item",
+          "long_text": "Go to some item that you already know about."
+        },
+        {
+          "short_text": "Access items with common characteristics",
+          "long_text": "Go to some set of items with one or more predefined common characteristics."
+        },
+        {
+          "short_text": "Access a web site/home page or similar",
+          "long_text": "Relocating or going to a website."
+        }
+      ]
+    },
+    {
+      "intention_type": "Evaluate",
+      "intention_list": [
+        {
+          "short_text": "Evaluate correctness of an item",
+          "long_text": "Determine whether an item is factually correct."
+        },
+        {
+          "short_text": "Evaluate usefulness of an item",
+          "long_text": "Evaluate how useful an item is for a given need."
+        },
+        {
+          "short_text": "Compare and Pick best item(s) from all the useful ones",
+          "long_text": "Select the most appropriate item(s) after comparing several options."
+        },
+        {
+          "short_text": "Evaluate specificity of an item",
+          "long_text": "Determine whether an item is specific or general enough for a particular need."
+        },
+        {
+          "short_text": "Evaluate duplication of an item",
+          "long_text": "Determine whether the information in one item is the same as in another or others."
+        },
+        {
+          "short_text": "Evaluate users’ decision or judgment",
+          "long_text": "Analyzing the pros and cons, and risks associated with different options available to support decision-making."
+        }
+      ]
+    },
+    {
+      "intention_type": "Advanced Information Processing: Rephrasing, Synthesis and Summarization",
+      "intention_list": [
+        {
+          "short_text": "Rephrasing prompt(s), retrieved results, and/or response(s)",
+          "long_text": ""
+        },
+        {
+          "short_text": "Directly Organize, synthesize, analyze, and/or summarize information",
+          "long_text": ""
+        },
+        {
+          "short_text": "Organize, synthesize, analyze, and/or summarize the information retrieved or generated in previous interactions",
+          "long_text": ""
+        }
+      ]
+    },
+    {
+      "intention_type": "Direct Problem-Solving",
+      "intention_list": [
+        {
+          "short_text": "Transactions",
+          "long_text": "Directly complete actions like a flight/hotel booking, restaurant reservation, etc. (not just find the information about the available flights and hotels)."
+        },
+        {
+          "short_text": "Technical Problems",
+          "long_text": "Directly answer a math question or address a coding problem (not just find relevant information about the theorems involved); coordinate a schedule based on all information provided in queries/prompt(s)."
+        },
+        {
+          "short_text": "Multimedia Problems",
+          "long_text": "Answer questions or generate responses to inputs that involve both text and image contents."
+        }
+      ]
+    }
+  ]
+  
