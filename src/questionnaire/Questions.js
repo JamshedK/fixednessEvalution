@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
-const Questions = () => {
+const Questions = ({ itemId, ratings, onRatingsChange }) => {
+  console.log(`Questions: ${itemId} was selected\n ratings: ${ratings}`);
   const expectationList = [
     "ChatGPT can always fully fulfill the intention",
     "ChatGPT may be able to fully fulfill the intention if/once an effective query/prompt is successfully formulated (e.g. after several rounds of query/prompt modifications).",
@@ -16,9 +17,33 @@ const Questions = () => {
     "Heavily Used: use the system daily or almost daily",
   ];
 
-  // States to track selections
-  const [expectationRating, setExpectationRating] = useState("");
-  const [usageFrequencyRating, setUsageFrequencyRating] = useState("");
+  // Initialize states with the passed ratings if available
+  const [expectationRating, setExpectationRating] = useState(
+    ratings?.expectationRating || ""
+  );
+  const [usageFrequencyRating, setUsageFrequencyRating] = useState(
+    ratings?.usageFrequencyRating || ""
+  );
+
+  // Update local state when the passed ratings change
+  useEffect(() => {
+    // Update local state based on the presence of ratings or reset to initial state if ratings are undefined
+    setExpectationRating(ratings?.expectationRating ?? "");
+    setUsageFrequencyRating(ratings?.usageFrequencyRating ?? "");
+  }, [ratings]);
+
+  // Update parent state when either rating changes
+  const handleRatingChange = () => {
+    if (expectationRating !== "" && usageFrequencyRating !== "") {
+      onRatingsChange(itemId, expectationRating, usageFrequencyRating);
+    }
+  };
+
+  // Call handleRatingChange whenever the ratings change
+  useEffect(() => {
+    handleRatingChange();
+  }, [expectationRating, usageFrequencyRating]);
+  console.log(`Expectation rating: ${expectationRating}`);
 
   return (
     <div
@@ -33,10 +58,10 @@ const Questions = () => {
               type="radio"
               id={`expectation-${index}`}
               name="expectationRating"
-              value={index}
-              checked={expectationRating === `${index}`}
+              value={item}
+              checked={expectationRating === item}
               onChange={(e) => setExpectationRating(e.target.value)}
-              className="w-4 h-4"
+              className="w-4 h-4 form-radio bg-black"
             />
             <label htmlFor={`expectation-${index}`}>{item}</label>
           </div>
@@ -47,22 +72,20 @@ const Questions = () => {
           In your prior interaction experiences, how often did you try to use
           Search Engine/ChatGPT to fulfill this intention?
         </h1>
-        <div className="flex flex-col space-y-2">
-          {usageFrequency.map((item, index) => (
-            <div key={index} className="flex flex-row space-x-4 items-center">
-              <input
-                type="radio"
-                id={`usage-${index}`}
-                name="usageFrequencyRating"
-                value={index}
-                checked={usageFrequencyRating === `${index}`}
-                onChange={(e) => setUsageFrequencyRating(e.target.value)}
-                className="w-4 h-4"
-              />
-              <label htmlFor={`usage-${index}`}>{item}</label>
-            </div>
-          ))}
-        </div>
+        {usageFrequency.map((item, index) => (
+          <div key={index} className="flex flex-row space-x-4 items-center">
+            <input
+              type="radio"
+              id={`usage-${index}`}
+              name="usageFrequencyRating"
+              value={item}
+              checked={usageFrequencyRating === item}
+              onChange={(e) => setUsageFrequencyRating(e.target.value)}
+              className="w-4 h-4 form-radio bg-black"
+            />
+            <label htmlFor={`usage-${index}`}>{item}</label>
+          </div>
+        ))}
       </div>
     </div>
   );

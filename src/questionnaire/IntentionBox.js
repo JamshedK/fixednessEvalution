@@ -1,15 +1,24 @@
 import IntentionTypeItem from "./IntentionTypeItem";
 
-const IntentionTypeBox = ({ key, title, intentionList }) => {
+const IntentionBox = ({
+  title,
+  intentionList,
+  onSelectItem,
+  ratings,
+  selectedItem,
+}) => {
   return (
     <div>
       <div className="text-white font-bold flex flex-col items-center text-[14px]">
         <label className="mb-2 text-center">{title}</label>
         {intentionList.map((intention, index) => (
           <IntentionTypeItem
+            selectedItem={selectedItem}
             key={index}
+            itemId={intention.short_text} // Create a unique ID for each item
             title={intention.short_text}
-            completed={false}
+            onSelectItem={onSelectItem}
+            ratings={ratings[intention.short_text]}
           />
         ))}
       </div>
@@ -17,4 +26,4 @@ const IntentionTypeBox = ({ key, title, intentionList }) => {
   );
 };
 
-export default IntentionTypeBox;
+export default IntentionBox;

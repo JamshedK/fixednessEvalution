@@ -6,6 +6,28 @@ import ProgressBar from "@ramonak/react-progress-bar";
 import Questions from "./Questions";
 
 const QuestionnnaireMain = () => {
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [ratings, setRatings] = useState({});
+
+  const handleSelectItem = (itemId) => {
+    setSelectedItem(itemId);
+  };
+
+  const handleRatingsChange = (
+    itemId,
+    expectationRating,
+    usageFrequencyRating
+  ) => {
+    console.log(
+      `Item ID: ${itemId}\nExpectation Rating: ${expectationRating}\nUsage Frequency Rating: ${usageFrequencyRating} \n`
+    );
+    console.log(ratings);
+    setRatings((prevRatings) => ({
+      ...prevRatings,
+      [itemId]: { expectationRating, usageFrequencyRating },
+    }));
+  };
+
   return (
     <div className="flex flex-row bg-[#2F4454] items-center">
       <div className="flex flex-col w-[30%] h-screen">
@@ -16,9 +38,12 @@ const QuestionnnaireMain = () => {
         >
           {topologyJSON.map((item, index) => (
             <IntentionBox
+              selectedItem={selectedItem}
               key={index}
               title={item.intention_type}
               intentionList={item.intention_list}
+              onSelectItem={handleSelectItem}
+              ratings={ratings}
             />
           ))}
         </div>
@@ -27,7 +52,15 @@ const QuestionnnaireMain = () => {
           <ProgressBar completed={60} />{" "}
         </div>
       </div>
-      <div className="w-full flex justify-center mr-16">{<Questions />}</div>
+      <div className="w-full flex justify-center mr-16">
+        {selectedItem && (
+          <Questions
+            itemId={selectedItem}
+            ratings={ratings[selectedItem]}
+            onRatingsChange={handleRatingsChange}
+          />
+        )}
+      </div>
     </div>
   );
 };
