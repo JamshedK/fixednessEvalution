@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 
 const Questions = ({ itemId, ratings, onRatingsChange }) => {
-  console.log(`Questions: ${itemId} was selected\n ratings: ${ratings}`);
   const expectationList = [
     "ChatGPT can always fully fulfill the intention",
     "ChatGPT may be able to fully fulfill the intention if/once an effective query/prompt is successfully formulated (e.g. after several rounds of query/prompt modifications).",
@@ -43,17 +42,24 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   useEffect(() => {
     handleRatingChange();
   }, [expectationRating, usageFrequencyRating]);
-  console.log(`Expectation rating: ${expectationRating}`);
+  //   console.log(`Expectation rating: ${expectationRating}`);
 
   return (
     <div
       className="flex flex-col py-12 px-16 h-fit rounded-xl max-w-[50rem] 
         max-h-[85%] overflow-auto space-y-4 text-[18px] text-white"
     >
+      <div className="p-4 text-start flex flex-row space-x-2">
+        <span className="font-bold">Intention: </span>
+        <span className="">{itemId}</span>
+      </div>
       <div className="bg-[#142838] py-12 px-16">
-        <h1 className="text-[20px] mb-5">Expectation Rating:</h1>
+        <h1 className="text-[20px] mb-5">
+          Based on your Expectation, please classify this intention into one of
+          the following categories
+        </h1>
         {expectationList.map((item, index) => (
-          <div key={index} className="flex flex-row space-x-4 items-center">
+          <div key={index} className="flex flex-row space-x-4 items-start">
             <input
               type="radio"
               id={`expectation-${index}`}
@@ -61,7 +67,7 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
               value={item}
               checked={expectationRating === item}
               onChange={(e) => setExpectationRating(e.target.value)}
-              className="w-4 h-4 form-radio bg-black"
+              className="w-4 h-4 form-radio bg-black mt-[6px]"
             />
             <label htmlFor={`expectation-${index}`}>{item}</label>
           </div>

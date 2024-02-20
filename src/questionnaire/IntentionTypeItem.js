@@ -22,7 +22,7 @@ const IntentionTypeItem = ({
     <div
       className={`flex items-center justify-between p-4 ${itemStyles} text-white w-full border-b-[1px] border-[#142838] text-[14px] hover:cursor-pointer`}
       onClick={() => {
-        console.log(`${itemId} selected`);
+        // console.log(`${itemId} selected`);
         onSelectItem(itemId);
       }}
     >

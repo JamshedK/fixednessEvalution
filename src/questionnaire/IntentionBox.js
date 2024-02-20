@@ -15,10 +15,16 @@ const IntentionBox = ({
           <IntentionTypeItem
             selectedItem={selectedItem}
             key={index}
-            itemId={intention.short_text} // Create a unique ID for each item
+            itemId={`${
+              intention.short_text
+            } - ${intention.long_text.toLowerCase()}`} // Create a unique ID for each item
             title={intention.short_text}
             onSelectItem={onSelectItem}
-            ratings={ratings[intention.short_text]}
+            ratings={
+              ratings[
+                `${intention.short_text} - ${intention.long_text.toLowerCase()}`
+              ]
+            }
           />
         ))}
       </div>

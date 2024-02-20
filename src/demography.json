@@ -1,0 +1,79 @@
+[
+  {
+    "category": "Age",
+    "options": [
+      "Under 18",
+      "18-24",
+      "25-34",
+      "35-44",
+      "45-54",
+      "55-64",
+      "65 or older"
+    ]
+  },
+  {
+    "category": "Gender",
+    "options": [
+      "Male",
+      "Female",
+      "Non-binary/Third gender",
+      "Prefer not to say",
+      "Prefer to self-describe"
+    ]
+  },
+  {
+    "category": "Highest Level of Education Completed",
+    "options": [
+      "Less than high school",
+      "High school graduate or equivalent",
+      "Some college, no degree",
+      "Trade/technical/vocational training",
+      "Associate degree",
+      "Bachelor’s degree",
+      "Master’s degree",
+      "Doctorate or higher"
+    ]
+  },
+  {
+    "category": "Employment Status",
+    "options": [
+      "Employed full-time",
+      "Employed part-time",
+      "Self-employed",
+      "Unemployed",
+      "Student",
+      "Retired",
+      "Prefer not to say"
+    ]
+  },
+  {
+    "category": "Frequency of Using Chatbots/Search Engine",
+    "options": [
+      "Never/This is going to be my first time",
+      "Occasionally (less than once a week)",
+      "Regularly (once a week or more)",
+      "Frequently (daily or almost daily)"
+    ]
+  },
+  {
+    "category": "Primary Purpose for Using ChatGPT",
+    "options": [
+      "Education",
+      "Work-related tasks",
+      "Personal interest/hobby",
+      "Entertainment",
+      "Other"
+    ]
+  },
+  {
+    "category": "How did you hear about ChatGPT?",
+    "options": [
+      "Social media",
+      "News article/blog",
+      "Friend/Colleague",
+      "Academic course/workshop",
+      "Other"
+    ],
+    "allowMultipleSelections": true
+  }
+]
