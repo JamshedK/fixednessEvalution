@@ -1,8 +1,13 @@
 import demographyJSON from "./../demography.json";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import AuthContext from "../context/auth-context";
+import { FlowContext } from "../context/flow-context";
+import { db } from "../firebase-config";
+import { doc, updateDoc } from "firebase/firestore";
+import { useNavigate } from "react-router-dom";
 
-const DemographyQuestions = () => {
+const DemographyQuestions = ({ onResponsesChange }) => {
   // States for each question category
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
@@ -11,6 +16,10 @@ const DemographyQuestions = () => {
   const [usageFrequency, setUsageFrequency] = useState("");
   const [purpose, setPurpose] = useState("");
   const [discovery, setDiscovery] = useState([]);
+
+  const authCtx = useContext(AuthContext);
+  const flowCtx = useContext(FlowContext);
+  const navigate = useNavigate();
 
   // Handler for checkboxes to toggle selection
   const handleCheckboxChange = (option) => {
@@ -50,6 +59,53 @@ const DemographyQuestions = () => {
       setState: handleCheckboxChange,
       type: "checkbox",
     },
+  };
+
+  // Validation function to check if all fields are filled
+  const validateForm = () => {
+    const requiredFields = [
+      age,
+      gender,
+      education,
+      employmentStatus,
+      usageFrequency,
+      purpose,
+    ];
+    const allFieldsFilled = requiredFields.every((field) => field !== "");
+    const discoveryFilled = discovery.length > 0;
+
+    return allFieldsFilled && discoveryFilled;
+  };
+
+  const handleSubmit = async () => {
+    if (!validateForm()) {
+      alert("Please answer all questions before submitting.");
+      return; // Stop the function from proceeding
+    }
+
+    const responses = {
+      age,
+      gender,
+      education,
+      employmentStatus,
+      usageFrequency,
+      purpose,
+      discovery,
+    };
+    // Reference to the user's document in Firestore using the user's UUID
+    const userDocRef = doc(db, "users", authCtx?.user.uid);
+
+    try {
+      // Update the user's document with the new responses
+      await updateDoc(userDocRef, {
+        ...responses, // Spread the responses object to update fields in the document
+      });
+      console.log("Document successfully updated!");
+      flowCtx.setDemographyCompleted(true);
+      navigate("/pre-task");
+    } catch (error) {
+      console.error("Error updating document: ", error);
+    }
   };
 
   return (
@@ -99,6 +155,14 @@ const DemographyQuestions = () => {
           })}
         </div>
       ))}
+      <div className="flex flex-row justify-around mt-8 text-black">
+        <button
+          className="bg-white px-6 py-2 rounded-2xl"
+          onClick={handleSubmit}
+        >
+          Submit
+        </button>
+      </div>{" "}
     </div>
   );
 };
