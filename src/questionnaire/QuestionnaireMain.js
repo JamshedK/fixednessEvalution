@@ -19,10 +19,6 @@ const QuestionnnaireMain = () => {
     expectationRating,
     usageFrequencyRating
   ) => {
-    // console.log(
-    //   `Item ID: ${itemId}\nExpectation Rating: ${expectationRating}\nUsage Frequency Rating: ${usageFrequencyRating} \n`
-    // );
-    // console.log(ratings);
     setRatings((prevRatings) => ({
       ...prevRatings,
       [itemId]: { expectationRating, usageFrequencyRating },
@@ -51,16 +47,6 @@ const QuestionnnaireMain = () => {
                 scrollbar-thumb-[#ffffff] scrollbar-thumb-rounded-full text-[14px] 
                 pb-10 pt-10 sticky top-0"
         >
-          {/* Demography Questions */}
-          <div>
-            <IntentionTypeItem
-              selectedItem={selectedItem}
-              itemId={"demography"} // Create a unique ID for each item
-              title={"Demography"}
-              onSelectItem={handleSelectItem}
-              ratings={ratings["demography"]}
-            />
-          </div>
           {topologyJSON.map((item, index) => (
             <IntentionBox
               selectedItem={selectedItem}
@@ -78,16 +64,13 @@ const QuestionnnaireMain = () => {
         </div>
       </div>
       <div className="w-full flex justify-center mr-16">
-        {selectedItem &&
-          (selectedItem === "demography" ? (
-            <DemographyQuestions />
-          ) : (
-            <Questions
-              itemId={selectedItem}
-              ratings={ratings[selectedItem]}
-              onRatingsChange={handleRatingsChange}
-            />
-          ))}
+        {selectedItem && (
+          <Questions
+            itemId={selectedItem}
+            ratings={ratings[selectedItem]}
+            onRatingsChange={handleRatingsChange}
+          />
+        )}
       </div>
     </div>
   );
