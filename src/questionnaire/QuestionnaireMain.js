@@ -106,7 +106,7 @@ const QuestionnnaireMain = () => {
           />
         )}
       </div>
-      {!allQuestionsAnswered && (
+      {allQuestionsAnswered && (
         <div className="flex flex-row justify-around mt-16 border-2">
           <button
             className="bg-white px-6 py-2 rounded-2xl fixed bottom-4 right-4"
