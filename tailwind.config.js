@@ -4,13 +4,14 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        'inter': ['Inter', 'sans-serif'],
-    },
+        inter: ["Inter", "sans-serif"],
+      },
     },
   },
   plugins: [
     require("@tailwindcss/forms")({
-      strategy: 'class', // only generate classes
+      strategy: "class", // only generate classes
     }),
-    require('tailwind-scrollbar'),
-  ],}
+    require("tailwind-scrollbar")({ nocompatible: true }),
+  ],
+};

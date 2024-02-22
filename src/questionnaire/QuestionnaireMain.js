@@ -79,7 +79,7 @@ const QuestionnnaireMain = () => {
         <div
           className="bg-[#142838] max-h-screen overflow-y-auto scrollbar 
                 scrollbar-thumb-[#ffffff] scrollbar-thumb-rounded-full text-[14px] 
-                pb-10 pt-6 sticky top-0"
+                pb-10 pt-6 sticky top-0 scrollbar-w-2 scrollbar-h-4"
         >
           {topologyJSON.map((item, index) => (
             <IntentionBox

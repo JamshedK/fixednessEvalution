@@ -16,6 +16,8 @@ const DemographyQuestions = ({ onResponsesChange }) => {
   const [usageFrequency, setUsageFrequency] = useState("");
   const [purpose, setPurpose] = useState("");
   const [discovery, setDiscovery] = useState([]);
+  // State to store "Other" inputs for different categories
+  const [otherInputs, setOtherInputs] = useState({});
 
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
@@ -30,6 +32,14 @@ const DemographyQuestions = ({ onResponsesChange }) => {
     );
   };
 
+  // Function to handle changes in the "Other" input fields
+  const handleOtherInputChange = (category, value) => {
+    setOtherInputs((prev) => ({
+      ...prev,
+      [category]: value,
+    }));
+  };
+
   // Map each question to its corresponding input type
   const inputFieldMap = {
     Age: { state: age, setState: setAge, type: "radio" },
@@ -38,26 +48,31 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       state: education,
       setState: setEducation,
       type: "radio",
+      name: "education",
     },
     "Employment Status": {
       state: employmentStatus,
       setState: setEmploymentStatus,
       type: "radio",
+      name: "employmentStatus",
     },
     "Frequency of Using Chatbots/Search Engine": {
       state: usageFrequency,
       setState: setUsageFrequency,
       type: "radio",
+      name: "usageFrequency",
     },
     "Primary Purpose for Using ChatGPT": {
       state: purpose,
       setState: setPurpose,
       type: "radio",
+      name: "purpose",
     },
     "How did you hear about ChatGPT?": {
       state: discovery,
       setState: handleCheckboxChange,
       type: "checkbox",
+      name: "discovery",
     },
   };
 
@@ -83,6 +98,7 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       return; // Stop the function from proceeding
     }
 
+    // TODO: If other is selected for checkbox, not everything gets saved
     const responses = {
       age,
       gender,
@@ -91,7 +107,15 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       usageFrequency,
       purpose,
       discovery,
+      ...Object.keys(otherInputs).reduce((acc, category) => {
+        console.log(acc);
+        if (otherInputs[category] !== "") {
+          acc[category] = otherInputs[category];
+        }
+        return acc;
+      }, {}),
     };
+
     // Reference to the user's document in Firestore using the user's UUID
     const userDocRef = doc(db, "users", authCtx?.user.uid);
 
@@ -110,11 +134,11 @@ const DemographyQuestions = ({ onResponsesChange }) => {
 
   return (
     <div
-      className="max-h-screen overflow-y-auto text-white py-20 scrollbar 
-    scrollbar-thumb-[#ffffff] scrollbar-thumb-rounded-full"
+      className="max-h-screen overflow-y-auto text-white py-20 scrollbar-h-10 scrollbar 
+    scrollbar-thumb-[#ffffff] scrollbar-thumb-rounded-full scrollbar-w-2 space-y-4"
     >
       {demographyJSON.map((question, qIndex) => (
-        <div key={qIndex} className="bg-[#142838] py-12 px-16">
+        <div key={qIndex} className="bg-[#142838] py-6 px-16 rounded-md">
           <h1 className="text-[20px] mb-5">{question.category}</h1>
           {question.options.map((option, oIndex) => {
             const inputType = question.allowMultipleSelections
@@ -150,6 +174,19 @@ const DemographyQuestions = ({ onResponsesChange }) => {
                   } bg-black`}
                 />
                 <label htmlFor={`${inputName}-${oIndex}`}>{option}</label>
+                {option === "Other" && (
+                  <input
+                    type="text"
+                    placeholder="Please specify"
+                    className="bg-[#2F4454] px-2 py-1 rounded-md"
+                    onChange={(e) =>
+                      handleOtherInputChange(
+                        inputFieldMap[question.category].name,
+                        e.target.value
+                      )
+                    }
+                  />
+                )}
               </div>
             );
           })}
