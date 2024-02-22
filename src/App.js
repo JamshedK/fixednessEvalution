@@ -13,21 +13,13 @@ function App() {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
   const flowCtx = useContext(FlowContext);
-
+  console.log(isLoggedIn);
   return (
     <div>
       <Routes>
         <Route
           path="/"
-          element={
-            isLoggedIn &&
-            flowCtx.demographyCompleted &&
-            flowCtx.preTaskCompleted ? (
-              <Main />
-            ) : (
-              <Login />
-            )
-          }
+          element={isLoggedIn ? <Navigate to="/chat" /> : <Login />}
         />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
@@ -42,6 +34,12 @@ function App() {
           }
         />
         <Route path="/demography" element={<DemographyMain />} />
+        <Route
+          path="/chat"
+          element={
+            flowCtx.demographyCompleted ? <Main /> : <Navigate to="/pre-task" />
+          }
+        />
       </Routes>
     </div>
   );

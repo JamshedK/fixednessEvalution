@@ -1,7 +1,6 @@
 import { useState, createContext } from "react";
-import React from "react";
 
-export const FlowContext = React.createContext({
+export const FlowContext = createContext({
   preTaskCompleted: false,
   demographyCompleted: false,
   postTaskCompleted: false,
@@ -10,19 +9,33 @@ export const FlowContext = React.createContext({
   setPostTaskCompleted: () => {},
 });
 
-// create a context provider for the flow
 export const FlowContextProvider = (props) => {
-  const [preTaskCompleted, setPreTaskCompleted] = useState(false);
-  const [demographyCompleted, setDemographyCompleted] = useState(false);
-  const [postTaskCompleted, setPostTaskCompleted] = useState(false);
+  const [preTaskCompleted, setPreTaskCompleted] = useState(
+    localStorage.getItem("preTaskCompleted") === "true"
+  );
+  const [demographyCompleted, setDemographyCompleted] = useState(
+    localStorage.getItem("demographyCompleted") === "true"
+  );
+  const [postTaskCompleted, setPostTaskCompleted] = useState(
+    localStorage.getItem("postTaskCompleted") === "true"
+  );
 
   const contextValue = {
-    preTaskCompleted: preTaskCompleted,
-    demographyCompleted: demographyCompleted,
-    postTaskCompleted: postTaskCompleted,
-    setPreTaskCompleted: setPreTaskCompleted,
-    setDemographyCompleted: setDemographyCompleted,
-    setPostTaskCompleted: setPostTaskCompleted,
+    preTaskCompleted,
+    demographyCompleted,
+    postTaskCompleted,
+    setPreTaskCompleted: (value) => {
+      setPreTaskCompleted(value);
+      localStorage.setItem("preTaskCompleted", value.toString());
+    },
+    setDemographyCompleted: (value) => {
+      setDemographyCompleted(value);
+      localStorage.setItem("demographyCompleted", value.toString());
+    },
+    setPostTaskCompleted: (value) => {
+      setPostTaskCompleted(value);
+      localStorage.setItem("postTaskCompleted", value.toString());
+    },
   };
 
   return (
