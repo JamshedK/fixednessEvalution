@@ -47,7 +47,7 @@ const QuestionnnaireMain = () => {
         dataToSave
       );
       console.log("Document written with ID: ", docRef.id);
-      flowCtx.setPreTaskCompleted(true);
+      flowCtx.setPreTask1Completed(true);
       navigate("/");
     } catch (e) {
       console.error("Error adding document: ", e);

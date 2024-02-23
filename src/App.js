@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { Route, Routes } from "react-router-dom";
-import SignUp from "./chat/SignUp";
-import Main from "./common/Main";
-import Login from "./chat/Login";
+import SignUp from "./common/SignUp";
+import MainChatTask from "./chat/MainChatTask";
+import Login from "./common/Login";
 import AuthContext from "./context/auth-context";
 import QuestionnnaireMain from "./questionnaire/QuestionnaireMain";
 import { FlowContext } from "./context/flow-context";
@@ -41,7 +41,11 @@ function App() {
         <Route
           path="/chat"
           element={
-            flowCtx.demographyCompleted ? <Main /> : <Navigate to="/pre-task" />
+            flowCtx.demographyCompleted ? (
+              <MainChatTask />
+            ) : (
+              <Navigate to="/pre-task" />
+            )
           }
         />
       </Routes>

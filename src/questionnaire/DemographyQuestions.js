@@ -126,7 +126,7 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       });
       console.log("Document successfully updated!");
       flowCtx.setDemographyCompleted(true);
-      navigate("/pre-task");
+      navigate("/");
     } catch (error) {
       console.error("Error updating document: ", error);
     }

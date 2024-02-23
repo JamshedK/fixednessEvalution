@@ -1,19 +1,19 @@
 import { useContext, useState } from "react";
-import Navbar from "../chat/navbar";
-import Chatbox from "../chat/chatbox";
-import NoteBar from "../chat/NoteBar";
+import Navbar from "./navbar";
+import Chatbox from "./chatbox";
+import NoteBar from "./NoteBar";
 import TaskContext from "../context/task-context";
-import EndTaskPopUp from "../chat/EndTaskPopUp";
+import EndTaskPopUp from "./EndTaskPopUp";
 import MainSearchPage from "../bing/MainSearchPage";
 
-const Main = () => {
+const MainChatTask = () => {
   const taskCtx = useContext(TaskContext);
 
   return (
     <div className="flex flex-row ">
       <Navbar />
-      {/* <Chatbox /> */}
-      <MainSearchPage />
+      <Chatbox />
+      {/* <MainSearchPage /> */}
       <NoteBar />
       {taskCtx.showEndTaskPopUp && (
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
@@ -24,4 +24,4 @@ const Main = () => {
   );
 };
 
-export default Main;
+export default MainChatTask;
