@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ai_profile from "../assets/chatbox/ai_profile.svg";
 
-const SearchResultContainer = () => {
+const SearchPage = () => {
   const [searchResult, setSearchResult] = useState({
     title: "",
     url: "",
@@ -59,4 +59,4 @@ const SearchResultContainer = () => {
   );
 };
 
-export default SearchResultContainer;
+export default SearchPage;

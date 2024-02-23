@@ -10,6 +10,7 @@ import { Navigate } from "react-router-dom";
 import DemographyMain from "./questionnaire/DemographyMain";
 import Logout from "./common/Logout";
 import Home from "./Home";
+import MainSearchTask from "./bing/MainSearchTask";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -23,10 +24,11 @@ function App() {
           path="/"
           element={isLoggedIn ? <Navigate to="/home" /> : <Login />}
         />
-        <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/search" element={<MainSearchTask />} />
         <Route
           path="/pre-task"
           element={

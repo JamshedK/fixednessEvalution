@@ -21,23 +21,26 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.preTask1Completed,
       path: "/pre-task",
     },
-    { title: "Task 1", completed: flowCtx.task1Completed, path: "/chat" },
+    { title: "Task 1: Chat", completed: flowCtx.task1Completed, path: "/chat" },
     {
       title: "Post-task Questionnaire 1",
       completed: flowCtx.postTask1Completed,
-      path: "/post-task",
+      path: "/pre-task",
     },
     {
       title: "Pre-task Questionnaire 2",
       completed: flowCtx.preTask2Completed,
       path: "/pre-task",
     },
-    { title: "Task 2", completed: flowCtx.task2Completed, path: "/chat" },
+    {
+      title: "Task 2: Search",
+      completed: flowCtx.task2Completed,
+      path: "/search",
+    },
     {
       title: "Post-task Questionnaire 2",
-      path: "/post-task",
+      path: "/pre-task",
       completed: flowCtx.postTask2Completed,
-      path: "/post-task",
     },
   ];
 
