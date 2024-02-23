@@ -9,6 +9,7 @@ import { FlowContext } from "./context/flow-context";
 import { Navigate } from "react-router-dom";
 import DemographyMain from "./questionnaire/DemographyMain";
 import Logout from "./common/Logout";
+import Home from "./Home";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -20,8 +21,9 @@ function App() {
       <Routes>
         <Route
           path="/"
-          element={isLoggedIn ? <Navigate to="/chat" /> : <Login />}
+          element={isLoggedIn ? <Navigate to="/home" /> : <Login />}
         />
+        <Route path="/home" element={<Home />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
