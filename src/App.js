@@ -8,6 +8,7 @@ import QuestionnnaireMain from "./questionnaire/QuestionnaireMain";
 import { FlowContext } from "./context/flow-context";
 import { Navigate } from "react-router-dom";
 import DemographyMain from "./questionnaire/DemographyMain";
+import Logout from "./common/Logout";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -23,6 +24,7 @@ function App() {
         />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/logout" element={<Logout />} />
         <Route
           path="/pre-task"
           element={
