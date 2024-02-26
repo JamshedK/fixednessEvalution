@@ -10,10 +10,15 @@ import Questions from "./Questions";
 import DemographyQuestions from "./DemographyQuestions";
 import { FlowContext } from "../context/flow-context";
 import { useNavigate } from "react-router-dom";
+import InstructionsPopUp from "./InstructionsPopUp";
+
+const instructionText =
+  "In the following phase, please complete the two survey questions under each intention presented on the left sidebar. Please read the intention description first before answering the two questions. After your complete the questions under one intention, you can click on the next intention on the sidebar, which will take you to a new set of survey questions. Please complete the survey questions for all intentions listed on the left sidebar.";
 
 const QuestionnnaireMain = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [ratings, setRatings] = useState({});
+  const [showInstructions, setShowInstructions] = useState(true);
 
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
@@ -116,6 +121,15 @@ const QuestionnnaireMain = () => {
           </button>
         </div>
       )}
+      {showInstructions && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
+          <InstructionsPopUp
+            instructionText={instructionText}
+            setShowInstructions={setShowInstructions}
+          />
+        </div>
+      )}
+      ;
     </div>
   );
 };
