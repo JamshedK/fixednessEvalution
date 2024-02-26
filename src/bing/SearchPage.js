@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef, useContext } from "react";
 import AuthContext from "../context/auth-context";
 import TaskContext from "../context/task-context";
 import send_message_icon from "../assets/msg_entry/send_message_icon.svg";
+import search_icon from "../assets/common/search_icon.svg";
+
 import SingleResultContainer from "./SingleResultContainer";
 
 const SearchPage = () => {
@@ -54,12 +56,12 @@ const SearchPage = () => {
   return (
     <div className="p-4 w-full bg-[#2F4454]">
       <div className="flex flex-row space-x-6">
-        <div className="rounded-3xl bg-[#3c586e] px-8 py-3 min-h-11 flex flex-grow">
+        <div className="rounded-3xl bg-[#3c586e] px-8 py-3 min-h-11 flex flex-grow items-start">
           <textarea
             className="bg-transparent focus:outline-none h-7 text-white resize-none w-full"
             ref={textRef}
             value={query}
-            placeholder="Search Bing..."
+            placeholder="Search the web..."
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 event.preventDefault();
@@ -68,10 +70,10 @@ const SearchPage = () => {
             }}
             onChange={handleTextareaChange}
           ></textarea>
+          <button onClick={search} title="Send prompt">
+            <img src={search_icon} alt="Send message" />
+          </button>
         </div>
-        <button onClick={search} title="Send prompt">
-          <img src={send_message_icon} alt="Send message" />
-        </button>
       </div>
       <div className="flex flex-col space-y-2 mt-4">
         {isLoading ? (

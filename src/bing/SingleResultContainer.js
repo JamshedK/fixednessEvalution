@@ -11,7 +11,7 @@ const SingleResultContainer = (props) => {
         href={props.displayUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-blue-600 hover:text-blue-800 hover:underline visited:text-purple-600 text-lg font-medium"
+        className="text-blue-200 hover:text-blue-300 hover:underline visited:text-purple-600 text-lg font-medium"
       >
         {props.displayUrl}
       </a>
