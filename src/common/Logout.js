@@ -9,6 +9,7 @@ const Logout = () => {
 
   useEffect(() => {
     authCtx.logout();
+    localStorage.clear();
     navigate("/login", { replace: true }); // Redirect to login page after logout
   }, [authCtx, navigate]);
 
