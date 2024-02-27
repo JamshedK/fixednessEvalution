@@ -3,16 +3,69 @@ import AuthContext from "../context/auth-context";
 import TaskContext from "../context/task-context";
 import send_message_icon from "../assets/msg_entry/send_message_icon.svg";
 import search_icon from "../assets/common/search_icon.svg";
-
+import { db } from "../firebase-config";
+import { doc, updateDoc, arrayUnion, getDoc, setDoc } from "firebase/firestore";
 import SingleResultContainer from "./SingleResultContainer";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
   const [typingStartTime, setTypingStartTime] = useState(null);
-  const [searchPages, setSearchPages] = useState([]); // New state to hold search results
+  const [searchResults, setSearchResults] = useState([]); // New state to hold search results
   const [isLoading, setIsLoading] = useState(false);
 
+  const authCtx = useContext(AuthContext);
+  const user = authCtx.user;
+
   const textRef = useRef();
+
+  const handleSearchResultClick = async (searchResultName) => {
+    // Store the click interaction
+    const searchTaskRef = doc(db, "searchTask", user.uid);
+
+    await updateDoc(searchTaskRef, {
+      queryInteractions: arrayUnion({
+        query: query,
+        clickedResult: searchResultName,
+      }),
+    });
+  };
+
+  const storeSearchResults = async (query, searchResults) => {
+    // Create a simplified version of the search results to store in Firestore
+    const simplifiedSearchResults = searchResults.map((result) => ({
+      snippet: result.snippet,
+      name: result.name,
+      displayUrl: result.displayUrl,
+    }));
+
+    // Get a reference to the searchTask document
+    const searchTaskRef = doc(db, "searchTask", user.uid);
+
+    // Check if the document exists
+    const docSnap = await getDoc(searchTaskRef);
+
+    if (docSnap.exists()) {
+      // If it exists, append the new query interaction
+      await updateDoc(searchTaskRef, {
+        queryInteractions: arrayUnion({
+          query: query,
+          searchResults: simplifiedSearchResults,
+          clickedResults: [], // Initialize with an empty array
+        }),
+      });
+    } else {
+      // If the document does not exist, create it with the new query interaction
+      await setDoc(searchTaskRef, {
+        queryInteractions: [
+          {
+            query: query,
+            searchResults: simplifiedSearchResults,
+            clickedResults: [],
+          },
+        ],
+      });
+    }
+  };
 
   const handleTextareaChange = (event) => {
     setQuery(event.target.value);
@@ -45,7 +98,8 @@ const SearchPage = () => {
 
       const data = await response.json();
       console.log(data.webPages);
-      setSearchPages(data.webPages.value); // Store the search results
+      setSearchResults(data.webPages.value); // Store the search results
+      await storeSearchResults(query, searchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
     } finally {
@@ -79,12 +133,13 @@ const SearchPage = () => {
         {isLoading ? (
           <p className="text-white text-center">Searching...</p>
         ) : (
-          searchPages.map((page, index) => (
+          searchResults.map((page, index) => (
             <SingleResultContainer
               key={index}
               displayUrl={page.displayUrl}
               name={page.name}
               snippet={page.snippet}
+              onClick={handleSearchResultClick}
             />
           ))
         )}
