@@ -11,7 +11,7 @@ const SingleResultContainer = ({ name, displayUrl, snippet, onClick }) => {
         href={displayUrl}
         target="_blank"
         rel="noopener noreferrer"
-        onClick={() => onClick(name)}
+        onClick={() => onClick(displayUrl)}
         className="text-blue-200 hover:text-blue-300 hover:underline visited:text-purple-600 text-lg font-medium"
       >
         {displayUrl}

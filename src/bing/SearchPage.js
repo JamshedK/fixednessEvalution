@@ -4,7 +4,14 @@ import TaskContext from "../context/task-context";
 import send_message_icon from "../assets/msg_entry/send_message_icon.svg";
 import search_icon from "../assets/common/search_icon.svg";
 import { db } from "../firebase-config";
-import { doc, updateDoc, arrayUnion, getDoc, setDoc } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  arrayUnion,
+  getDoc,
+  setDoc,
+  runTransaction,
+} from "firebase/firestore";
 import SingleResultContainer from "./SingleResultContainer";
 
 const SearchPage = () => {
@@ -19,14 +26,48 @@ const SearchPage = () => {
   const textRef = useRef();
 
   const handleSearchResultClick = async (searchResultName) => {
-    // Store the click interaction
+    // Reference to the searchTask document
     const searchTaskRef = doc(db, "searchTask", user.uid);
 
-    await updateDoc(searchTaskRef, {
-      queryInteractions: arrayUnion({
-        query: query,
-        clickedResult: searchResultName,
-      }),
+    // Transaction to ensure atomic update
+    await runTransaction(db, async (transaction) => {
+      const searchTaskDoc = await transaction.get(searchTaskRef);
+      if (!searchTaskDoc.exists()) {
+        console.error("Document does not exist!");
+        return;
+      }
+
+      // Extract current data
+      const data = searchTaskDoc.data();
+      const { queryInteractions } = data;
+
+      // Find the specific query interaction, assuming `query` is unique per interaction
+      const interactionIndex = queryInteractions.findIndex(
+        (interaction) => interaction.query === query
+      );
+      if (interactionIndex === -1) {
+        console.error("Query interaction not found!");
+        return;
+      }
+
+      // Clone the interactions to avoid direct mutation
+      const updatedQueryInteractions = [...queryInteractions];
+
+      // Update the clickedResults for the specific query interaction
+      const interaction = updatedQueryInteractions[interactionIndex];
+      console.log(interaction);
+      const updatedClickedResults = interaction.clickedResults
+        ? [...interaction.clickedResults, searchResultName]
+        : [searchResultName];
+      updatedQueryInteractions[interactionIndex] = {
+        ...interaction,
+        clickedResults: updatedClickedResults,
+      };
+
+      // Update the document with the new interactions
+      transaction.update(searchTaskRef, {
+        queryInteractions: updatedQueryInteractions,
+      });
     });
   };
 
@@ -99,7 +140,7 @@ const SearchPage = () => {
       const data = await response.json();
       console.log(data.webPages);
       setSearchResults(data.webPages.value); // Store the search results
-      await storeSearchResults(query, searchResults);
+      await storeSearchResults(query, data.webPages.value);
     } catch (error) {
       console.error("Error fetching search results:", error);
     } finally {
