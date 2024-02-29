@@ -1,8 +1,15 @@
 import { useState, useEffect, useContext } from "react";
 import TaskContext from "../context/task-context";
+import { useLocation } from "react-router-dom";
 
 const Questions = ({ itemId, ratings, onRatingsChange }) => {
   const taskCtx = useContext(TaskContext);
+  const location = useLocation();
+  const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
+
+  const instructionString = isPostTask
+    ? "Based on Your Experience with the system, please classify this intention into one of the following categories."
+    : "Based on your Expectation, please classify this intention into one of the following categories.";
 
   let service = "";
   const currentURL = window.location.pathname;
@@ -65,10 +72,7 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
         <span className="">{itemId}</span>
       </div>
       <div className="bg-[#142838] py-12 px-16">
-        <h1 className="text-[20px] mb-5">
-          Based on your Expectation, please classify this intention into one of
-          the following categories
-        </h1>
+        <h1 className="text-[20px] mb-5">{instructionString}</h1>
         {expectationList.map((item, index) => (
           <div key={index} className="flex flex-row space-x-4 items-start">
             <input
