@@ -21,7 +21,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Pre-task Questionnaire 1",
       completed: flowCtx.preTask1Completed,
-      path: "/pre-task",
+      path: "/pre-task?firstTask=true",
     },
     {
       title: `Task 1: ${taskCtx.tasks.firstTask}`,
@@ -36,7 +36,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Pre-task Questionnaire 2",
       completed: flowCtx.preTask2Completed,
-      path: "/pre-task",
+      path: "/pre-task?firstTask=false",
     },
     {
       title: `Task 2: ${taskCtx.tasks.secondTask}`,

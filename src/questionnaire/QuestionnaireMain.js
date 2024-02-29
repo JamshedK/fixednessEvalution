@@ -11,6 +11,7 @@ import DemographyQuestions from "./DemographyQuestions";
 import { FlowContext } from "../context/flow-context";
 import { useNavigate } from "react-router-dom";
 import InstructionsPopUp from "./InstructionsPopUp";
+import { useLocation } from "react-router-dom";
 
 const instructionText =
   "In the following phase, please complete the two survey questions under each intention presented on the left sidebar. Please read the intention description first before answering the two questions. After your complete the questions under one intention, you can click on the next intention on the sidebar, which will take you to a new set of survey questions. Please complete the survey questions for all intentions listed on the left sidebar.";
@@ -23,6 +24,7 @@ const QuestionnnaireMain = () => {
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
   const navigate = useNavigate();
+  const location = useLocation(); // Hook to get location object
 
   const handleSelectItem = (itemId) => {
     setSelectedItem(itemId);
@@ -44,6 +46,8 @@ const QuestionnnaireMain = () => {
       userID: authCtx.user.uid,
       ratings,
     };
+    const searchParams = new URLSearchParams(location.search);
+    const isFirstTask = searchParams.get("firstTask") === "true"; // Check if firstTask query parameter is 'true'
 
     try {
       // Reference to your Firestore collection
@@ -52,7 +56,12 @@ const QuestionnnaireMain = () => {
         dataToSave
       );
       console.log("Document written with ID: ", docRef.id);
-      flowCtx.setPreTask1Completed(true);
+      // Conditionally updating based on firstTask query parameter
+      if (isFirstTask) {
+        flowCtx.setPreTask1Completed(true);
+      } else {
+        flowCtx.setPreTask2Completed(true);
+      }
       navigate("/");
     } catch (e) {
       console.error("Error adding document: ", e);
@@ -111,7 +120,7 @@ const QuestionnnaireMain = () => {
           />
         )}
       </div>
-      {allQuestionsAnswered && (
+      {!allQuestionsAnswered && (
         <div className="flex flex-row justify-around mt-16 border-2">
           <button
             className="bg-white px-6 py-2 rounded-2xl fixed bottom-4 right-4"
