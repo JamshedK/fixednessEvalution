@@ -42,25 +42,30 @@ const QuestionnnaireMain = () => {
   };
 
   const handleSubmit = async () => {
+    const searchParams = new URLSearchParams(location.search);
+    const isFirstTask = searchParams.get("firstTask") === "true"; // Check if firstTask query parameter is 'true'
+    const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
     const dataToSave = {
       userID: authCtx.user.uid,
       ratings,
+      isPostTask,
     };
-    const searchParams = new URLSearchParams(location.search);
-    const isFirstTask = searchParams.get("firstTask") === "true"; // Check if firstTask query parameter is 'true'
-
     try {
       // Reference to your Firestore collection
       const docRef = await addDoc(
-        collection(db, "preTaskResponses"),
+        collection(db, "questionnaireResponses"),
         dataToSave
       );
       console.log("Document written with ID: ", docRef.id);
       // Conditionally updating based on firstTask query parameter
-      if (isFirstTask) {
+      if (isFirstTask && !isPostTask) {
         flowCtx.setPreTask1Completed(true);
-      } else {
+      } else if (isFirstTask && isPostTask) {
+        flowCtx.setPostTask1Completed(true);
+      } else if (!isFirstTask && !isPostTask) {
         flowCtx.setPreTask2Completed(true);
+      } else {
+        flowCtx.setPostTask2Completed(true);
       }
       navigate("/");
     } catch (e) {

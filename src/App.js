@@ -39,6 +39,7 @@ function App() {
             )
           }
         />
+        <Route path="/post-task" element={<QuestionnnaireMain />} />
         <Route path="/demography" element={<DemographyMain />} />
         <Route
           path="/chat"

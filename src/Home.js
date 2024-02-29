@@ -31,7 +31,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Post-task Questionnaire 1",
       completed: flowCtx.postTask1Completed,
-      path: "/pre-task",
+      path: "/post-task?firstTask=true",
     },
     {
       title: "Pre-task Questionnaire 2",
@@ -45,7 +45,7 @@ const Home = ({ onSelectItem }) => {
     },
     {
       title: "Post-task Questionnaire 2",
-      path: "/pre-task",
+      path: "/post-task?firstTask=false",
       completed: flowCtx.postTask2Completed,
     },
   ];
