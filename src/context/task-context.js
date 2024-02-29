@@ -8,8 +8,9 @@ import {
   getDoc,
 } from "firebase/firestore";
 import AuthContext from "./auth-context";
+import tasksJSON from "../tasks.json";
+
 const TaskContext = createContext({
-  LLMTask: null,
   SearchEngineTask: null,
   showEditNoteReminder: false, // Default value
   showPopUp: null, // you need showEditNoteReminder and showPopUp because otherwise you won't be able to display the popup properly
@@ -18,7 +19,7 @@ const TaskContext = createContext({
   showRatingPopUp: null,
   noteText: null,
   showEndTaskPopUp: false,
-  setLLMTask: () => {},
+  tasks: {},
   setSearchEngineTask: () => {},
   setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
   setShowPopUp: () => {},
@@ -27,10 +28,10 @@ const TaskContext = createContext({
   setShowEndTaskPopUp: () => {},
   setIsRatingNeeded: () => {},
   setShowRatingPopUp: () => {},
+  setTasks: () => {},
 });
 
 export const TaskContextProvider = (props) => {
-  const [LLMTask, setLLMTaskState] = useState(null);
   const [SearchEngineTask, setSearchEngineTaskState] = useState(null);
   const [showEditNoteReminder, setShowEditNoteReminderState] = useState(false);
   const [showPopUp, setShowPopUpState] = useState(false);
@@ -39,6 +40,12 @@ export const TaskContextProvider = (props) => {
   const [showEndTaskPopUp, setShowEndTaskPopUpState] = useState(false);
   const [isRatingNeeded, setIsRatingNeededState] = useState(false);
   const [showRatingPopUp, setShowRatingPopUpState] = useState(false);
+  const [tasks, setTasksState] = useState({
+    firstTask: null,
+    firstTaskTopic: null,
+    secondTask: null,
+    secondTaskTopic: null,
+  });
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
@@ -47,10 +54,10 @@ export const TaskContextProvider = (props) => {
         const userDocRef = doc(db, "users", authCtx.user.uid);
         try {
           const docSnap = await getDoc(userDocRef);
-          if (docSnap.exists() && docSnap.data().assignedTask) {
-            setLLMTaskState(docSnap.data().assignedTask);
+          if (docSnap.exists() && docSnap.data().tasks) {
+            setTasks(docSnap.data().tasks);
           } else {
-            console.log("No assigned LLMTask found or user does not exist.");
+            console.log("No assigned tasks found or user does not exist.");
           }
         } catch (error) {
           console.error("Error fetching user's assigned task:", error);
@@ -61,35 +68,40 @@ export const TaskContextProvider = (props) => {
     fetchAssignedTask();
   }, [authCtx.user]);
 
-  // Function to fetch tasks from Firestore and set a random LLMTask
-  const setLLMTask = async (user) => {
-    const taskCollectionRef = collection(db, "chatgptTasks");
-    try {
-      const taskDocs = await getDocs(taskCollectionRef);
-      const tasks = taskDocs.docs.map((doc) => ({
-        taskId: doc.id,
-        ...doc.data(),
-      }));
-      if (tasks.length > 0) {
-        // Randomly select a task
-        const randomTask = tasks[Math.floor(Math.random() * tasks.length)];
-        setLLMTaskState(randomTask);
+  const setTasks = (user) => {
+    const taskTypes = ["chat", "search"];
+    const firstTaskIndex = Math.floor(Math.random() * taskTypes.length);
+    const firstTask = taskTypes[firstTaskIndex];
+    const secondTask = taskTypes[firstTaskIndex === 0 ? 1 : 0]; // Ensure the second task is different
 
-        // Assign the random task to the current user in the 'users' collection
-        if (user && user.uid) {
-          const userDocRef = doc(db, "users", user.uid);
-          await updateDoc(userDocRef, {
-            assignedTask: randomTask,
-          });
-          console.log("User was assigned an LLM task successfully");
-        }
+    const taskTopics = tasksJSON.map((task) => task.title);
+    const firstTaskTopicIndex = Math.floor(Math.random() * taskTopics.length);
+    let secondTaskTopicIndex;
+    do {
+      secondTaskTopicIndex = Math.floor(Math.random() * taskTopics.length);
+    } while (secondTaskTopicIndex === firstTaskTopicIndex); // Ensure different topics
+
+    const firstTaskTopic = taskTopics[firstTaskTopicIndex];
+    const secondTaskTopic = taskTopics[secondTaskTopicIndex];
+
+    const obj = {
+      firstTask,
+      firstTaskTopic,
+      secondTask,
+      secondTaskTopic,
+    };
+    try {
+      if (user && user.uid) {
+        const userDocRef = doc(db, "users", user.uid);
+        updateDoc(userDocRef, {
+          tasks: obj,
+        });
+        console.log("User was assigned tasks successfully");
       }
     } catch (error) {
-      console.error(
-        "Error fetching tasks from Firestore or updating user's assigned task:",
-        error
-      );
+      console.error("Error assigning tasks to user:", error);
     }
+    setTasksState(obj);
   };
 
   // Function to update showEditNoteReminder state
@@ -127,7 +139,6 @@ export const TaskContextProvider = (props) => {
   };
 
   const contextValue = {
-    LLMTask,
     SearchEngineTask,
     showEditNoteReminder,
     showPopUp,
@@ -136,7 +147,7 @@ export const TaskContextProvider = (props) => {
     showEndTaskPopUp,
     isRatingNeeded,
     showRatingPopUp,
-    setLLMTask,
+    tasks,
     setSearchEngineTask,
     setShowEditNoteReminder,
     setShowPopUp,
@@ -145,6 +156,7 @@ export const TaskContextProvider = (props) => {
     setShowEndTaskPopUp,
     setIsRatingNeeded,
     setShowRatingPopUp,
+    setTasks,
   };
 
   return (
