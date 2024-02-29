@@ -1,11 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import TaskContext from "../context/task-context";
 
 const Questions = ({ itemId, ratings, onRatingsChange }) => {
+  const taskCtx = useContext(TaskContext);
+
+  let service = "";
+  const currentURL = window.location.pathname;
+  if (currentURL.includes("chat")) {
+    service = "ChatGPT";
+  } else {
+    service = "Search Engine";
+  }
+
   const expectationList = [
-    "ChatGPT can always fully fulfill the intention",
-    "ChatGPT may be able to fully fulfill the intention if/once an effective query/prompt is successfully formulated (e.g. after several rounds of query/prompt modifications).",
-    "ChatGPT may be able to partially fulfill the intention if/once an effective query/prompt is successfully formulated.",
-    "ChatGPT is unlikely to fulfill this intention at all.",
+    `${service} can always fully fulfill the intention`,
+    `${service}  may be able to fully fulfill the intention if/once an effective query/prompt is successfully formulated (e.g. after several rounds of query/prompt modifications).`,
+    `${service}  may be able to partially fulfill the intention if/once an effective query/prompt is successfully formulated.`,
+    `${service}  is unlikely to fulfill this intention at all.`,
   ];
 
   const usageFrequency = [
@@ -75,8 +86,8 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
       </div>
       <div className="bg-[#142838] py-12 px-16">
         <h1 className="text-[20px] mb-5">
-          In your prior interaction experiences, how often did you try to use
-          Search Engine/ChatGPT to fulfill this intention?
+          In your prior interaction experiences, how often did you try to use{" "}
+          {service} to fulfill this intention?
         </h1>
         {usageFrequency.map((item, index) => (
           <div key={index} className="flex flex-row space-x-4 items-center">

@@ -5,9 +5,11 @@ import circle_icon from "./assets/common/circle_icon.svg";
 import { FlowContext } from "./context/flow-context";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
+import TaskContext from "./context/task-context";
 
 const Home = ({ onSelectItem }) => {
   const flowCtx = useContext(FlowContext);
+  const taskCtx = useContext(TaskContext);
   const navigate = useNavigate();
 
   const tasks = [
@@ -21,7 +23,11 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.preTask1Completed,
       path: "/pre-task",
     },
-    { title: "Task 1: Chat", completed: flowCtx.task1Completed, path: "/chat" },
+    {
+      title: `Task 1: ${taskCtx.tasks.firstTask}`,
+      completed: flowCtx.task1Completed,
+      path: `/${taskCtx.tasks.firstTask}`,
+    },
     {
       title: "Post-task Questionnaire 1",
       completed: flowCtx.postTask1Completed,
@@ -33,9 +39,9 @@ const Home = ({ onSelectItem }) => {
       path: "/pre-task",
     },
     {
-      title: "Task 2: Search",
+      title: `Task 2: ${taskCtx.tasks.secondTask}`,
       completed: flowCtx.task2Completed,
-      path: "/search",
+      path: `/${taskCtx.tasks.secondTask}`,
     },
     {
       title: "Post-task Questionnaire 2",

@@ -55,7 +55,7 @@ export const TaskContextProvider = (props) => {
         try {
           const docSnap = await getDoc(userDocRef);
           if (docSnap.exists() && docSnap.data().tasks) {
-            setTasks(docSnap.data().tasks);
+            setTasksState(docSnap.data().tasks);
           } else {
             console.log("No assigned tasks found or user does not exist.");
           }
