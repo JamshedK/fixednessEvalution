@@ -4,13 +4,14 @@ import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 import { doc, setDoc, arrayUnion, Timestamp } from "firebase/firestore";
 import TaskContext from "../context/task-context";
+import { useLocation } from "react-router-dom";
 
 const NoteContainer = (props) => {
   const textRef = useRef(null);
   const [noteText, setNoteText] = useState(""); // To track the user's input
   const [isSaveButtonVisible, setIsSaveButtonVisible] = useState(false); // To control the save button visibility
   const [savedNote, setSavedNote] = useState(""); // Optional, to store the saved noteText
-
+  const location = useLocation();
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
 
@@ -33,18 +34,24 @@ const NoteContainer = (props) => {
 
   const handleSave = async () => {
     if (authCtx.user.uid) {
-      const noteDocumentRef = doc(db, "notes", authCtx.user.uid);
+      const taskCategory = location.pathname.split("/")[1];
+      console.log("taskCategory", taskCategory);
+      const customDocID = `${authCtx.user.uid}${taskCategory}`;
+      console.log(customDocID);
+      const noteDocumentRef = doc(db, "notes", customDocID);
       const noteObject = {
         noteText: noteText,
         ts: Timestamp.now(), // Use Firestore Timestamp for the current time
-        // taskID: props.taskID || 'defaultTaskID' // Assuming taskID is passed as a prop
       };
 
       try {
+        const userID = authCtx.user.uid;
         // Set document with merge, if doesn't exist, it'll create
         await setDoc(
           noteDocumentRef,
           {
+            taskCategory,
+            userID,
             notesArray: arrayUnion(noteObject),
           },
           { merge: true }
