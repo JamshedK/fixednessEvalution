@@ -1,6 +1,6 @@
 [
   {
-    "category": "Age",
+    "category": "What is your age group?",
     "options": [
       "Under 18",
       "18-24",
@@ -12,7 +12,7 @@
     ]
   },
   {
-    "category": "Gender",
+    "category": "What is your gender?",
     "options": [
       "Male",
       "Female",
@@ -22,7 +22,7 @@
     ]
   },
   {
-    "category": "Highest Level of Education Completed",
+    "category": "What is the highest level of education you have completed?",
     "options": [
       "Less than high school",
       "High school graduate or equivalent",
@@ -35,7 +35,7 @@
     ]
   },
   {
-    "category": "Employment Status",
+    "category": "What is your current employment status?",
     "options": [
       "Employed full-time",
       "Employed part-time",
@@ -47,7 +47,7 @@
     ]
   },
   {
-    "category": "Frequency of Using Chatbots/Search Engine",
+    "category": "How frequently do you use chatbots or search engines?",
     "options": [
       "Never/This is going to be my first time",
       "Occasionally (less than once a week)",
@@ -56,7 +56,7 @@
     ]
   },
   {
-    "category": "Primary Purpose for Using ChatGPT",
+    "category": "What is your primary purpose for using ChatGPT?",
     "options": [
       "Education",
       "Work-related tasks",

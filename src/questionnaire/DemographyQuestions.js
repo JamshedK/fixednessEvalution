@@ -42,27 +42,31 @@ const DemographyQuestions = ({ onResponsesChange }) => {
 
   // Map each question to its corresponding input type
   const inputFieldMap = {
-    Age: { state: age, setState: setAge, type: "radio" },
-    Gender: { state: gender, setState: setGender, type: "radio" },
-    "Highest Level of Education Completed": {
+    "What is your age group?": { state: age, setState: setAge, type: "radio" },
+    "What is your gender?": {
+      state: gender,
+      setState: setGender,
+      type: "radio",
+    },
+    "What is the highest level of education you have completed?": {
       state: education,
       setState: setEducation,
       type: "radio",
       name: "education",
     },
-    "Employment Status": {
+    "What is your current employment status?": {
       state: employmentStatus,
       setState: setEmploymentStatus,
       type: "radio",
       name: "employmentStatus",
     },
-    "Frequency of Using Chatbots/Search Engine": {
+    "How frequently do you use chatbots or search engines?": {
       state: usageFrequency,
       setState: setUsageFrequency,
       type: "radio",
       name: "usageFrequency",
     },
-    "Primary Purpose for Using ChatGPT": {
+    "What is your primary purpose for using ChatGPT?": {
       state: purpose,
       setState: setPurpose,
       type: "radio",
