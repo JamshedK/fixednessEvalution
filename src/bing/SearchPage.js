@@ -11,6 +11,7 @@ import {
   getDoc,
   setDoc,
   runTransaction,
+  Timestamp,
 } from "firebase/firestore";
 import SingleResultContainer from "./SingleResultContainer";
 
@@ -90,6 +91,7 @@ const SearchPage = () => {
       await updateDoc(searchTaskRef, {
         queryInteractions: arrayUnion({
           query: query,
+          ts: Timestamp.now(),
           searchResults: simplifiedSearchResults,
           clickedResults: [], // Initialize with an empty array
         }),
@@ -99,6 +101,7 @@ const SearchPage = () => {
       await setDoc(searchTaskRef, {
         queryInteractions: [
           {
+            ts: Timestamp.now(),
             query: query,
             searchResults: simplifiedSearchResults,
             clickedResults: [],

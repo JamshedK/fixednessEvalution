@@ -1,5 +1,5 @@
 import { useContext, useState, useMemo } from "react";
-import { addDoc, collection } from "firebase/firestore";
+import { addDoc, collection, Timestamp } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 import IntentionBox from "./IntentionBox";
@@ -53,6 +53,7 @@ const QuestionnnaireMain = () => {
       userID: authCtx.user.uid,
       ratings,
       isPostTask,
+      ts: Timestamp.now(),
     };
     try {
       // Reference to your Firestore collection

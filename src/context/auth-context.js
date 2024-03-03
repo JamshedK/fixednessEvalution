@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, Timestamp } from "firebase/firestore";
 import { db } from "../firebase-config";
 
 const AuthContext = React.createContext({
@@ -30,6 +30,7 @@ export const AuthContextProvider = (props) => {
       uid: user.uid,
       email: user.email,
       displayName: user.displayName,
+      creationTs: Timestamp.now(),
     };
     try {
       await setDoc(doc(db, "users", user.uid), userDoc, { merge: true });

@@ -4,7 +4,7 @@ import React, { useState, useContext } from "react";
 import AuthContext from "../context/auth-context";
 import { FlowContext } from "../context/flow-context";
 import { db } from "../firebase-config";
-import { doc, updateDoc } from "firebase/firestore";
+import { Timestamp, doc, updateDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
 
 const DemographyQuestions = ({ onResponsesChange }) => {
@@ -126,7 +126,8 @@ const DemographyQuestions = ({ onResponsesChange }) => {
     try {
       // Update the user's document with the new responses
       await updateDoc(userDocRef, {
-        ...responses, // Spread the responses object to update fields in the document
+        ...responses,
+        demographyCompleteTs: Timestamp.now(), // Spread the responses object to update fields in the document
       });
       console.log("Document successfully updated!");
       flowCtx.setDemographyCompleted(true);
