@@ -17,48 +17,67 @@ const Home = ({ onSelectItem }) => {
       title: "Demography Survey",
       completed: flowCtx.demographyCompleted,
       path: "/demography",
+      canNavigate: true,
     },
     {
       title: "Pre-task Questionnaire 1",
       completed: flowCtx.preTask1Completed,
       path: "/pre-task?firstTask=true",
+      canNavigate: flowCtx.demographyCompleted,
     },
     {
       title: `Task 1: ${taskCtx.tasks.firstTask}`,
       completed: flowCtx.task1Completed,
       path: `/${taskCtx.tasks.firstTask}`,
+      canNavigate: flowCtx.preTask1Completed,
     },
     {
       title: "Post-task Questionnaire 1",
       completed: flowCtx.postTask1Completed,
       path: "/post-task?firstTask=true",
+      canNavigate: flowCtx.task1Completed,
     },
     {
       title: "Pre-task Questionnaire 2",
       completed: flowCtx.preTask2Completed,
       path: "/pre-task?firstTask=false",
+      canNavigate: flowCtx.postTask1Completed,
     },
     {
       title: `Task 2: ${taskCtx.tasks.secondTask}`,
       completed: flowCtx.task2Completed,
       path: `/${taskCtx.tasks.secondTask}`,
+      canNavigate: flowCtx.preTask2Completed,
     },
     {
       title: "Post-task Questionnaire 2",
       path: "/post-task?firstTask=false",
       completed: flowCtx.postTask2Completed,
+      canNavigate: flowCtx.task2Completed,
     },
   ];
 
+  const handleNavigation = (task) => () => {
+    if (task.canNavigate) {
+      if (task.completed) {
+        alert("You have already completed this item");
+        return;
+      }
+      navigate(task.path);
+    } else {
+      alert("Please complete the previous item");
+    }
+  };
+
   return (
-    <div className="flex justify-center w-screen h-screen items-center ">
+    <div className="flex flex-col justify-center w-screen h-screen items-center ">
       <div className="task-list w-[30%]">
         {tasks.map((task, index) => (
           <div
             key={index}
             className="flex items-center justify-between bg-[#142838] p-4 text-white w-full 
                         border-b-[1px] border-[#2F4454] text-[14px] hover:cursor-pointer"
-            onClick={() => navigate(task.path)}
+            onClick={handleNavigation(task)}
           >
             <span className="text-green-600">
               {task.completed ? (
@@ -91,6 +110,12 @@ const Home = ({ onSelectItem }) => {
             </span>
           </div>
         ))}
+      </div>
+      <div className="text-white text-[20px] mt-20 w-[30%] text-center">
+        <p>
+          Please, complete each item in the study in the order they are listed.
+          You can only move to the next item when the current item is completed.
+        </p>
       </div>
     </div>
   );
