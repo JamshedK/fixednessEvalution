@@ -21,7 +21,7 @@ import ReactMarkdown from "react-markdown";
 import hljs from "highlight.js";
 import TaskContext from "../context/task-context";
 import EditNoteReminder from "./EditNoteReminder";
-import RatePrompt from "../common/RatePrompts";
+import RatePrompt from "./RatePrompt";
 
 function ChatBox() {
   const [prompt, setPrompt] = useState("");
