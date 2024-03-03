@@ -44,7 +44,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Session Experience Survey 1",
       completed: flowCtx.sessionExperienceSurvey1Completed,
-      path: "/session-experience?firstTask=true",
+      path: `/session-experience?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.postTask1Completed,
     },
     {
@@ -72,7 +72,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Session Experience Survey 2",
       completed: flowCtx.sessionExperienceSurvey2Completed,
-      path: "/session-experience?firstTask=false",
+      path: `/session-experience?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.postTask2Completed,
     },
   ];
