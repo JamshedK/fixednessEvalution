@@ -27,7 +27,7 @@ const DemographyMain = () => {
             <IntentionTypeItem
               selectedItem={selectedItem}
               itemId={"demography"} // Create a unique ID for each item
-              title={"Demography"}
+              title={"Background Information"}
               onSelectItem={handleSelectItem}
             />
           </div>

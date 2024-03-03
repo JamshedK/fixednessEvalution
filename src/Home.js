@@ -14,7 +14,7 @@ const Home = ({ onSelectItem }) => {
 
   const tasks = [
     {
-      title: "Demography Survey",
+      title: "Background Survey",
       completed: flowCtx.demographyCompleted,
       path: "/demography",
       canNavigate: true,
@@ -58,15 +58,16 @@ const Home = ({ onSelectItem }) => {
   ];
 
   const handleNavigation = (task) => () => {
-    if (task.canNavigate) {
-      if (task.completed) {
-        alert("You have already completed this item");
-        return;
-      }
-      navigate(task.path);
-    } else {
-      alert("Please complete the previous item");
-    }
+    // if (task.canNavigate) {
+    //   if (task.completed) {
+    //     alert("You have already completed this item");
+    //     return;
+    //   }
+    //   navigate(task.path);
+    // } else {
+    //   alert("Please complete the previous item");
+    // }
+    navigate(task.path);
   };
 
   return (
