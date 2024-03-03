@@ -8,17 +8,21 @@ export const FlowContext = createContext({
   preTask1Completed: false,
   task1Completed: false,
   postTask1Completed: false,
+  sessionExperienceSurvey1Completed: false,
   preTask2Completed: false,
   task2Completed: false,
   postTask2Completed: false,
+  sessionExperienceSurvey2Completed: false,
   // Define the setter functions for the new states
   setDemographyCompleted: () => {},
   setPreTask1Completed: () => {},
   setTask1Completed: () => {},
   setPostTask1Completed: () => {},
+  setSessionExperienceSurvey1Completed: () => {},
   setPreTask2Completed: () => {},
   setTask2Completed: () => {},
   setPostTask2Completed: () => {},
+  setSessionExperienceSurvey2Completed: () => {},
 });
 
 export const FlowContextProvider = ({ children }) => {
@@ -27,9 +31,17 @@ export const FlowContextProvider = ({ children }) => {
   const [preTask1Completed, setPreTask1Completed] = useState(false);
   const [task1Completed, setTask1Completed] = useState(false);
   const [postTask1Completed, setPostTask1Completed] = useState(false);
+  const [
+    sessionExperienceSurvey1Completed,
+    setSessionExperienceSurvey1Completed,
+  ] = useState(false);
   const [preTask2Completed, setPreTask2Completed] = useState(false);
   const [task2Completed, setTask2Completed] = useState(false);
   const [postTask2Completed, setPostTask2Completed] = useState(false);
+  const [
+    sessionExperienceSurvey2Completed,
+    setSessionExperienceSurvey2Completed,
+  ] = useState(false);
 
   const authCtx = useContext(AuthContext);
   const user = authCtx.user;
@@ -52,6 +64,12 @@ export const FlowContextProvider = ({ children }) => {
           setPreTask2Completed(data.preTask2Completed || false);
           setTask2Completed(data.task2Completed || false);
           setPostTask2Completed(data.postTask2Completed || false);
+          setSessionExperienceSurvey1Completed(
+            data.sessionExperienceSurvey1Completed || false
+          );
+          setSessionExperienceSurvey2Completed(
+            data.sessionExperienceSurvey2Completed || false
+          );
         }
       } catch (error) {
         console.error("Error fetching user task state from Firestore:", error);
@@ -80,9 +98,11 @@ export const FlowContextProvider = ({ children }) => {
     preTask1Completed,
     task1Completed,
     postTask1Completed,
+    sessionExperienceSurvey1Completed,
     preTask2Completed,
     task2Completed,
     postTask2Completed,
+    sessionExperienceSurvey2Completed,
     // Define the setter functions for the new states
     setDemographyCompleted: (value) => {
       setDemographyCompleted(value);
@@ -100,6 +120,10 @@ export const FlowContextProvider = ({ children }) => {
       setPostTask1Completed(value);
       updateTaskStateInFirestore("postTask1Completed", value);
     },
+    setSessionExperienceSurvey1Completed: (value) => {
+      setSessionExperienceSurvey1Completed(value);
+      updateTaskStateInFirestore("sessionExperienceSurvey1Completed", value);
+    },
     setPreTask2Completed: (value) => {
       setPreTask2Completed(value);
       updateTaskStateInFirestore("preTask2Completed", value);
@@ -111,6 +135,10 @@ export const FlowContextProvider = ({ children }) => {
     setPostTask2Completed: (value) => {
       setPostTask2Completed(value);
       updateTaskStateInFirestore("postTask2Completed", value);
+    },
+    setSessionExperienceSurvey2Completed: (value) => {
+      setSessionExperienceSurvey2Completed(value);
+      updateTaskStateInFirestore("sessionExperienceSurvey2Completed", value);
     },
   };
   return (
