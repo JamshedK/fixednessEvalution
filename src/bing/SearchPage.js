@@ -4,6 +4,7 @@ import TaskContext from "../context/task-context";
 import send_message_icon from "../assets/msg_entry/send_message_icon.svg";
 import search_icon from "../assets/common/search_icon.svg";
 import { db } from "../firebase-config";
+import { uid } from "uid";
 import {
   doc,
   updateDoc,
@@ -26,7 +27,7 @@ const SearchPage = () => {
 
   const textRef = useRef();
 
-  const handleSearchResultClick = async (searchResultName) => {
+  const handleSearchResultClick = async (clickedObj) => {
     // Reference to the searchTask document
     const searchTaskRef = doc(db, "searchTask", user.uid);
 
@@ -58,8 +59,8 @@ const SearchPage = () => {
       const interaction = updatedQueryInteractions[interactionIndex];
       console.log(interaction);
       const updatedClickedResults = interaction.clickedResults
-        ? [...interaction.clickedResults, searchResultName]
-        : [searchResultName];
+        ? [...interaction.clickedResults, clickedObj]
+        : [clickedObj];
       updatedQueryInteractions[interactionIndex] = {
         ...interaction,
         clickedResults: updatedClickedResults,
@@ -78,6 +79,7 @@ const SearchPage = () => {
       snippet: result.snippet,
       name: result.name,
       displayUrl: result.displayUrl,
+      customID: result.customID,
     }));
 
     // Get a reference to the searchTask document
@@ -107,6 +109,7 @@ const SearchPage = () => {
             clickedResults: [],
           },
         ],
+        userID: user.uid,
       });
     }
   };
@@ -142,8 +145,13 @@ const SearchPage = () => {
 
       const data = await response.json();
       console.log(data.webPages);
-      setSearchResults(data.webPages.value); // Store the search results
-      await storeSearchResults(query, data.webPages.value);
+      const localSearchResults = data.webPages.value.map((result) => ({
+        ...result,
+        customID: uid(),
+      }));
+
+      setSearchResults(localSearchResults); // Store the search results
+      await storeSearchResults(query, localSearchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
     } finally {
@@ -183,7 +191,12 @@ const SearchPage = () => {
               displayUrl={page.displayUrl}
               name={page.name}
               snippet={page.snippet}
-              onClick={handleSearchResultClick}
+              onClick={() =>
+                handleSearchResultClick({
+                  url: page.displayUrl,
+                  customID: page.customID,
+                })
+              }
             />
           ))
         )}
