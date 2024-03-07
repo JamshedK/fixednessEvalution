@@ -8,10 +8,11 @@ import user_profile from "../assets/chatbox/user_profile.svg";
 import ai_profile from "../assets/chatbox/ai_profile.svg";
 import {
   collection,
-  query,
-  orderBy,
-  getDocs,
-  where,
+  doc,
+  arrayUnion,
+  getDoc,
+  updateDoc,
+  setDoc,
   addDoc,
 } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
@@ -74,6 +75,27 @@ function ChatBox() {
     setIsLoading(false);
   };
 
+  const saveChatHistory = async (formData) => {
+    // Get a reference to the searchTask document
+    const chatTaskRef = doc(db, "chatTasks", authCtx.user.uid);
+
+    // Check if the document exists
+    const docSnap = await getDoc(chatTaskRef);
+
+    if (docSnap.exists()) {
+      // If it exists, append the new query interaction
+      await updateDoc(chatTaskRef, {
+        prompts: arrayUnion(formData),
+      });
+    } else {
+      // If the document does not exist, create it with the new query interaction
+      await setDoc(chatTaskRef, {
+        queryInteractions: [formData],
+        userID: authCtx.user.uid,
+      });
+    }
+  };
+
   const saveResponseToFirestore = async (
     message,
     promptID,
@@ -83,15 +105,17 @@ function ChatBox() {
   ) => {
     try {
       const promptRef = collection(db, "chatsIndividual");
-      await addDoc(promptRef, {
+      const formData = {
         id: tempResponseID,
-        prompt: message.content,
         responseTo: promptID,
+        prompt: message.content,
         userID: authCtx?.user.uid || "",
         role: "assistant",
         typingStartTime,
         typingEndTime,
-      });
+      };
+      await addDoc(promptRef, formData);
+      await saveChatHistory(formData);
     } catch (error) {
       console.error("Error saving prompt:", error);
     }
@@ -169,6 +193,7 @@ function ChatBox() {
       </div>
       <div className="fixed bottom-0 mb-8 w-[50%] flex flex-col left-[50%] transform -translate-x-1/2 ">
         <MsgEntry
+          saveChatHistory={saveChatHistory}
           setPromptID={setPromptID}
           responseID={responseID}
           setPromptResponseArray={setPromptResponseArray}
