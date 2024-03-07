@@ -120,10 +120,9 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       }, {}),
     };
 
-    // Reference to the user's document in Firestore using the user's UUID
-    const userDocRef = doc(db, "users", authCtx?.user.uid);
-
     try {
+      // Reference to the user's document in Firestore using the user's UUID
+      const userDocRef = doc(db, "users", authCtx?.user?.uid);
       // Update the user's document with the new responses
       await updateDoc(userDocRef, {
         ...responses,

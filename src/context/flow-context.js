@@ -13,6 +13,7 @@ export const FlowContext = createContext({
   task2Completed: false,
   postTask2Completed: false,
   sessionExperienceSurvey2Completed: false,
+  isLoading: false,
   // Define the setter functions for the new states
   setDemographyCompleted: () => {},
   setPreTask1Completed: () => {},
@@ -23,6 +24,7 @@ export const FlowContext = createContext({
   setTask2Completed: () => {},
   setPostTask2Completed: () => {},
   setSessionExperienceSurvey2Completed: () => {},
+  setIsLoading: () => {},
 });
 
 export const FlowContextProvider = ({ children }) => {
@@ -42,11 +44,13 @@ export const FlowContextProvider = ({ children }) => {
     sessionExperienceSurvey2Completed,
     setSessionExperienceSurvey2Completed,
   ] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const authCtx = useContext(AuthContext);
   const user = authCtx.user;
 
   useEffect(() => {
+    setIsLoading(true);
     // Fetch the user's tasks state from Firestore when the component mounts
     const fetchUserTaskState = async () => {
       if (!user || !user.uid) return;
@@ -73,6 +77,8 @@ export const FlowContextProvider = ({ children }) => {
         }
       } catch (error) {
         console.error("Error fetching user task state from Firestore:", error);
+      } finally {
+        setIsLoading(false);
       }
     };
 
@@ -103,6 +109,7 @@ export const FlowContextProvider = ({ children }) => {
     task2Completed,
     postTask2Completed,
     sessionExperienceSurvey2Completed,
+    isLoading,
     // Define the setter functions for the new states
     setDemographyCompleted: (value) => {
       setDemographyCompleted(value);
@@ -140,6 +147,7 @@ export const FlowContextProvider = ({ children }) => {
       setSessionExperienceSurvey2Completed(value);
       updateTaskStateInFirestore("sessionExperienceSurvey2Completed", value);
     },
+    setIsLoading,
   };
   return (
     <FlowContext.Provider value={contextValue}>{children}</FlowContext.Provider>

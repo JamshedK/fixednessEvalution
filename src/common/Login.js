@@ -10,6 +10,7 @@ import { auth } from "../firebase-config";
 import { db } from "../firebase-config";
 import AuthContext from "../context/auth-context";
 import TaskContext from "../context/task-context";
+import { FlowContext } from "../context/flow-context";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -17,6 +18,7 @@ const Login = () => {
   const [password, setPassword] = useState("");
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
+  const flowCtx = useContext(FlowContext);
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -27,11 +29,12 @@ const Login = () => {
         password
       );
       const user = userCredential.user;
-      console.log("Logged in user:", user);
       // Login the user
       authCtx.login(user);
       // Redirect to home page after successful login
-      navigate("/");
+      // delay for one second
+      await new Promise((resolve) => setTimeout(resolve, 1000));
+      navigate("/home?refresh=true");
     } catch (error) {
       console.error("Error logging in:", error);
       alert("Invalid email or password. Please try again.");
@@ -56,7 +59,7 @@ const Login = () => {
         console.log("User already exists, so not assigning an LLM task");
       }
       // Redirect to home page after successful login
-      navigate("/");
+      navigate("/home?refresh=true");
     } catch (error) {
       console.error("Error logging in with Google:", error);
       alert(

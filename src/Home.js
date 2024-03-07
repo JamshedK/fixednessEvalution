@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import checkbox_icon from "./assets/common/checkbox.svg";
 import show_more_icon from "./assets/common/show_more.svg";
 import circle_icon from "./assets/common/circle_icon.svg";
@@ -77,6 +77,15 @@ const Home = ({ onSelectItem }) => {
     },
   ];
 
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const refresh = urlParams.get("refresh");
+    if (refresh) {
+      navigate("/home", { replace: true });
+      window.location.reload();
+    }
+  }, [flowCtx.isLoading]);
+
   const handleNavigation = (task) => () => {
     // if (task.canNavigate) {
     //   if (task.completed) {
@@ -96,7 +105,10 @@ const Home = ({ onSelectItem }) => {
         {tasks.map((task, index) => {
           if (task.isText) {
             return (
-              <div className="text-white text-[16px] text-center my-2 mr-20">
+              <div
+                key={task.title}
+                className="text-white text-[16px] text-center my-2 mr-20"
+              >
                 {task.title}
               </div>
             );
