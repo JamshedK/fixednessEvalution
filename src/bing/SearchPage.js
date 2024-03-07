@@ -15,14 +15,19 @@ import {
   Timestamp,
 } from "firebase/firestore";
 import SingleResultContainer from "./SingleResultContainer";
+import EditNoteReminder from "../chat/EditNoteReminder";
+import RatePrompt from "../chat/RatePrompt";
+import RateSearchResults from "../bing/RateSearchResults";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
+  const [queryID, setQueryID] = useState("");
   const [typingStartTime, setTypingStartTime] = useState(null);
   const [searchResults, setSearchResults] = useState([]); // New state to hold search results
   const [isLoading, setIsLoading] = useState(false);
 
   const authCtx = useContext(AuthContext);
+  const taskCtx = useContext(TaskContext);
   const user = authCtx.user;
 
   const textRef = useRef();
@@ -126,10 +131,17 @@ const SearchPage = () => {
   };
 
   const search = async () => {
+    if (!query) return;
+    if (taskCtx.isRatingNeeded) {
+      taskCtx.setShowRatingPopUp(true);
+      return;
+    } else if (taskCtx.showEditNoteReminder) {
+      taskCtx.setShowPopUp(true);
+      return;
+    }
     setIsLoading(true); // Start loading
     setTypingStartTime(null);
-    if (!query) return;
-
+    setQueryID(uid());
     const subscriptionKey = process.env.REACT_APP_BING_API_KEY;
     const endpoint = "https://api.bing.microsoft.com/v7.0/search";
     const params = new URLSearchParams({ q: query, mkt: "en-US" });
@@ -151,6 +163,9 @@ const SearchPage = () => {
       }));
 
       setSearchResults(localSearchResults); // Store the search results
+      // Update the context to show the pop-up
+      taskCtx.setIsRatingNeeded(true);
+      taskCtx.setShowEditNoteReminder(true);
       await storeSearchResults(query, localSearchResults);
     } catch (error) {
       console.error("Error fetching search results:", error);
@@ -201,6 +216,16 @@ const SearchPage = () => {
           ))
         )}
       </div>
+      {taskCtx.showPopUp && !taskCtx.isRatingNeeded && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
+          <EditNoteReminder />
+        </div>
+      )}
+      {taskCtx.showRatingPopUp && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
+          <RateSearchResults queryID={queryID} />
+        </div>
+      )}
     </div>
   );
 };
