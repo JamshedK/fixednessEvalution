@@ -1,5 +1,6 @@
 [
   {
+    "key": "overallExperience",
     "question": "How would you rate your overall experience with the current task interaction?",
     "options": [
       "Very Unsatisfactory",
@@ -10,6 +11,7 @@
     ]
   },
   {
+    "key": "responseSatisfaction",
     "question": "How satisfied are you with the responses provided by the current task during this session?",
     "options": [
       "Very Dissatisfied",
@@ -20,6 +22,7 @@
     ]
   },
   {
+    "key": "objectiveAchievement",
     "question": "How successful do you feel you were in achieving your objectives during this session with the current task?",
     "options": [
       "Very Unsuccessful",
@@ -30,6 +33,7 @@
     ]
   },
   {
+    "key": "additionalComments",
     "question": "Please provide any additional comments or feedback you have about your experience. If possible, please comment on both unexpected positive experiences and encountered obstacles.",
     "responseType": "open-ended"
   }

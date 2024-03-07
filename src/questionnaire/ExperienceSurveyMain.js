@@ -1,8 +1,16 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import sessionExperienceJSON from "./../sessionExperience.json"; // Assuming sessionExperience.json is located in the src directory
+import { addDoc, serverTimestamp, collection } from "firebase/firestore";
+import AuthContext from "../context/auth-context";
+import { db } from "../firebase-config";
+import { useNavigate } from "react-router-dom";
+import { FlowContext } from "../context/flow-context";
 
 const ExperienceSurveyMain = () => {
   const [currentTask, setCurrentTask] = useState("");
+  const flowCtx = useContext(FlowContext);
+  const authCtx = useContext(AuthContext);
+  const navigate = useNavigate();
   // State to hold responses
   const [responses, setResponses] = useState({
     overallExperience: "",
@@ -30,10 +38,10 @@ const ExperienceSurveyMain = () => {
   }, []);
 
   // Handler for changes in radio button selections
-  const handleRadioChange = (question, option) => {
+  const handleRadioChange = (key, option) => {
     setResponses((prevResponses) => ({
       ...prevResponses,
-      [question]: option,
+      [key]: option,
     }));
   };
 
@@ -45,11 +53,29 @@ const ExperienceSurveyMain = () => {
     }));
   };
 
-  // Placeholder function for form submission
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(responses);
-    // Implement submission logic here, such as updating Firestore or navigating to another route
+    try {
+      const queryParams = new URLSearchParams(window.location.search);
+      const isFirstTask = queryParams.get("firstTask");
+      const taskName = queryParams.get("currentTask");
+      await addDoc(collection(db, "experienceSurvey"), {
+        ...responses,
+        ts: serverTimestamp(),
+        task: taskName,
+        userId: authCtx.user.uid,
+      });
+
+      if (isFirstTask === "true") {
+        flowCtx.setSessionExperienceSurvey1Completed(true);
+      } else {
+        flowCtx.setSessionExperienceSurvey2Completed(true);
+      }
+      navigate("/");
+    } catch (error) {
+      console.error("Error adding document: ", error);
+    }
   };
 
   return (
@@ -88,10 +114,8 @@ const ExperienceSurveyMain = () => {
                       name={question.question}
                       value={option}
                       className="form-radio"
-                      checked={responses[question.question] === option}
-                      onChange={() =>
-                        handleRadioChange(question.question, option)
-                      }
+                      checked={responses[question.key] === option}
+                      onChange={() => handleRadioChange(question.key, option)}
                     />
                     <label htmlFor={`${question.question}-${option}`}>
                       {option}
