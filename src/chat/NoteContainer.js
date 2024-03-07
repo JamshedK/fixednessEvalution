@@ -70,7 +70,7 @@ const NoteContainer = (props) => {
   };
 
   return (
-    <div className="flex flex-col bg-[#2F4454] h-fit rounded-xl mx-5 p-3 w-80 text-md">
+    <div className="flex flex-col bg-[#2F4454] h-fit rounded-xl mx-5 p-3 w-80 text-sm">
       <textarea
         ref={textRef}
         className="bg-transparent overflow-hidden focus:outline-none text-white resize-none h-auto"
