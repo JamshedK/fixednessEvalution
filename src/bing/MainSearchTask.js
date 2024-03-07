@@ -14,7 +14,7 @@ const MainSearchTask = () => {
       <NoteBar />
       {taskCtx.showEndTaskPopUp && (
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
-          <EndTaskPopUp />
+          <EndTaskPopUp collectionName="searchTask" />
         </div>
       )}
     </div>

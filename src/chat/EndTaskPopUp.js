@@ -4,14 +4,33 @@ import { db } from "../firebase-config";
 import TaskContext from "../context/task-context";
 import AuthContext from "../context/auth-context";
 import { useNavigate } from "react-router-dom";
+import { FlowContext } from "../context/flow-context";
 
 const EndTaskPopUp = (props) => {
   const taskCtx = useContext(TaskContext);
   const authCtx = useContext(AuthContext);
+  const flowCtx = useContext(FlowContext);
   const navigate = useNavigate();
 
   const handleYesClicked = () => {
     taskCtx.setShowEndTaskPopUp(false);
+    const collectionRef = doc(db, props.collectionName, authCtx.user.uid);
+    setDoc(
+      collectionRef,
+      {
+        endTime: Timestamp.now(),
+        status: "completed",
+      },
+      { merge: true }
+    );
+    // see the url parameter and get firstTask
+    const urlParams = new URLSearchParams(window.location.search);
+    const isFirstTask = urlParams.get("firstTask");
+    if (isFirstTask === "true") {
+      flowCtx.setTask1Completed(true);
+    } else {
+      flowCtx.setTask2Completed(true);
+    }
     navigate("/");
   };
 

@@ -32,7 +32,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: `Task 1: ${taskCtx.tasks.firstTask}`,
       completed: flowCtx.task1Completed,
-      path: `/${taskCtx.tasks.firstTask}`,
+      path: `/${taskCtx.tasks.firstTask}?firstTask=true`,
       canNavigate: flowCtx.preTask1Completed,
     },
     {
@@ -60,7 +60,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: `Task 2: ${taskCtx.tasks.secondTask}`,
       completed: flowCtx.task2Completed,
-      path: `/${taskCtx.tasks.secondTask}`,
+      path: `/${taskCtx.tasks.secondTask}?firstTask=false`,
       canNavigate: flowCtx.preTask2Completed,
     },
     {

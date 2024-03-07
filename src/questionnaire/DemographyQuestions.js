@@ -127,7 +127,7 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       // Update the user's document with the new responses
       await updateDoc(userDocRef, {
         ...responses,
-        demographyCompleteTs: Timestamp.now(), // Spread the responses object to update fields in the document
+        demographyCompletedTs: Timestamp.now(), // Spread the responses object to update fields in the document
       });
       console.log("Document successfully updated!");
       flowCtx.setDemographyCompleted(true);
