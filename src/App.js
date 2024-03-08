@@ -33,28 +33,10 @@ function App() {
         <Route path="/search" element={<MainSearchTask />} />
         <Route path="/session-experience" element={<ExperienceSurveyMain />} />
         <Route path="/end" element={<EndOfStudy />} />
-        <Route
-          path="/pre-task"
-          element={
-            flowCtx.demographyCompleted ? (
-              <QuestionnnaireMain />
-            ) : (
-              <Navigate to="/demography" />
-            )
-          }
-        />
+        <Route path="/pre-task" element={<QuestionnnaireMain />} />
         <Route path="/post-task" element={<QuestionnnaireMain />} />
         <Route path="/demography" element={<DemographyMain />} />
-        <Route
-          path="/chat"
-          element={
-            flowCtx.demographyCompleted ? (
-              <MainChatTask />
-            ) : (
-              <Navigate to="/pre-task" />
-            )
-          }
-        />
+        <Route path="/chat" element={<MainChatTask />} />
       </Routes>
     </div>
   );
