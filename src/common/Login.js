@@ -56,9 +56,11 @@ const Login = () => {
         // User document does not exist, indicating a new user
         taskCtx.setTasks(user);
       } else {
-        console.log("User already exists, so not assigning an LLM task");
+        console.log("User already exists,  so not assigning an LLM task");
       }
       // Redirect to home page after successful login
+      // delay for one second
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       navigate("/home?refresh=true");
     } catch (error) {
       console.error("Error logging in with Google:", error);
