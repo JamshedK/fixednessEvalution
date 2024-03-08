@@ -26,7 +26,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Pre-task Questionnaire 1",
       completed: flowCtx.preTask1Completed,
-      path: "/pre-task?firstTask=true",
+      path: `/pre-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.demographyCompleted,
     },
     {
@@ -38,7 +38,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Post-task Questionnaire 1",
       completed: flowCtx.postTask1Completed,
-      path: "/post-task?firstTask=true",
+      path: `/post-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.task1Completed,
     },
     {
@@ -54,7 +54,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Pre-task Questionnaire 2",
       completed: flowCtx.preTask2Completed,
-      path: "/pre-task?firstTask=false",
+      path: `/pre-task?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,
     },
     {
@@ -65,7 +65,7 @@ const Home = ({ onSelectItem }) => {
     },
     {
       title: "Post-task Questionnaire 2",
-      path: "/post-task?firstTask=false",
+      path: `/post-task?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       completed: flowCtx.postTask2Completed,
       canNavigate: flowCtx.task2Completed,
     },

@@ -45,10 +45,12 @@ const QuestionnnaireMain = () => {
     const searchParams = new URLSearchParams(location.search);
     const isFirstTask = searchParams.get("firstTask") === "true"; // Check if firstTask query parameter is 'true'
     const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
+    const currentTask = searchParams.get("currentTask");
     const dataToSave = {
       userID: authCtx.user.uid,
       ratings,
       isPostTask,
+      currentTask,
       ts: Timestamp.now(),
     };
     try {

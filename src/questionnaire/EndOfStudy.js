@@ -9,6 +9,7 @@ const EndOfStudy = () => {
   const [mturkId, setMturkId] = useState("");
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
+  const [showInput, setShowInput] = useState(true);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -22,7 +23,7 @@ const EndOfStudy = () => {
         mturkId: mturkId,
       });
       flowCtx.setIsEndOfStudySurveyCompleted(true);
-      navigate("/"); // Adjust the path as needed
+      setShowInput(false);
     } catch (error) {
       alert("There was an error submitting your MTurk ID. Please try again.");
       console.error("Error submitting MTurk ID:", error);
@@ -35,25 +36,32 @@ const EndOfStudy = () => {
         <h1 className="text-xl mb-4">
           Thank you for participating in our study!
         </h1>
-        <p>Please enter your Amazon MTurk ID below.</p>
-        <form
-          onSubmit={handleSubmit}
-          className="mt-4 flex flex-col space-y-4 border-2 w-[70%] items-center"
-        >
-          <input
-            type="text"
-            value={mturkId}
-            onChange={(e) => setMturkId(e.target.value)}
-            placeholder="MTurk ID"
-            className="text-center p-2 rounded-md border-2 border-gray-300 w-full "
-          />
-          <button
-            type="submit"
-            className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-fit"
-          >
-            Click to End the Study
-          </button>
-        </form>
+        {showInput && (
+          <div className="flex flex-col w-full items-center">
+            <p>Please enter your Amazon MTurk ID below.</p>
+            <form
+              onSubmit={handleSubmit}
+              className="mt-4 flex flex-col space-y-4 border-2 w-[70%] items-center"
+            >
+              <input
+                type="text"
+                value={mturkId}
+                onChange={(e) => setMturkId(e.target.value)}
+                placeholder="MTurk ID"
+                className="text-center p-2 rounded-md border-2 border-gray-300 w-full "
+              />
+              <button
+                type="submit"
+                className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-fit"
+              >
+                Click to End the Study
+              </button>
+            </form>
+          </div>
+        )}
+        {!showInput && (
+          <p className="text-xl mb-4"> You may now close this page</p>
+        )}
       </div>
     </div>
   );
