@@ -14,6 +14,7 @@ export const FlowContext = createContext({
   postTask2Completed: false,
   sessionExperienceSurvey2Completed: false,
   isLoading: false,
+  isEndOfStudySurveyCompleted: false,
   // Define the setter functions for the new states
   setDemographyCompleted: () => {},
   setPreTask1Completed: () => {},
@@ -25,6 +26,7 @@ export const FlowContext = createContext({
   setPostTask2Completed: () => {},
   setSessionExperienceSurvey2Completed: () => {},
   setIsLoading: () => {},
+  setIsEndOfStudySurveyCompleted: () => {},
 });
 
 export const FlowContextProvider = ({ children }) => {
@@ -45,6 +47,8 @@ export const FlowContextProvider = ({ children }) => {
     setSessionExperienceSurvey2Completed,
   ] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isEndOfStudySurveyCompleted, setIsEndOfStudySurveyCompleted] =
+    useState(false);
 
   const authCtx = useContext(AuthContext);
   const user = authCtx.user;
@@ -73,6 +77,9 @@ export const FlowContextProvider = ({ children }) => {
           );
           setSessionExperienceSurvey2Completed(
             data.sessionExperienceSurvey2Completed || false
+          );
+          setIsEndOfStudySurveyCompleted(
+            data.isEndOfStudySurveyCompleted || false
           );
         }
       } catch (error) {
@@ -110,6 +117,7 @@ export const FlowContextProvider = ({ children }) => {
     postTask2Completed,
     sessionExperienceSurvey2Completed,
     isLoading,
+    isEndOfStudySurveyCompleted,
     // Define the setter functions for the new states
     setDemographyCompleted: (value) => {
       setDemographyCompleted(value);
@@ -148,6 +156,10 @@ export const FlowContextProvider = ({ children }) => {
       updateTaskStateInFirestore("sessionExperienceSurvey2Completed", value);
     },
     setIsLoading,
+    setIsEndOfStudySurveyCompleted: (value) => {
+      setIsEndOfStudySurveyCompleted(value);
+      updateTaskStateInFirestore("isEndOfStudySurveyCompleted", value);
+    },
   };
   return (
     <FlowContext.Provider value={contextValue}>{children}</FlowContext.Provider>

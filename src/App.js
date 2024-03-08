@@ -12,6 +12,7 @@ import Logout from "./common/Logout";
 import Home from "./Home";
 import MainSearchTask from "./bing/MainSearchTask";
 import ExperienceSurveyMain from "./questionnaire/ExperienceSurveyMain";
+import EndOfStudy from "./questionnaire/EndOfStudy";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -31,6 +32,7 @@ function App() {
         <Route path="/home" element={<Home />} />
         <Route path="/search" element={<MainSearchTask />} />
         <Route path="/session-experience" element={<ExperienceSurveyMain />} />
+        <Route path="/end" element={<EndOfStudy />} />
         <Route
           path="/pre-task"
           element={

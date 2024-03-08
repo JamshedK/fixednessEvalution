@@ -75,6 +75,16 @@ const Home = ({ onSelectItem }) => {
       path: `/session-experience?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.postTask2Completed,
     },
+    {
+      title: "End of Study",
+      isText: true,
+    },
+    {
+      title: "End of Study Survey",
+      completed: flowCtx.isEndOfStudySurveyCompleted,
+      path: "/end",
+      canNavigate: flowCtx.sessionExperienceSurvey2Completed,
+    },
   ];
 
   useEffect(() => {
