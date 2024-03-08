@@ -106,12 +106,11 @@ const Home = ({ onSelectItem }) => {
     } else {
       alert("Please complete the previous item");
     }
-    navigate(task.path);
   };
 
   return (
     <div className="flex flex-col justify-center w-screen h-screen items-center ">
-      <div className="task-list w-[30%]">
+      <div className="task-list w-[30%] overflow-y-auto mt-10">
         {tasks.map((task, index) => {
           if (task.isText) {
             return (

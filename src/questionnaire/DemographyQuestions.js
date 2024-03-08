@@ -48,12 +48,13 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       setState: setGender,
       type: "radio",
     },
-    "What is the highest level of education you have completed?": {
-      state: education,
-      setState: setEducation,
-      type: "radio",
-      name: "education",
-    },
+    "What is the highest level of education you have completed or currently pursuing?":
+      {
+        state: education,
+        setState: setEducation,
+        type: "radio",
+        name: "education",
+      },
     "What is your current employment status?": {
       state: employmentStatus,
       setState: setEmploymentStatus,

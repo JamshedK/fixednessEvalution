@@ -8,8 +8,8 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
 
   const instructionString = isPostTask
-    ? "Based on Your Experience with the system, please classify this intention into one of the following categories."
-    : "Based on your Expectation, please classify this intention into one of the following categories.";
+    ? "Based on Your Experience with the system, please classify the intention described above into one of the following categories."
+    : "Based on your Expectation, please classify the intention described above into one of the following categories.";
 
   let service = "";
   const currentURL = window.location.pathname;
@@ -23,7 +23,7 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
     `${service} can always fully fulfill the intention`,
     `${service}  may be able to fully fulfill the intention if/once an effective query/prompt is successfully formulated (e.g. after several rounds of query/prompt modifications).`,
     `${service}  may be able to partially fulfill the intention if/once an effective query/prompt is successfully formulated.`,
-    `${service}  is unlikely to fulfill this intention at all.`,
+    `${service}  is unlikely to fulfill the intention described above at all.`,
   ];
 
   const usageFrequency = [
@@ -91,7 +91,7 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
       <div className="bg-[#142838] py-12 px-16">
         <h1 className="text-[20px] mb-5">
           In your prior interaction experiences, how often did you try to use{" "}
-          {service} to fulfill this intention?
+          {service} to fulfill the intention described above?
         </h1>
         {usageFrequency.map((item, index) => (
           <div key={index} className="flex flex-row space-x-4 items-center">

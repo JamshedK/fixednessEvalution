@@ -42,10 +42,6 @@ const QuestionnnaireMain = () => {
   };
 
   const handleSubmit = async () => {
-    if (!allQuestionsAnswered) {
-      alert("Please answer all questions before submitting");
-      return;
-    }
     const searchParams = new URLSearchParams(location.search);
     const isFirstTask = searchParams.get("firstTask") === "true"; // Check if firstTask query parameter is 'true'
     const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
@@ -130,14 +126,16 @@ const QuestionnnaireMain = () => {
           />
         )}
       </div>
-      <div className="flex flex-row justify-around mt-16 border-2">
-        <button
-          className="bg-white px-6 py-2 rounded-2xl fixed bottom-4 right-4"
-          onClick={handleSubmit}
-        >
-          Submit
-        </button>
-      </div>
+      {allQuestionsAnswered && (
+        <div className="flex flex-row justify-around mt-16 border-2">
+          <button
+            className="bg-white px-6 py-2 rounded-2xl fixed bottom-4 right-4"
+            onClick={handleSubmit}
+          >
+            Submit
+          </button>
+        </div>
+      )}
       {showInstructions && (
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
           <InstructionsPopUp
