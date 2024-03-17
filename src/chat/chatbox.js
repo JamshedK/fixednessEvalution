@@ -90,7 +90,7 @@ function ChatBox() {
     } else {
       // If the document does not exist, create it with the new query interaction
       await setDoc(chatTaskRef, {
-        queryInteractions: [formData],
+        promps: [formData],
         userID: authCtx.user.uid,
       });
     }

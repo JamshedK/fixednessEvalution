@@ -69,28 +69,42 @@ export const TaskContextProvider = (props) => {
     fetchAssignedTask();
   }, [authCtx.user]);
 
+  const generateLatinSquare = (tasks) => {
+    let square = [];
+    for (let i = 0; i < tasks.length; i++) {
+      let row = [];
+      for (let j = 0; j < tasks.length; j++) {
+        let index = (i + j) % tasks.length;
+        row.push(tasks[index]);
+      }
+      square.push(row);
+    }
+    return square;
+  };
+
+  const selectRandomTask = (latinSquare) => {
+    const row = Math.floor(Math.random() * latinSquare.length);
+    const column = Math.floor(Math.random() * latinSquare[row].length);
+    return latinSquare[row][column].title;
+  };
+
   const setTasks = (user) => {
+    // Generate Latin Square for task topics
+    const latinSquareTopics = generateLatinSquare(tasksJSON);
+    console.log(latinSquareTopics);
+    const firstTaskTopic = selectRandomTask(latinSquareTopics);
+    const secondTaskTopic = selectRandomTask(latinSquareTopics);
     const taskTypes = ["chat", "search"];
     const firstTaskIndex = Math.floor(Math.random() * taskTypes.length);
     const firstTask = taskTypes[firstTaskIndex];
     const secondTask = taskTypes[firstTaskIndex === 0 ? 1 : 0]; // Ensure the second task is different
-
-    const taskTopics = tasksJSON.map((task) => task.title);
-    const firstTaskTopicIndex = Math.floor(Math.random() * taskTopics.length);
-    let secondTaskTopicIndex;
-    do {
-      secondTaskTopicIndex = Math.floor(Math.random() * taskTopics.length);
-    } while (secondTaskTopicIndex === firstTaskTopicIndex); // Ensure different topics
-
-    const firstTaskTopic = taskTopics[firstTaskTopicIndex];
-    const secondTaskTopic = taskTopics[secondTaskTopicIndex];
-
     const obj = {
       firstTask,
       firstTaskTopic,
       secondTask,
       secondTaskTopic,
     };
+    console.log(obj);
     try {
       if (user && user.uid) {
         const userDocRef = doc(db, "users", user.uid);
