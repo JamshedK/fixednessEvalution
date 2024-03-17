@@ -5,18 +5,26 @@ const SingleResultContainer = ({ name, displayUrl, snippet, onClick }) => {
     <div className="p-4 bg-[#293A47] text-white rounded-lg">
       <div className="flex gap-2 items-center">
         <img src={ai_profile} alt="Profile" className="h-6 w-6" />
-        <p className="text-sm truncate">{name}</p>
+        <a
+          href={displayUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          onClick={() => onClick(displayUrl)}
+          className="text-blue-200 hover:text-blue-300 hover:underline text-sm font-[14px]"
+        >
+          {displayUrl}
+        </a>
       </div>
       <a
         href={displayUrl}
         target="_blank"
         rel="noopener noreferrer"
         onClick={() => onClick(displayUrl)}
-        className="text-blue-200 hover:text-blue-300 hover:underline visited:text-purple-600 text-lg font-medium"
+        className="text-blue-200 hover:text-blue-300 hover:underline text-md font-medium"
       >
-        {displayUrl}
+        {name}
       </a>
-      <p>{snippet}</p>
+      <p className="text-[14px]">{snippet}</p>
     </div>
   );
 };

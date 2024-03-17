@@ -74,7 +74,7 @@ const NoteContainer = (props) => {
       <textarea
         ref={textRef}
         className="bg-transparent overflow-hidden focus:outline-none text-white resize-none h-auto"
-        placeholder="Type your answer"
+        placeholder="Type your answer in notebox..."
         value={noteText} // Control the input with the state
         onChange={handleTextareaChange}
       />
