@@ -139,11 +139,11 @@ const DemographyQuestions = ({ onResponsesChange }) => {
 
   return (
     <div
-      className="max-h-screen overflow-y-auto text-white py-20 scrollbar-h-10 scrollbar 
+      className="max-h-screen overflow-y-auto text-black py-20 scrollbar-h-10 scrollbar 
     scrollbar-thumb-[#ffffff] scrollbar-thumb-rounded-full scrollbar-w-2 space-y-4"
     >
       {demographyJSON.map((question, qIndex) => (
-        <div key={qIndex} className="bg-[#142838] py-6 px-16 rounded-md">
+        <div key={qIndex} className="bg-[#e3e3e3] py-6 px-16 rounded-md">
           <h1 className="text-[20px] mb-5">{question.category}</h1>
           {question.options.map((option, oIndex) => {
             const inputType = question.allowMultipleSelections
@@ -176,14 +176,14 @@ const DemographyQuestions = ({ onResponsesChange }) => {
                   }
                   className={`w-4 h-4 ${
                     inputType === "radio" ? "form-radio" : "form-checkbox"
-                  } bg-black`}
+                  } bg-white`}
                 />
                 <label htmlFor={`${inputName}-${oIndex}`}>{option}</label>
                 {option === "Other" && (
                   <input
                     type="text"
                     placeholder="Please specify"
-                    className="bg-[#2F4454] px-2 py-1 rounded-md"
+                    className="bg-[#FFFFFF] px-2 py-1 rounded-md"
                     onChange={(e) =>
                       handleOtherInputChange(
                         inputFieldMap[question.category].name,
@@ -199,7 +199,7 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       ))}
       <div className="flex flex-row justify-around mt-8 text-black">
         <button
-          className="bg-white px-6 py-2 rounded-2xl"
+          className="bg-[#e3e3e3] px-6 py-2 rounded-2xl"
           onClick={handleSubmit}
         >
           Submit

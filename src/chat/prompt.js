@@ -16,7 +16,7 @@ const Prompt = (props) => {
       <div className="w-full xl:max-w-[80%] lg:max-w-[80%]  ">
         <div className="inline-flex  w-full space-x-4">
           <img className="w-9 h-9" src={props.profile_image} />
-          <p className="text-white  w-full leading-7">{props.text}</p>
+          <p className="text-black  w-full leading-7">{props.text}</p>
         </div>
       </div>
     </div>

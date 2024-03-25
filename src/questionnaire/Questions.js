@@ -8,12 +8,13 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
 
   const instructionString = isPostTask
-    ? "Based on Your Experience with the system, please classify the intention described above into one of the following categories."
+    ? "Based on your experience in the session you just completed, please classify the intention described above into one of the following categories."
     : "Based on your Expectation, please classify the intention described above into one of the following categories.";
 
   let service = "";
-  const currentURL = window.location.pathname;
-  if (currentURL.includes("chat")) {
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentTask = urlParams.get("currentTask");
+  if (currentTask === "chat") {
     service = "ChatGPT";
   } else {
     service = "Search Engine";
@@ -65,13 +66,13 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   return (
     <div
       className="flex flex-col py-12 px-16 h-fit rounded-xl max-w-[50rem] 
-        max-h-[85%] overflow-auto space-y-4 text-[18px] text-white"
+        max-h-[85%] overflow-auto space-y-4 text-[18px] text-black"
     >
       <div className="p-4 text-start flex flex-row space-x-2">
         <span className="font-bold">Intention: </span>
         <span className="">{itemId}</span>
       </div>
-      <div className="bg-[#142838] py-12 px-16">
+      <div className="bg-[#e3e3e3] py-12 px-16">
         <h1 className="text-[20px] mb-5">{instructionString}</h1>
         {expectationList.map((item, index) => (
           <div key={index} className="flex flex-row space-x-4 items-start">
@@ -82,13 +83,13 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
               value={item}
               checked={expectationRating === item}
               onChange={(e) => setExpectationRating(e.target.value)}
-              className="w-4 h-4 form-radio bg-black mt-[6px]"
+              className="w-4 h-4 form-radio bg-white mt-[6px]"
             />
             <label htmlFor={`expectation-${index}`}>{item}</label>
           </div>
         ))}
       </div>
-      <div className="bg-[#142838] py-12 px-16">
+      {!isPostTask && <div className="bg-[#e3e3e3] py-12 px-16">
         <h1 className="text-[20px] mb-5">
           In your prior interaction experiences, how often did you try to use{" "}
           {service} to fulfill the intention described above?
@@ -102,22 +103,22 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
               value={item}
               checked={usageFrequencyRating === item}
               onChange={(e) => setUsageFrequencyRating(e.target.value)}
-              className="w-4 h-4 form-radio bg-black"
+              className="w-4 h-4 form-radio bg-white"
             />
             <label htmlFor={`usage-${index}`}>{item}</label>
           </div>
         ))}
-      </div>
+      </div>}
       {/* TODO: Implement these if you get time*/}
       {/* <div className="flex flex-row justify-around mt-16">
         <button
-          className="bg-[#142838] px-6 py-2 rounded-2xl"
+          className="bg-[#e3e3e3] px-6 py-2 rounded-2xl"
           //   onClick={handleSubmit}
         >
           {"< Previous"}
         </button>
         <button
-          className="bg-[#142838] px-6 py-2 rounded-2xl"
+          className="bg-[#e3e3e3] px-6 py-2 rounded-2xl"
           //   onClick={handleSubmit}
         >
           {"Next >"}

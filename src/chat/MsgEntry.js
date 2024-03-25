@@ -1,6 +1,5 @@
 import { useState, useRef, useContext } from "react";
 import send_message_icon from "../assets/msg_entry/send_message_icon.svg";
-import microphone_icon from "../assets/msg_entry/microphone_icon.svg";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 import {
@@ -81,9 +80,9 @@ const MsgEntry = (props) => {
 
   return (
     <div className="flex flex-row space-x-6">
-      <div className="rounded-3xl bg-[#3c586e] px-8 py-3 min-h-11 flex flex-grow">
+      <div className="rounded-2xl bg-[#e3e3e3] px-8 py-3 min-h-11 flex flex-grow">
         <textarea
-          className="bg-transparent focus:outline-none h-7 text-white resize-none w-full"
+          className="bg-transparent focus:outline-none h-7 text-black resize-none w-full"
           ref={textRef}
           placeholder="Type a prompt... "
           onKeyDown={(event) => {
@@ -93,9 +92,6 @@ const MsgEntry = (props) => {
           }}
           onChange={handleTextareaChange}
         ></textarea>
-        <button title="Microphone recording">
-          <img src={microphone_icon} />
-        </button>
       </div>
       <button onClick={sendPrompt} title="Send prompt">
         <img src={send_message_icon} />

@@ -96,12 +96,12 @@ const QuestionnnaireMain = () => {
   }, [progressPercentage]);
 
   return (
-    <div className="flex flex-row bg-[#2F4454] items-center">
+    <div className="flex flex-row bg-[#FFFFFF] items-center">
       <div className="flex flex-col w-[30%] h-screen">
         <div
-          className="bg-[#142838] max-h-screen overflow-y-auto scrollbar 
-                scrollbar-thumb-[#ffffff] scrollbar-thumb-rounded-full text-[14px] 
-                pb-10 pt-6 sticky top-0 scrollbar-w-2 scrollbar-h-4"
+          className="bg-[#e3e3e3] max-h-screen overflow-y-auto scrollbar 
+                scrollbar-thumb-[#d58d8d] scrollbar-thumb-rounded-full text-[14px] 
+                sticky top-0 scrollbar-w-2 scrollbar-h-4"
         >
           {topologyJSON.map((item, index) => (
             <IntentionBox
@@ -114,7 +114,7 @@ const QuestionnnaireMain = () => {
             />
           ))}
         </div>
-        <div className="text-white p-4 bg-[#142838] flex flex-col space-y-2">
+        <div className="text-black p-4 bg-[#white] flex flex-col space-y-2 mt-4 border-r-8 border-[#e3e3e3]">
           <label>Progress</label>
           <ProgressBar completed={Number(progressPercentage.toFixed(0))} />
         </div>
@@ -131,7 +131,7 @@ const QuestionnnaireMain = () => {
       {allQuestionsAnswered && (
         <div className="flex flex-row justify-around mt-16 border-2">
           <button
-            className="bg-white px-6 py-2 rounded-2xl fixed bottom-4 right-4"
+            className="bg-[#e3e3e3] px-6 py-2 rounded-2xl fixed bottom-4 right-4"
             onClick={handleSubmit}
           >
             Submit

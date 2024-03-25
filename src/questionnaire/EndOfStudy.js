@@ -41,7 +41,7 @@ const EndOfStudy = () => {
             <p>Please enter your Amazon MTurk ID below.</p>
             <form
               onSubmit={handleSubmit}
-              className="mt-4 flex flex-col space-y-4 border-2 w-[70%] items-center"
+              className="mt-4 flex flex-col space-y-4 w-[70%] items-center"
             >
               <input
                 type="text"
@@ -52,7 +52,7 @@ const EndOfStudy = () => {
               />
               <button
                 type="submit"
-                className="ml-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-fit"
+                className="ml-4 bg-white text-black py-2 px-4 rounded-md w-fit"
               >
                 Click to End the Study
               </button>

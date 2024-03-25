@@ -19,9 +19,9 @@ const DemographyMain = () => {
   };
 
   return (
-    <div className="flex flex-row bg-[#2F4454] items-center ">
+    <div className="flex flex-row bg-[#FFFFFF] items-center ">
       <div className="flex flex-col w-[30%] h-screen">
-        <div className="bg-[#142838] h-screen text-[14px] pb-10 pt-10 sticky top-0">
+        <div className="bg-[#e3e3e3] h-screen text-[14px] pb-10 pt-10 sticky top-0">
           {/* Demography Questions */}
           <div>
             <IntentionTypeItem

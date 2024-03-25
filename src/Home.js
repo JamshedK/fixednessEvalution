@@ -97,15 +97,17 @@ const Home = ({ onSelectItem }) => {
   }, [flowCtx.isLoading]);
 
   const handleNavigation = (task) => () => {
-    if (task.canNavigate) {
-      if (task.completed) {
-        alert("You have already completed this item");
-        return;
-      }
-      navigate(task.path);
-    } else {
-      alert("Please complete the previous item");
-    }
+    // if (task.canNavigate) {
+    //   if (task.completed) {
+    //     alert("You have already completed this item");
+    //     return;
+    //   }
+    //   navigate(task.path);
+    // } else {
+    //   alert("Please complete the previous item");
+    // }
+    navigate(task.path);
+
   };
 
   return (
@@ -116,7 +118,7 @@ const Home = ({ onSelectItem }) => {
             return (
               <div
                 key={task.title}
-                className="text-white text-[16px] text-center my-2 mr-20"
+                className="text-black text-[16px] text-center my-2 mr-20"
               >
                 {task.title}
               </div>
@@ -125,8 +127,8 @@ const Home = ({ onSelectItem }) => {
             return (
               <div
                 key={index}
-                className="flex items-center justify-between bg-[#142838] p-4 text-white w-full 
-                        border-b-[1px] border-[#2F4454] text-[14px] hover:cursor-pointer"
+                className="flex items-center justify-between bg-[#e3e3e3] p-4 text-black w-full 
+                        border-b-[1px] border-[#f9f9f9] text-[14px] hover:cursor-pointer"
                 onClick={handleNavigation(task)}
               >
                 <span className="text-green-600">
@@ -165,7 +167,7 @@ const Home = ({ onSelectItem }) => {
           }
         })}
       </div>
-      <div className="text-white text-[20px] mt-20 w-[30%] text-center">
+      <div className="text-black text-[20px] mt-20 w-[30%] text-center">
         <p>
           Please, complete each item in the study in the order they are listed.
           You can only move to the next item when the current item is completed.

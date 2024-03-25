@@ -15,12 +15,12 @@ const IntentionTypeItem = ({
     ratings?.usageFrequencyRating !== undefined;
 
   const itemStyles = isSelected
-    ? "bg-[#3F5765] border-l-4 border-[#76B041]"
-    : "bg-[#2F4454]";
+    ? "bg-[#f9f9f9]"
+    : "bg-[#e3e3e3] border-[#f9f9f9]";
 
   return (
     <div
-      className={`flex items-center justify-between p-4 ${itemStyles} text-white w-full border-b-[1px] border-[#142838] text-[14px] hover:cursor-pointer`}
+      className={`flex items-center justify-between p-4 ${itemStyles} text-black w-full border-b-[1px] border-[#e3e3e3] text-[14px] hover:cursor-pointer`}
       onClick={() => {
         // console.log(`${itemId} selected`);
         onSelectItem(itemId);
@@ -41,7 +41,7 @@ const IntentionTypeItem = ({
           />
         )}
       </span>
-      <span className={`${completed ? "font-bold" : "ml-4"} w-full px-4`}>
+      <span className={`${completed ? "font-medium" : "ml-4"} w-full px-4`}>
         {title}
       </span>
       <span>

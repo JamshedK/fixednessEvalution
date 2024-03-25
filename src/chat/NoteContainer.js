@@ -70,10 +70,10 @@ const NoteContainer = (props) => {
   };
 
   return (
-    <div className="flex flex-col bg-[#2F4454] h-fit rounded-xl mx-5 p-3 w-80 text-sm">
+    <div className="flex flex-col bg-[#FFFFFF] h-fit rounded-md mx-5 p-3 w-80 text-sm">
       <textarea
         ref={textRef}
-        className="bg-transparent overflow-hidden focus:outline-none text-white resize-none h-auto"
+        className="bg-transparent overflow-hidden focus:outline-none text-black resize-none h-auto"
         placeholder="Type your answer in notebox..."
         value={noteText} // Control the input with the state
         onChange={handleTextareaChange}
@@ -81,7 +81,7 @@ const NoteContainer = (props) => {
       {(isSaveButtonVisible || taskCtx.showSaveButton) && (
         <div className="flex flex-row justify-around mt-8">
           <button
-            className="bg-white px-3 py-1 rounded-sm"
+            className="bg-[#e3e3e3] px-3 py-1 rounded-lg"
             onClick={handleSave}
           >
             Save

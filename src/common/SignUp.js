@@ -41,15 +41,15 @@ const SignUp = () => {
   };
 
   return (
-    <div className="bg-[#2F4454] min-h-screen flex items-center justify-center">
-      <div className="bg-[#142838] max-w-[30rem] p-6 rounded-lg flex flex-col items-center">
+    <div className="bg-[#FFFFFF] min-h-screen flex items-center justify-center">
+      <div className="bg-[#e3e3e3] max-w-[30rem] p-6 rounded-lg flex flex-col items-center">
         <form
           onSubmit={handleSignUp}
           className="flex flex-col items-center space-y-6 px-16 mt-[4rem]"
         >
           <input
             type="email"
-            className="w-[20rem] bg-[#2F4454] h-8 text-white rounded py-2 px-3"
+            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={email}
             required
             placeholder="Email"
@@ -57,7 +57,7 @@ const SignUp = () => {
           />
           <input
             type="password"
-            className="w-[20rem] bg-[#2F4454] h-8 text-white rounded py-2 px-3"
+            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={password}
             required
             placeholder="Password"
@@ -65,7 +65,7 @@ const SignUp = () => {
           />
           <input
             type="Verify password"
-            className="w-[20rem] bg-[#2F4454] h-8 text-white rounded py-2 px-3"
+            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={verifyPassword}
             required
             placeholder="Verify password"

@@ -59,9 +59,9 @@ const RatePrompt = (props) => {
   };
 
   return (
-    <div className="fixed flex flex-col bg-[#142838] py-12 px-16 h-fit rounded-xl min-w-[30rem] max-h-[85%] overflow-auto space-y-4">
-      {/* <h1 className="text-white text-center mb-2">How did the system perform compared to your expectation?</h1> */}
-      <div className="flex flex-col text-white space-y-4 ma x-w-[28rem]">
+    <div className="fixed flex flex-col bg-[#e3e3e3] py-12 px-16 h-fit rounded-xl min-w-[30rem] max-h-[85%] overflow-auto space-y-4">
+      {/* <h1 className="text-black text-center mb-2">How did the system perform compared to your expectation?</h1> */}
+      <div className="flex flex-col text-black space-y-4 ma x-w-[28rem]">
         <h1 className="text-lg">
           How did the system perform compared to your expectation?{" "}
         </h1>
@@ -72,8 +72,8 @@ const RatePrompt = (props) => {
               <div className="flex flex-row space-x-4 items-center">
                 <button
                   key={index}
-                  className={`w-4 h-4 rounded-full border-[1px] border-white ${
-                    rating === index ? "bg-white" : ""
+                  className={`w-4 h-4 rounded-full border-[1px] border-black ${
+                    rating === index ? "bg-black" : ""
                   }`}
                   onClick={() => setRating(index)}
                 ></button>

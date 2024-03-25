@@ -35,7 +35,7 @@ function ChatBox() {
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
 
-  const bgObj = { user: "bg-[#3c586e]", ai: "bg-[#2f4454]" };
+  const bgObj = { user: "bg-[#f9f9f9]", ai: "bg-[#FFFFFF]" };
 
   // to handle automatic scrolling to the end
   useEffect(() => {
@@ -180,7 +180,7 @@ function ChatBox() {
   });
 
   return (
-    <div className="bg-[#2f4454] flex w-full h-full flex-col">
+    <div className="bg-[#FFFFFF] flex w-full flex-col">
       <div className="w-full mb-56">
         {messageComponents}
         {isLoading && (

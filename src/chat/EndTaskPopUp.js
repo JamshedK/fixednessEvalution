@@ -35,20 +35,20 @@ const EndTaskPopUp = (props) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center bg-[#142838] py-12 px-16 h-fit rounded-xl max-w-lg mx-auto">
-      <p className="text-white mb-8">
+    <div className="flex flex-col items-center justify-center bg-[#e3e3e3] py-12 px-16 h-fit rounded-xl max-w-lg mx-auto">
+      <p className="text-black mb-8">
         Are you sure that you are ready to submit the final answer? You will no
         be able to do any further edits after final submission
       </p>
       <div className="flex space-x-4">
         <button
-          className="bg-[#2F4454] text-white px-6 py-2 rounded-lg"
+          className="bg-[#FFFFFF] text-black px-6 py-2 rounded-lg"
           onClick={handleYesClicked}
         >
           Yes
         </button>
         <button
-          className="bg-white text-[#142838] px-6 py-2 rounded-lg"
+          className="bg-white text-[#e3e3e3] px-6 py-2 rounded-lg"
           onClick={() => taskCtx.setShowEndTaskPopUp(false)}
         >
           No

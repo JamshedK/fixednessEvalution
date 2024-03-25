@@ -81,7 +81,7 @@ const ExperienceSurveyMain = () => {
   return (
     <div className="flex w-screen h-screen overflow-auto scrollbar justify-center scrollbar-thumb-[#ffffff] scrollbar-w-2">
       <form
-        className="flex flex-col justify-center items-center h-fit w-[40%] bg-[#142838] text-white py-12 
+        className="flex flex-col justify-center items-center h-fit w-[40%] bg-[#e3e3e3] text-black py-12 
          px-16 rounded-xl"
         onSubmit={handleSubmit}
       >
@@ -128,7 +128,7 @@ const ExperienceSurveyMain = () => {
         })}
         <button
           type="submit"
-          className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-lg"
+          className="mt-4 px-4 py-2 bg-white text-black rounded-lg"
         >
           Submit
         </button>

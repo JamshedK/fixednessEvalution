@@ -40,19 +40,19 @@ const EditNoteReminder = (props) => {
     }
     
     return(
-        <div className="flex flex-col items-center justify-center bg-[#142838] py-12 px-16 h-fit rounded-xl max-w-lg mx-auto">
-            <p className="text-white mb-8">
+        <div className="flex flex-col items-center justify-center bg-[#e3e3e3] py-12 px-16 h-fit rounded-xl max-w-lg mx-auto">
+            <p className="text-black mb-8">
                 You need to record your thoughts before typing a new prompt. 
                 If you choose Edit your draft, remember to click save
             </p>
             <div className="flex space-x-4">
                 <button 
-                    className="bg-[#2F4454] text-white px-6 py-2 rounded-lg"
+                    className="bg-[#FFFFFF] text-gray-500 px-6 py-2 rounded-lg"
                     onClick={handleResubmitClicked}>
                     Resubmit the same
                 </button>
                 <button 
-                    className="bg-white text-[#142838] px-6 py-2 rounded-lg"
+                    className="bg-white text-black px-6 py-2 rounded-lg"
                     onClick={handleEditDraftClicked}>
                     Edit your draft
                 </button>

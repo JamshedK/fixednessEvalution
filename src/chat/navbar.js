@@ -25,11 +25,11 @@ const Navbar = (props) => {
     task = taskCtx.tasks.secondTaskTopic;
   }
   return (
-    <div className="bg-[#142838] w-[25%] h-screen sticky flex top-0 flex-col text-[18px] pb-10 pt-10 justify-start space-y-5">
-      <div className="pl-8 text-white font-bold underline">
+    <div className="bg-[#e3e3e3] w-[30%] h-screen sticky flex top-0 flex-col text-[18px] pb-10 pt-10 justify-start space-y-5">
+      <div className="pl-8 text-black font-bold underline">
         <label className="">Current task</label>
       </div>
-      <div className="bg-[#2F4454] h-fit rounded-xl mx-5 px-6 py-4 w-80 text-md text-white">
+      <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-6 py-4 w-fit text-md text-black">
         <label className="">{task}</label>
       </div>
     </div>

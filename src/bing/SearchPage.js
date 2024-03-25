@@ -175,11 +175,11 @@ const SearchPage = () => {
   };
 
   return (
-    <div className="p-4 w-full bg-[#2F4454]">
+    <div className="p-4 w-full bg-[#FFFFFF]">
       <div className="flex flex-row space-x-6">
-        <div className="rounded-3xl bg-[#3c586e] px-8 py-3 min-h-11 flex flex-grow items-start">
+        <div className="rounded-3xl bg-[#e3e3e3] px-8 py-3 min-h-11 flex flex-grow items-center">
           <textarea
-            className="bg-transparent focus:outline-none h-7 text-white resize-none w-full"
+            className="bg-transparent focus:outline-none h-7 text-black resize-none w-full"
             ref={textRef}
             value={query}
             placeholder="Search the web..."
@@ -198,7 +198,7 @@ const SearchPage = () => {
       </div>
       <div className="flex flex-col space-y-2 mt-4">
         {isLoading ? (
-          <p className="text-white text-center">Searching...</p>
+          <p className="text-black text-center">Searching...</p>
         ) : (
           searchResults.map((page, index) => (
             <SingleResultContainer
