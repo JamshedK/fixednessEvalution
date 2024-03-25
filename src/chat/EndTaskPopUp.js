@@ -32,6 +32,7 @@ const EndTaskPopUp = (props) => {
       flowCtx.setTask2Completed(true);
     }
     navigate("/");
+    window.location.reload();
   };
 
   return (

@@ -4,7 +4,8 @@ import SignUp from "./common/SignUp";
 import MainChatTask from "./chat/MainChatTask";
 import Login from "./common/Login";
 import AuthContext from "./context/auth-context";
-import QuestionnnaireMain from "./questionnaire/QuestionnaireMain";
+import QuestionnnaireMain from "./questionnaire/PreTaskQuestionnaireMain";
+import PostTaskQuestionnaireMain from "./questionnaire/PostTaskQuesionnaireMain";
 import { FlowContext } from "./context/flow-context";
 import { Navigate } from "react-router-dom";
 import DemographyMain from "./questionnaire/DemographyMain";
@@ -34,7 +35,7 @@ function App() {
         <Route path="/session-experience" element={<ExperienceSurveyMain />} />
         <Route path="/end" element={<EndOfStudy />} />
         <Route path="/pre-task" element={<QuestionnnaireMain />} />
-        <Route path="/post-task" element={<QuestionnnaireMain />} />
+        <Route path="/post-task" element={<PostTaskQuestionnaireMain />} />
         <Route path="/demography" element={<DemographyMain />} />
         <Route path="/chat" element={<MainChatTask />} />
       </Routes>

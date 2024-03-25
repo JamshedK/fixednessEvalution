@@ -72,7 +72,7 @@ const SignUp = () => {
             onChange={(e) => setVerifyPassword(e.target.value)}
           />
         </form>
-        <div className="flex flex-col w-full items-center justify-end space-y-8 mb-[5rem]">
+        <div className="flex flex-col w-full items-center justify-end space-y-8 mb-4 mt-2">
           <button
             type="submit"
             className="w-fit bg-white text-black py-2 px-8 rounded-xl mt-"
@@ -82,7 +82,7 @@ const SignUp = () => {
             Sign Up
           </button>
           <button
-            className="text-blue-300 w-fit underline"
+            className="text-black w-fit underline"
             onClick={() => navigate("/login")}
           >
             Log in

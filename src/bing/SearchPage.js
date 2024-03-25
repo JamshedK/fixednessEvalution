@@ -192,7 +192,7 @@ const SearchPage = () => {
             onChange={handleTextareaChange}
           ></textarea>
           <button onClick={search} title="Send prompt">
-            <img src={search_icon} alt="Send message" />
+            <img className="h-5 w-5" src={search_icon} alt="Send message" />
           </button>
         </div>
       </div>

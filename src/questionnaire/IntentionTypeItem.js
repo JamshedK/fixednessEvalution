@@ -9,10 +9,16 @@ const IntentionTypeItem = ({
   ratings,
   selectedItem,
 }) => {
+  const isPostTask = window.location.pathname.includes("post-task");
   const isSelected = selectedItem === itemId;
-  const completed =
-    ratings?.expectationRating !== undefined &&
-    ratings?.usageFrequencyRating !== undefined;
+  let completed;
+  if (isPostTask) {
+    completed = ratings?.expectationRating !== undefined;
+  } else {
+    completed =
+      ratings?.expectationRating !== undefined &&
+      ratings?.usageFrequencyRating !== undefined;
+  }
 
   const itemStyles = isSelected
     ? "bg-[#f9f9f9]"

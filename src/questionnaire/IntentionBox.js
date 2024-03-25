@@ -10,7 +10,9 @@ const IntentionBox = ({
   return (
     <div>
       <div className="text-black font-medium flex flex-col items-center text-[14px] bg-white">
-        <label className="mb-2 text-center text-gray-600 font-bold">{title}</label>
+        <label className="mb-2 text-center text-gray-600 font-bold">
+          {title}
+        </label>
         {intentionList.map((intention, index) => (
           <IntentionTypeItem
             selectedItem={selectedItem}

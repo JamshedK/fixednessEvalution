@@ -16,7 +16,7 @@ const MainChatTask = () => {
 
   return (
     <div className="flex flex-row bg-[#e3e3e3] ">
-      <Navbar />
+      <Navbar setShowInstructions={setShowInstructions}/>
       <Chatbox />
       {/* <MainSearchPage /> */}
       <NoteBar />

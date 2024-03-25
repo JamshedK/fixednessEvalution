@@ -14,7 +14,7 @@ const MainSearchTask = () => {
 
   return (
     <div className="flex flex-row w-screen">
-      <Navbar />
+      <Navbar setShowInstructions={setShowInstructions}/>
       <SearchPage />
       <NoteBar />
       {taskCtx.showEndTaskPopUp && (

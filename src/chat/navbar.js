@@ -32,6 +32,12 @@ const Navbar = (props) => {
       <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-6 py-4 w-fit text-md text-black">
         <label className="">{task}</label>
       </div>
+      <button
+            className="w-fit text-black py-2 rounded-xl px-4 mx-6 underline"
+            onClick={() => props.setShowInstructions(true)}
+          >
+            Show instructions
+          </button>
     </div>
   );
 };

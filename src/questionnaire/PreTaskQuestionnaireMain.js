@@ -3,7 +3,7 @@ import { addDoc, collection, Timestamp } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 import IntentionBox from "./IntentionBox";
-import topologyJSON from "./../topology.json";
+import topologyJSON from "../topology.json";
 import IntentionTypeItem from "./IntentionTypeItem";
 import ProgressBar from "@ramonak/react-progress-bar";
 import Questions from "./Questions";

@@ -102,19 +102,19 @@ const Login = () => {
         </form>
         <div className="flex flex-col w-full items-center justify-end space-y-8 mb-[5rem]">
           <button
-            className="text-blue-300 w-fit underline"
+            className="text-black w-fit underline"
             onClick={() => navigate("/forgot-password")}
           >
             Forgot Password
           </button>
           <button
-            className="text-blue-300 w-fit underline"
+            className="text-black w-fit underline"
             onClick={() => navigate("/signup")}
           >
             Sign Up
           </button>
           <button
-            className="text-blue-300 w-fit underline"
+            className="text-black w-fit underline"
             onClick={handleGoogleLogin}
           >
             Continue with Google
