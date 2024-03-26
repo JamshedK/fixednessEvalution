@@ -1,13 +1,20 @@
 import React, { useState, useEffect, useContext } from "react";
 import sessionExperienceJSON from "./../sessionExperience.json"; // Assuming sessionExperience.json is located in the src directory
-import { addDoc, serverTimestamp, collection } from "firebase/firestore";
+import {
+  addDoc,
+  serverTimestamp,
+  collection,
+  where,
+  getDocs,
+  query,
+} from "firebase/firestore";
 import AuthContext from "../context/auth-context";
-import { db } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import { useNavigate } from "react-router-dom";
 import { FlowContext } from "../context/flow-context";
 
 const ExperienceSurveyMain = () => {
-  const [currentTask, setCurrentTask] = useState("");
+  const [currentTask, setCurrentTask] = useState();
   const flowCtx = useContext(FlowContext);
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
@@ -36,6 +43,38 @@ const ExperienceSurveyMain = () => {
     // Update the currentTask state with the extracted and mapped task name
     setCurrentTask(taskName);
   }, []);
+
+  // get saved data from firebase
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const task = new URLSearchParams(window.location.search).get(
+          "currentTask"
+        );
+        const q = query(
+          collection(db, "experienceSurvey"),
+          where("task", "==", task),
+          where("userId", "==", authCtx.user.uid)
+        );
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          // Each doc satisfies the query's conditions and can be processed
+          const restult = doc.data();
+          setResponses({
+            overallExperience: restult.overallExperience,
+            responseSatisfaction: restult.responseSatisfaction,
+            objectiveAchievement: restult.objectiveAchievement,
+            additionalComments: restult.additionalComments,
+          });
+        });
+      } catch (error) {
+        console.error("Error getting documents: ", error);
+      }
+    };
+    if (authCtx.user) {
+      fetchData();
+    }
+  }, [authCtx]);
 
   // Handler for changes in radio button selections
   const handleRadioChange = (key, option) => {
