@@ -53,15 +53,15 @@ const PostTaskQuestions = ({ itemId, ratings, onRatingsChange }) => {
 
   return (
     <div
-      className="flex flex-col py-12 px-16 h-fit rounded-xl max-w-[50rem] 
-        max-h-[85%] overflow-auto space-y-4 text-[18px] text-black"
+      className="flex flex-col py-6 px-16 h-fit rounded-xl max-w-[50rem] 
+        max-h-[85%] overflow-auto space-y-4 text-[18px] lg:text-[16px] text-black"
     >
       <div className="p-4 text-start flex flex-row space-x-2">
         <span className="font-bold">Intention: </span>
         <span className="">{itemId}</span>
       </div>
-      <div className="bg-[#e3e3e3] py-12 px-16">
-        <h1 className="text-[20px] mb-5">{instructionString}</h1>
+      <div className="bg-[#e3e3e3] py-6 px-16">
+        <h1 className="text-[20px] lg:text-[16px] mb-5">{instructionString}</h1>
         {expectationList.map((item, index) => (
           <div key={index} className="flex flex-row space-x-4 items-start">
             <input

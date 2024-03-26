@@ -66,14 +66,14 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   return (
     <div
       className="flex flex-col py-12 px-16 h-fit rounded-xl max-w-[50rem] 
-        max-h-[85%] overflow-auto space-y-4 text-[18px] text-black"
+        max-h-[85%] overflow-auto space-y-4 lg:text-[16px] text-[18px] text-black"
     >
       <div className="p-4 text-start flex flex-row space-x-2">
         <span className="font-bold">Intention: </span>
         <span className="">{itemId}</span>
       </div>
-      <div className="bg-[#e3e3e3] py-12 px-16">
-        <h1 className="text-[20px] mb-5">{instructionString}</h1>
+      <div className="bg-[#e3e3e3] py-6 px-16">
+        <h1 className="text-[20px] lg:text-[16px] mb-5">{instructionString}</h1>
         {expectationList.map((item, index) => (
           <div key={index} className="flex flex-row space-x-4 items-start">
             <input
@@ -89,26 +89,28 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
           </div>
         ))}
       </div>
-      {!isPostTask && <div className="bg-[#e3e3e3] py-12 px-16">
-        <h1 className="text-[20px] mb-5">
-          In your prior interaction experiences, how often did you try to use{" "}
-          {service} to fulfill the intention described above?
-        </h1>
-        {usageFrequency.map((item, index) => (
-          <div key={index} className="flex flex-row space-x-4 items-center">
-            <input
-              type="radio"
-              id={`usage-${index}`}
-              name="usageFrequencyRating"
-              value={item}
-              checked={usageFrequencyRating === item}
-              onChange={(e) => setUsageFrequencyRating(e.target.value)}
-              className="w-4 h-4 form-radio bg-white"
-            />
-            <label htmlFor={`usage-${index}`}>{item}</label>
-          </div>
-        ))}
-      </div>}
+      {!isPostTask && (
+        <div className="bg-[#e3e3e3] py-6 px-16">
+          <h1 className="text-[20px] lg:text-[16px] mb-5">
+            In your prior interaction experiences, how often did you try to use{" "}
+            {service} to fulfill the intention described above?
+          </h1>
+          {usageFrequency.map((item, index) => (
+            <div key={index} className="flex flex-row space-x-4 items-center">
+              <input
+                type="radio"
+                id={`usage-${index}`}
+                name="usageFrequencyRating"
+                value={item}
+                checked={usageFrequencyRating === item}
+                onChange={(e) => setUsageFrequencyRating(e.target.value)}
+                className="w-4 h-4 form-radio bg-white"
+              />
+              <label htmlFor={`usage-${index}`}>{item}</label>
+            </div>
+          ))}
+        </div>
+      )}
       {/* TODO: Implement these if you get time*/}
       {/* <div className="flex flex-row justify-around mt-16">
         <button

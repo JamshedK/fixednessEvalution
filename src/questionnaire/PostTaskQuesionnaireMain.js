@@ -1,5 +1,12 @@
-import { useContext, useState, useMemo } from "react";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { useContext, useState, useMemo, useEffect } from "react";
+import {
+  addDoc,
+  collection,
+  Timestamp,
+  getDocs,
+  where,
+  query,
+} from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 import IntentionBox from "./IntentionBox";
@@ -24,6 +31,29 @@ const PostTaskQuestionnaireMain = () => {
   const flowCtx = useContext(FlowContext);
   const navigate = useNavigate();
   const location = useLocation(); // Hook to get location object
+
+  // get ratings from firebase
+  useEffect(() => {
+    const fetchData = async () => {
+      const task = new URLSearchParams(location.search).get("currentTask");
+      try {
+        const querySnapshot = await getDocs(
+          collection(db, "questionnaireResponses"),
+          where("userID", "==", authCtx.user.uid),
+          where("task", "==", task)
+        );
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          setRatings(data.ratings);
+        });
+      } catch (e) {
+        console.error("Error fetching document: ", e);
+      }
+    };
+    if (authCtx.user) {
+      fetchData();
+    }
+  }, [authCtx]);
 
   const handleSelectItem = (itemId) => {
     setSelectedItem(itemId);
@@ -90,7 +120,7 @@ const PostTaskQuestionnaireMain = () => {
 
   return (
     <div className="flex flex-row bg-[#FFFFFF] items-center">
-      <div className="flex flex-col w-[30%] h-screen">
+      <div className="flex flex-col w-[30%] h-screen pt-4">
         <div
           className="bg-[#e3e3e3] max-h-screen overflow-y-auto scrollbar 
                 scrollbar-thumb-[#d58d8d] scrollbar-thumb-rounded-full text-[14px] 
@@ -107,7 +137,7 @@ const PostTaskQuestionnaireMain = () => {
             />
           ))}
         </div>
-        <div className="text-black p-4 bg-[#white] flex flex-col space-y-2 mt-4 border-r-8 border-[#e3e3e3]">
+        <div className="text-black p-4 bg-[#white] flex flex-col space-y-2 pt-2 border-r-8 border-[#e3e3e3]">
           <label>Progress</label>
           <ProgressBar completed={Number(progressPercentage.toFixed(0))} />
         </div>
