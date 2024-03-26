@@ -6,7 +6,7 @@ import IntentionBox from "./IntentionBox";
 import topologyJSON from "../topology.json";
 import IntentionTypeItem from "./IntentionTypeItem";
 import ProgressBar from "@ramonak/react-progress-bar";
-import Questions from "./Questions";
+import Questions from "./PreTaskQuestions";
 import { FlowContext } from "../context/flow-context";
 import { useNavigate } from "react-router-dom";
 import InstructionsPopUp from "./InstructionsPopUp";

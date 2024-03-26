@@ -3,7 +3,7 @@ import IntentionBox from "./IntentionBox";
 import topologyJSON from "../topology.json";
 import IntentionTypeItem from "./IntentionTypeItem";
 import ProgressBar from "@ramonak/react-progress-bar";
-import Questions from "./Questions";
+import Questions from "./PreTaskQuestions";
 import DemographyQuestions from "./BackgroundQuestions";
 
 const DemographyMain = () => {
