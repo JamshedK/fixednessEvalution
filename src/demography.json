@@ -47,7 +47,16 @@
     ]
   },
   {
-    "category": "How frequently do you use chatbots or search engines?",
+    "category": "How frequently do you use Chatbots?",
+    "options": [
+      "Never/This is going to be my first time",
+      "Occasionally (less than once a week)",
+      "Regularly (once a week or more)",
+      "Frequently (daily or almost daily)"
+    ]
+  },
+  {
+    "category": "How frequently do you use Search Engines (e.g. Google, Bing)?",
     "options": [
       "Never/This is going to be my first time",
       "Occasionally (less than once a week)",
@@ -66,7 +75,28 @@
     ]
   },
   {
+    "category": "What is your primary purpose for using Search Engines (e.g. Google, Bing)?",
+    "options": [
+      "Education",
+      "Work-related tasks",
+      "Personal interest/hobby",
+      "Entertainment",
+      "Other"
+    ]
+  },
+  {
     "category": "How did you hear about ChatGPT?",
+    "options": [
+      "Social media",
+      "News article/blog",
+      "Friend/Colleague",
+      "Academic course/workshop",
+      "Other"
+    ],
+    "allowMultipleSelections": true
+  },
+  {
+    "category": "How did you hear about Search Engines (e.g. Google, Bing)?",
     "options": [
       "Social media",
       "News article/blog",
