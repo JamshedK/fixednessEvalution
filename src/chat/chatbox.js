@@ -42,6 +42,31 @@ function ChatBox() {
     window.scrollTo(0, document.documentElement.scrollHeight);
   }, [promptResponseArray]);
 
+  // pull the chat history from the database
+  useEffect(() => {
+    const getChatHistory = async () => {
+      const chatTaskRef = doc(db, "chatTasks", authCtx.user.uid);
+      const docSnap = await getDoc(chatTaskRef);
+      const chatHistory = [];
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        const prompts = data.prompts;
+        for (const prompt of prompts) {
+          const obj = {
+            role: prompt.role,
+            content: prompt.prompt,
+            id: prompt.id,
+          };
+          chatHistory.push(obj);
+        }
+      }
+      setPromptResponseArray(chatHistory);
+    };
+    if (authCtx.user) {
+      getChatHistory();
+    }
+  }, [authCtx]);
+
   const getAPIResponse = async (array, promptID) => {
     try {
       setIsLoading(true);
@@ -90,7 +115,7 @@ function ChatBox() {
     } else {
       // If the document does not exist, create it with the new query interaction
       await setDoc(chatTaskRef, {
-        promps: [formData],
+        prompts: [formData],
         userID: authCtx.user.uid,
       });
     }

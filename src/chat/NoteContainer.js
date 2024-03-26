@@ -2,22 +2,19 @@ import { useState, useRef } from "react";
 import { useContext, useEffect } from "react";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
-import { doc, setDoc, arrayUnion, Timestamp } from "firebase/firestore";
+import { doc, setDoc, arrayUnion, Timestamp, getDoc } from "firebase/firestore";
 import TaskContext from "../context/task-context";
 import { useLocation } from "react-router-dom";
 import { Editor, EditorState, RichUtils } from "draft-js";
 import "draft-js/dist/Draft.css"; // Basic styling
-import { convertToRaw } from "draft-js";
+import { convertToRaw, convertFromRaw } from "draft-js";
 import { stateToHTML } from "draft-js-export-html";
 
 const NoteContainer = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
-  const textRef = useRef(null);
-  const [noteText, setNoteText] = useState(""); // To track the user's input
   const [isSaveButtonVisible, setIsSaveButtonVisible] = useState(false); // To control the save button visibility
-  const [savedNote, setSavedNote] = useState(""); // Optional, to store the saved noteText
   const location = useLocation();
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
@@ -28,6 +25,35 @@ const NoteContainer = (props) => {
     const textLength = contentState.getPlainText("").trim().length;
     setIsSaveButtonVisible(textLength > 0);
   }, [editorState]);
+
+  // This useEffect will set the editorState to the saved noteText when the component mounts
+  useEffect(() => {
+    // Pull from the database
+    // Set the editorState with the saved noteText
+    const getContent = async () => {
+      if (authCtx?.user?.uid) {
+        const taskCategory = location.pathname.split("/")[1];
+        const customDocID = `${authCtx.user.uid}${taskCategory}`;
+        const noteDocumentRef = doc(db, "notes", customDocID);
+        try {
+          const docSnap = await getDoc(noteDocumentRef);
+          if (docSnap.exists()) {
+            const data = docSnap.data();
+            if (data.notesArray) {
+              const lastNote = data.notesArray[data.notesArray.length - 1];
+              const rawContent = JSON.parse(lastNote.serializedContent);
+              const contentState = convertFromRaw(rawContent);
+              setEditorState(EditorState.createWithContent(contentState));
+            }
+          }
+          setIsSaveButtonVisible(false);
+        } catch (error) {
+          console.error("Error getting document:", error);
+        }
+      }
+    };
+    getContent();
+  }, [authCtx]);
 
   const handleSave = async () => {
     if (authCtx.user.uid) {
@@ -93,6 +119,7 @@ const NoteContainer = (props) => {
           onChange={setEditorState}
           handleKeyCommand={handleKeyCommand}
         />
+        {}
         {(isSaveButtonVisible || taskCtx.showSaveButton) && (
           <div className="flex flex-row justify-around mt-8">
             <button
