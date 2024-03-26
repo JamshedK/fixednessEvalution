@@ -8,7 +8,7 @@ import QuestionnnaireMain from "./questionnaire/PreTaskQuestionnaireMain";
 import PostTaskQuestionnaireMain from "./questionnaire/PostTaskQuesionnaireMain";
 import { FlowContext } from "./context/flow-context";
 import { Navigate } from "react-router-dom";
-import DemographyMain from "./questionnaire/DemographyMain";
+import DemographyMain from "./questionnaire/BackgroundMain";
 import Logout from "./common/Logout";
 import Home from "./Home";
 import MainSearchTask from "./bing/MainSearchTask";

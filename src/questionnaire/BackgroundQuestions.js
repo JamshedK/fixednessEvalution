@@ -4,7 +4,7 @@ import { FlowContext } from "../context/flow-context";
 import { db } from "../firebase-config";
 import { doc, updateDoc, Timestamp, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import demographyJSON from "./../demography.json";
+import demographyJSON from "../demography.json";
 
 const DemographyQuestions = ({ onResponsesChange }) => {
   const [responses, setResponses] = useState({});

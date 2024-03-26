@@ -1,10 +1,10 @@
 import { useContext, useState, useMemo } from "react";
 import IntentionBox from "./IntentionBox";
-import topologyJSON from "./../topology.json";
+import topologyJSON from "../topology.json";
 import IntentionTypeItem from "./IntentionTypeItem";
 import ProgressBar from "@ramonak/react-progress-bar";
 import Questions from "./Questions";
-import DemographyQuestions from "./DemographyQuestions";
+import DemographyQuestions from "./BackgroundQuestions";
 
 const DemographyMain = () => {
   const [selectedItem, setSelectedItem] = useState("demography");
