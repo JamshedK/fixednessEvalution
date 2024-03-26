@@ -31,8 +31,10 @@ const EndTaskPopUp = (props) => {
     } else {
       flowCtx.setTask2Completed(true);
     }
-    navigate("/");
-    window.location.reload();
+    // delay for 1 second
+    setTimeout(() => {
+      navigate("/home?refresh=true");
+    }, 1000);
   };
 
   return (

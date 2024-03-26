@@ -97,16 +97,11 @@ const Home = ({ onSelectItem }) => {
   }, [flowCtx.isLoading]);
 
   const handleNavigation = (task) => () => {
-    // if (task.canNavigate) {
-    //   if (task.completed) {
-    //     alert("You have already completed this item");
-    //     return;
-    //   }
-    //   navigate(task.path);
-    // } else {
-    //   alert("Please complete the previous item");
-    // }
-    navigate(task.path);
+    if (task.canNavigate) {
+      navigate(task.path);
+    } else {
+      alert("Please complete the previous item");
+    }
   };
 
   return (

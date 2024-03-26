@@ -37,13 +37,17 @@ const PostTaskQuestionnaireMain = () => {
     const fetchData = async () => {
       const task = new URLSearchParams(location.search).get("currentTask");
       try {
-        const querySnapshot = await getDocs(
-          collection(db, "questionnaireResponses"),
+        const collectionRef = collection(db, "questionnaireResponses");
+        const q = query(
+          collectionRef,
+          where("isPostTask", "==", true),
           where("userID", "==", authCtx.user.uid),
           where("task", "==", task)
         );
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           const data = doc.data();
+          console.log("Document data:", data);
           setRatings(data.ratings);
         });
       } catch (e) {
