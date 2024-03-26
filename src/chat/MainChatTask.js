@@ -15,10 +15,9 @@ const MainChatTask = () => {
     "Your objective is to respond to the question listed under 'Current task' on the left side of the screen. Utilize the 'Type a prompt...' feature to interact with ChatGPT as needed to answer the question. With each interaction, you'll be asked to evaluate the usefulness of the response. Please be sure to compile and refine your answer to the task in the note box to the right after each interaction. Once you're satisfied with your response, hit 'Submit' to complete the task.";
 
   return (
-    <div className="flex flex-row bg-[#e3e3e3] ">
-      <Navbar setShowInstructions={setShowInstructions}/>
+    <div className="flex flex-row bg-[#e3e3e3] w-screen border-2 border-red-600">
+      <Navbar setShowInstructions={setShowInstructions} />
       <Chatbox />
-      {/* <MainSearchPage /> */}
       <NoteBar />
       {taskCtx.showEndTaskPopUp && (
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">

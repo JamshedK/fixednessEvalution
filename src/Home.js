@@ -107,7 +107,6 @@ const Home = ({ onSelectItem }) => {
     //   alert("Please complete the previous item");
     // }
     navigate(task.path);
-
   };
 
   return (
@@ -146,11 +145,7 @@ const Home = ({ onSelectItem }) => {
                     />
                   )}
                 </span>
-                <span
-                  className={`${
-                    task.completed ? "font-bold" : "ml-4"
-                  } w-full px-4`}
-                >
+                <span className={`${task.completed ? "" : "ml-4"} w-full px-4`}>
                   {task.title}
                 </span>
                 <span>

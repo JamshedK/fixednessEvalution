@@ -112,7 +112,7 @@ const NoteContainer = (props) => {
   };
 
   return (
-    <div className="flex flex-col  h-fit rounded-md  w-full text-sm items-start mx-5">
+    <div className="flex flex-col  h-fit rounded-md  w-full text-sm items-start px-4">
       <div className="bg-[#FFFFFF] p-3 w-full rounded-md min-h-8">
         <Editor
           editorState={editorState}
