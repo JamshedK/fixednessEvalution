@@ -129,6 +129,7 @@ const NoteContainer = (props) => {
           editorState={editorState}
           onChange={setEditorState}
           handleKeyCommand={handleKeyCommand}
+          placeholder="Enter your notes here..."
         />
         {}
         {(isSaveButtonVisible || taskCtx.showSaveButton) && (
@@ -142,13 +143,6 @@ const NoteContainer = (props) => {
           </div>
         )}
       </div>
-      {/* <textarea
-        ref={textRef}
-        className="bg-transparent overflow-hidden focus:outline-none text-black resize-none h-auto"
-        placeholder="Type your answer in notebox..."
-        value={noteText} // Control the input with the state
-        onChange={handleTextareaChange}
-      /> */}
     </div>
   );
 };
