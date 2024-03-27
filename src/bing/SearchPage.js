@@ -78,7 +78,7 @@ const SearchPage = () => {
     });
   };
 
-  const storeSearchResults = async (query, searchResults) => {
+  const storeSearchResults = async (query, searchResults, queryID) => {
     // Create a simplified version of the search results to store in Firestore
     const simplifiedSearchResults = searchResults.map((result) => ({
       snippet: result.snippet,
@@ -98,6 +98,7 @@ const SearchPage = () => {
       await updateDoc(searchTaskRef, {
         queryInteractions: arrayUnion({
           query: query,
+          queryID: queryID,
           ts: Timestamp.now(),
           searchResults: simplifiedSearchResults,
           clickedResults: [], // Initialize with an empty array
@@ -110,6 +111,7 @@ const SearchPage = () => {
           {
             ts: Timestamp.now(),
             query: query,
+            queryID: queryID,
             searchResults: simplifiedSearchResults,
             clickedResults: [],
           },
@@ -141,7 +143,8 @@ const SearchPage = () => {
     }
     setIsLoading(true); // Start loading
     setTypingStartTime(null);
-    setQueryID(uid());
+    const qID = uid();
+    setQueryID(qID);
     const subscriptionKey = process.env.REACT_APP_BING_API_KEY;
     const endpoint = "https://api.bing.microsoft.com/v7.0/search";
     const params = new URLSearchParams({ q: query, mkt: "en-US" });
@@ -166,7 +169,7 @@ const SearchPage = () => {
       // Update the context to show the pop-up
       taskCtx.setIsRatingNeeded(true);
       taskCtx.setShowEditNoteReminder(true);
-      await storeSearchResults(query, localSearchResults);
+      await storeSearchResults(query, localSearchResults, qID);
     } catch (error) {
       console.error("Error fetching search results:", error);
     } finally {
