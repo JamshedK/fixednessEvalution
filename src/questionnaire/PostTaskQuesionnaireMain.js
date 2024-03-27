@@ -32,7 +32,7 @@ const PostTaskQuestionnaireMain = () => {
   const navigate = useNavigate();
   const location = useLocation(); // Hook to get location object
 
-  // get ratings from firebase
+  // get ratings from firebase`
   useEffect(() => {
     const fetchData = async () => {
       const task = new URLSearchParams(location.search).get("currentTask");
@@ -42,12 +42,11 @@ const PostTaskQuestionnaireMain = () => {
           collectionRef,
           where("isPostTask", "==", true),
           where("userID", "==", authCtx.user.uid),
-          where("task", "==", task)
+          where("currentTask", "==", task)
         );
         const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           const data = doc.data();
-          console.log("Document data:", data);
           setRatings(data.ratings);
         });
       } catch (e) {

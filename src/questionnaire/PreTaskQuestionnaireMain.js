@@ -8,7 +8,7 @@ import {
   where,
 } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
-import { db } from "../firebase-config";
+import { auth, db } from "../firebase-config";
 import IntentionBox from "./IntentionBox";
 import topologyJSON from "../topology.json";
 import IntentionTypeItem from "./IntentionTypeItem";
@@ -37,11 +37,14 @@ const QuestionnnaireMain = () => {
     const fetchData = async () => {
       const task = new URLSearchParams(location.search).get("currentTask");
       try {
-        const querySnapshot = await getDocs(
-          collection(db, "questionnaireResponses"),
+        const collectionRef = collection(db, "questionnaireResponses");
+        const q = query(
+          collectionRef,
+          where("isPostTask", "==", false),
           where("userID", "==", authCtx.user.uid),
-          where("task", "==", task)
+          where("currentTask", "==", task)
         );
+        const querySnapshot = await getDocs(q);
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           setRatings(data.ratings);
