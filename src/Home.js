@@ -105,7 +105,7 @@ const Home = ({ onSelectItem }) => {
   };
 
   return (
-    <div className="flex flex-col justify-center w-screen h-screen items-center ">
+    <div className="flex flex-col justify-center w-screen h-screen items-center">
       <div className="task-list w-[30%] overflow-y-auto mt-10">
         {tasks.map((task, index) => {
           if (task.isText) {
@@ -158,6 +158,7 @@ const Home = ({ onSelectItem }) => {
         })}
       </div>
       <div className="text-black text-[20px]md:text-[14px] mt-20 md:mt-6 w-[30%] text-center">
+        <p className="text-red-600 italic">Scroll to see all tasks</p>
         <p>
           Please, complete each item in the study in the order they are listed.
           You can only move to the next item when the current item is completed.
