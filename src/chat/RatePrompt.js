@@ -44,6 +44,9 @@ const RatePrompt = (props) => {
         await updateDoc(chatDoc.ref, {
           ratingID: docRef.id,
         });
+        if (taskCtx.showEditNoteReminder) {
+          taskCtx.setShowPopUp(true);
+        }
       } else {
         console.error(
           "No matching chat document found for promptID:",

@@ -13,6 +13,10 @@ const EndTaskPopUp = (props) => {
   const navigate = useNavigate();
 
   const handleYesClicked = () => {
+    if (taskCtx.isRatingNeeded) {
+      taskCtx.setShowRatingPopUp(true);
+      return;
+    }
     taskCtx.setShowEndTaskPopUp(false);
     const collectionRef = doc(db, props.collectionName, authCtx.user.uid);
     setDoc(
