@@ -157,7 +157,7 @@ const Home = ({ onSelectItem }) => {
           }
         })}
       </div>
-      <div className="text-black text-[20px] mt-20 w-[30%] text-center">
+      <div className="text-black text-[20px]md:text-[14px] mt-20 md:mt-6 w-[30%] text-center">
         <p>
           Please, complete each item in the study in the order they are listed.
           You can only move to the next item when the current item is completed.

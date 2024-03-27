@@ -19,7 +19,6 @@ function App() {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
   const flowCtx = useContext(FlowContext);
-  console.log(isLoggedIn);
   return (
     <div>
       <Routes>

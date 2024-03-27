@@ -15,15 +15,19 @@ const NoteContainer = (props) => {
     EditorState.createEmpty()
   );
   const [isSaveButtonVisible, setIsSaveButtonVisible] = useState(false); // To control the save button visibility
+  const [isLoading, setIsLoading] = useState(true);
   const location = useLocation();
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
 
   // This useEffect will monitor any changes to editorState and determine whether to show the save button
   useEffect(() => {
-    const contentState = editorState.getCurrentContent();
-    const textLength = contentState.getPlainText("").trim().length;
-    setIsSaveButtonVisible(textLength > 0);
+    if (!isLoading) {
+      const contentState = editorState.getCurrentContent();
+      const textLength = contentState.getPlainText("").trim().length;
+      setIsSaveButtonVisible(textLength > 0);
+      console.log("here");
+    }
   }, [editorState]);
 
   // This useEffect will set the editorState to the saved noteText when the component mounts
@@ -44,16 +48,23 @@ const NoteContainer = (props) => {
               const rawContent = JSON.parse(lastNote.serializedContent);
               const contentState = convertFromRaw(rawContent);
               setEditorState(EditorState.createWithContent(contentState));
+              setIsLoading(false);
             }
           }
-          setIsSaveButtonVisible(false);
+          console.log("Note loaded successfully");
         } catch (error) {
           console.error("Error getting document:", error);
         }
       }
     };
     getContent();
+    // setIsSaveButtonVisible(false);
   }, [authCtx]);
+
+  // This is needed to make save button disappear after loading note from db
+  useEffect(() => {
+    setIsSaveButtonVisible(false);
+  }, [isLoading]);
 
   const handleSave = async () => {
     if (authCtx.user.uid) {
