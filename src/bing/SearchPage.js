@@ -217,12 +217,12 @@ const SearchPage = () => {
         )}
       </div>
       {taskCtx.showPopUp && !taskCtx.isRatingNeeded && (
-        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
+        <div className="fixed top-0 z-10 left-0 w-screen h-screen flex items-center justify-center">
           <EditNoteReminder />
         </div>
       )}
       {taskCtx.showRatingPopUp && (
-        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
+        <div className="fixed top-0 left-0 z-10 w-screen h-screen flex items-center justify-center">
           <RateSearchResults queryID={queryID} />
         </div>
       )}

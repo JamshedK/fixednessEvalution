@@ -37,6 +37,9 @@ const RateSearchResults = (props) => {
       // Close the prompt and handle any further actions here (if needed)
       taskCtx.setIsRatingNeeded(false);
       taskCtx.setShowRatingPopUp(false);
+      if (taskCtx.showEditNoteReminder) {
+        taskCtx.setShowPopUp(true);
+      }
     } catch (error) {
       console.error("Error adding document:", error);
     }

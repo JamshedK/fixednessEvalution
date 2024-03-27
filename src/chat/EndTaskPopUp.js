@@ -17,6 +17,10 @@ const EndTaskPopUp = (props) => {
       taskCtx.setShowRatingPopUp(true);
       return;
     }
+    if (taskCtx.showEditNoteReminder) {
+      taskCtx.setShowPopUp(true);
+      return;
+    }
     taskCtx.setShowEndTaskPopUp(false);
     const collectionRef = doc(db, props.collectionName, authCtx.user.uid);
     setDoc(
