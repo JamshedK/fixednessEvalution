@@ -14,6 +14,8 @@ const NoteContainer = (props) => {
   const [editorState, setEditorState] = useState(() =>
     EditorState.createEmpty()
   );
+  // const [noteInHTML, setNoteInHTML] = useState(""); // To store the HTML content of the note
+  // const [serializedContent, setSerializedContent] = useState(""); // To store the serialized content of the note
   const [isSaveButtonVisible, setIsSaveButtonVisible] = useState(false); // To control the save button visibility
   const location = useLocation();
   const authCtx = useContext(AuthContext);
@@ -23,8 +25,15 @@ const NoteContainer = (props) => {
   useEffect(() => {
     const contentState = editorState.getCurrentContent();
     const textLength = contentState.getPlainText("").trim().length;
+    var localNoteInHTML = stateToHTML(contentState);
+    var localSerialized = JSON.stringify(convertToRaw(contentState));
+    // setNoteInHTML(localNoteInHTML);
+    // setSerializedContent(localSerialized);
+    taskCtx.setNote({
+      noteInHTML: localNoteInHTML,
+      serializedContent: localSerialized,
+    });
     setIsSaveButtonVisible(textLength > 0);
-    console.log("here");
   }, [editorState]);
 
   // This useEffect will set the editorState to the saved noteText when the component mounts
@@ -63,18 +72,18 @@ const NoteContainer = (props) => {
       const customDocID = `${authCtx.user.uid}${taskCategory}`;
       console.log(customDocID);
       const noteDocumentRef = doc(db, "notes", customDocID);
-      // Get the current content
-      const contentState = editorState.getCurrentContent();
-      // Convert to HTML
-      const noteInHTML = stateToHTML(contentState);
-      console.log(noteInHTML); // Use or save this HTML as needed
-      // Convert to raw JSON so the formatting is saved and we can recreate the content
-      const rawContent = convertToRaw(contentState);
-      const serializedContent = JSON.stringify(rawContent);
+      // // Get the current content
+      // const contentState = editorState.getCurrentContent();
+      // // Convert to HTML
+      // const noteInHTML = stateToHTML(contentState);
+      // console.log(noteInHTML); // Use or save this HTML as needed
+      // // Convert to raw JSON so the formatting is saved and we can recreate the content
+      // const rawContent = convertToRaw(contentState);
+      // const serializedContent = JSON.stringify(rawContent);
 
       const noteObject = {
-        noteInHTML: noteInHTML,
-        serializedContent: serializedContent,
+        noteInHTML: taskCtx.note.noteInHTML,
+        serializedContent: taskCtx.note.serializedContent,
         ts: Timestamp.now(),
       };
 

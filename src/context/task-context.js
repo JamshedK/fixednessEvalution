@@ -18,14 +18,14 @@ const TaskContext = createContext({
   showSaveButton: null, // if user clicks on Edit your draft
   isRatingNeeded: null,
   showRatingPopUp: null,
-  noteText: null,
+  note: null,
   showEndTaskPopUp: false,
   tasks: {},
   setSearchEngineTask: () => {},
   setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
   setShowPopUp: () => {},
   setShowSaveButton: () => {},
-  setNoteText: () => {},
+  setNote: () => {},
   setShowEndTaskPopUp: () => {},
   setIsRatingNeeded: () => {},
   setShowRatingPopUp: () => {},
@@ -37,7 +37,7 @@ export const TaskContextProvider = (props) => {
   const [showEditNoteReminder, setShowEditNoteReminderState] = useState(false);
   const [showPopUp, setShowPopUpState] = useState(false);
   const [showSaveButton, setShowSaveButtonState] = useState(false);
-  const [noteText, setNoteTextState] = useState("");
+  const [note, setNoteState] = useState("");
   const [showEndTaskPopUp, setShowEndTaskPopUpState] = useState(false);
   const [isRatingNeeded, setIsRatingNeededState] = useState(false);
   const [showRatingPopUp, setShowRatingPopUpState] = useState(false);
@@ -134,8 +134,8 @@ export const TaskContextProvider = (props) => {
     setShowSaveButtonState(value);
   };
 
-  const setNoteText = (text) => {
-    setNoteTextState(text);
+  const setNote = (text) => {
+    setNoteState(text);
   };
 
   const setShowEndTaskPopUp = (text) => {
@@ -160,7 +160,7 @@ export const TaskContextProvider = (props) => {
     showEditNoteReminder,
     showPopUp,
     showSaveButton,
-    noteText,
+    note,
     showEndTaskPopUp,
     isRatingNeeded,
     showRatingPopUp,
@@ -169,7 +169,7 @@ export const TaskContextProvider = (props) => {
     setShowEditNoteReminder,
     setShowPopUp,
     setShowSaveButton,
-    setNoteText,
+    setNote,
     setShowEndTaskPopUp,
     setIsRatingNeeded,
     setShowRatingPopUp,

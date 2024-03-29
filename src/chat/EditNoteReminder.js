@@ -3,18 +3,23 @@ import { Timestamp, setDoc, doc, arrayUnion } from "firebase/firestore";
 import { db } from "../firebase-config";
 import TaskContext from "../context/task-context";
 import AuthContext from "../context/auth-context";
+import { useLocation } from "react-router-dom";
 
 const EditNoteReminder = (props) => {
   const taskCtx = useContext(TaskContext);
   const authCtx = useContext(AuthContext);
+  const location = useLocation();
 
   const handleResubmitClicked = async () => {
     if (authCtx.user.uid) {
-      const noteDocumentRef = doc(db, "notes", authCtx.user.uid);
+      const taskCategory = location.pathname.split("/")[1];
+      const customDocID = `${authCtx.user.uid}${taskCategory}`;
+      const noteDocumentRef = doc(db, "notes", customDocID);
       const noteObject = {
-        noteText: taskCtx.noteText,
+        noteInHTML: taskCtx.note.noteInHTML,
+        serializedContent: taskCtx.note.serializedContent,
         ts: Timestamp.now(),
-        resubmmited: true,
+        resubmitted: true,
       };
 
       try {
