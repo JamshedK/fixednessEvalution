@@ -85,24 +85,26 @@ export const TaskContextProvider = (props) => {
   const selectRandomTask = (latinSquare) => {
     const row = Math.floor(Math.random() * latinSquare.length);
     const column = Math.floor(Math.random() * latinSquare[row].length);
-    return latinSquare[row][column].title;
+    return latinSquare[row][column];
   };
 
   const setTasks = (user) => {
     // Generate Latin Square for task topics
     const latinSquareTopics = generateLatinSquare(tasksJSON);
     console.log(latinSquareTopics);
-    const firstTaskTopic = selectRandomTask(latinSquareTopics);
-    const secondTaskTopic = selectRandomTask(latinSquareTopics);
+    const firstTaskObj = selectRandomTask(latinSquareTopics);
+    const secondTaskObj = selectRandomTask(latinSquareTopics);
     const taskTypes = ["chat", "search"];
     const firstTaskIndex = Math.floor(Math.random() * taskTypes.length);
     const firstTask = taskTypes[firstTaskIndex];
     const secondTask = taskTypes[firstTaskIndex === 0 ? 1 : 0]; // Ensure the second task is different
     const obj = {
       firstTask,
-      firstTaskTopic,
+      firstTaskTopic: firstTaskObj.title,
+      firstTaskDescription: firstTaskObj.description,
       secondTask,
-      secondTaskTopic,
+      secondTaskTopic: secondTaskObj.title,
+      secondTaskDescription: secondTaskObj.description,
     };
     console.log(obj);
     try {

@@ -4,7 +4,7 @@
     "intention_list": [
       {
         "short_text": "Identify something to get started",
-        "long_text": "For instance, find good query terms or prompt structure"
+        "long_text": "For instance, find good query keywords, chat prompts, questions or task description"
       },
       {
         "short_text": "Identify something more to search",
@@ -21,7 +21,7 @@
     "intention_list": [
       {
         "short_text": "Learn domain knowledge",
-        "long_text": "Learn about the topic of a search"
+        "long_text": "learn more about the topical or general domain knowledge of a search"
       },
       {
         "short_text": "Learn database content",
@@ -104,7 +104,7 @@
         "long_text": ""
       },
       {
-        "short_text": "Organize, synthesize, analyze, and/or summarize the information retrieved or generated in your previous interactions or conversations with the system",
+        "short_text": "Organize, synthesize, analyze, and/or summarize the information retrieved or generated under your previous queries, questions or prompts within the current conversation/session with the system",
         "long_text": ""
       }
     ]

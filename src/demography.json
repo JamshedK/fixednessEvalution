@@ -47,7 +47,7 @@
     ]
   },
   {
-    "category": "How frequently do you use Chatbots?",
+    "category": "How frequently do you use ChatGPT?",
     "options": [
       "Never/This is going to be my first time",
       "Occasionally (less than once a week)",
@@ -85,18 +85,7 @@
     ]
   },
   {
-    "category": "How did you hear about ChatGPT?",
-    "options": [
-      "Social media",
-      "News article/blog",
-      "Friend/Colleague",
-      "Academic course/workshop",
-      "Other"
-    ],
-    "allowMultipleSelections": true
-  },
-  {
-    "category": "How did you hear about Search Engines (e.g. Google, Bing)?",
+    "category": "How did you first hear about ChatGPT?",
     "options": [
       "Social media",
       "News article/blog",

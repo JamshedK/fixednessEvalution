@@ -1,38 +1,47 @@
 [
   {
     "id": 1,
-    "title": "Explore the effects of social media on body image among teenagers"
+    "title": "Explore the effects of social media on body image among teenagers",
+    "description": "Explore the effects of social media on body image among teenagers, focusing on the influence of advertising, peer comparison, and the role of parental guidance."
   },
   {
     "id": 2,
-    "title": "Assess the ethical implications and fairness of using AI in hiring processes"
+    "title": "Assess the ethical implications and fairness of using AI in hiring processes",
+    "description": "Assess the ethical implications and fairness of using AI in hiring processes, considering aspects like bias, privacy, and the impact on candidate diversity."
   },
   {
     "id": 3,
-    "title": "Investigate the balance between privacy and public safety in the use of surveillance cameras in urban areas"
+    "title": "Investigate the balance between privacy and public safety in the use of surveillance cameras in urban areas",
+    "description": "Investigate the balance between privacy and public safety in the use of surveillance cameras in urban areas, considering legal, ethical, and technological perspectives."
   },
   {
     "id": 4,
-    "title": "Evaluate the impact of daily screen time on mental health across different age groups"
+    "title": "Evaluate the impact of daily screen time on mental health across different age groups",
+    "description": "Evaluate the impact of daily screen time on mental health across different age groups, considering factors like duration, content type, and potential benefits or harms."
   },
   {
     "id": 5,
-    "title": "Compare the Keto, Vegan, and Mediterranean diets"
+    "title": "Compare the Keto, Vegan, and Mediterranean diets",
+    "description": "Compare the Keto, Vegan, and Mediterranean diets focusing on their nutritional profiles, suitability for various age groups, and effects on diabetes and heart health."
   },
   {
     "id": 6,
-    "title": "Evaluate the effectiveness of various digital tools and apps in managing and tracking symptoms of asthma"
+    "title": "Evaluate the effectiveness of various digital tools and apps in managing and tracking symptoms of asthma",
+    "description": "Evaluate the effectiveness of various digital tools and apps in managing and tracking symptoms of asthma, including emergency response features and long-term treatment adherence."
   },
   {
     "id": 7,
-    "title": "Analyze the pros and cons of electric cars vs. gasoline cars"
+    "title": "Analyze the pros and cons of electric cars vs. gasoline cars",
+    "description": "Analyze the pros and cons of electric cars vs. gasoline cars in terms of cost, environmental impact, and performance for city and long-distance driving."
   },
   {
     "id": 8,
-    "title": "Investigate and report on the effectiveness of three major home insulation materials"
+    "title": "Investigate and report on the effectiveness of three major home insulation materials",
+    "description": "Investigate and report on the effectiveness of three major home insulation materials (fiberglass, cellulose, and foam) in terms of energy efficiency, cost, and environmental impact."
   },
   {
     "id": 9,
-    "title": "Evaluate the feasibility and impact of adopting a carbon-neutral lifestyle"
+    "title": "Evaluate the feasibility and impact of adopting a carbon-neutral lifestyle",
+    "description": "Evaluate the feasibility and impact of adopting a carbon-neutral lifestyle, focusing on changes in diet, transportation, and energy use at home."
   }
 ]
