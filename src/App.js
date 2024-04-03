@@ -14,6 +14,7 @@ import Home from "./Home";
 import MainSearchTask from "./bing/MainSearchTask";
 import ExperienceSurveyMain from "./questionnaire/ExperienceSurveyMain";
 import EndOfStudy from "./questionnaire/EndOfStudy";
+import ConsentForm from "./common/Consent";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -28,6 +29,7 @@ function App() {
         />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/consent" element={<ConsentForm />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/home" element={<Home />} />
         <Route path="/search" element={<MainSearchTask />} />

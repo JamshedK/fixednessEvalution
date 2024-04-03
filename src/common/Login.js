@@ -61,7 +61,7 @@ const Login = () => {
       // Redirect to home page after successful login
       // delay for one second
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate("/home?refresh=true");
+      navigate("/consent?refresh=true");
     } catch (error) {
       console.error("Error logging in with Google:", error);
       alert(
@@ -111,7 +111,7 @@ const Login = () => {
             className="text-black w-fit underline"
             onClick={() => navigate("/signup")}
           >
-            Sign Up
+            Create an account
           </button>
           <button
             className="text-black w-fit underline"

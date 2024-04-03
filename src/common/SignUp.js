@@ -33,7 +33,7 @@ const SignUp = () => {
       // assing a task to the user
       taskCtx.setTasks(user);
       // Redirect to login page after successful sign up
-      navigate("/");
+      navigate("/consent?refresh=true");
     } catch (error) {
       console.error("Error signing up:", error);
       alert("An error occurred while signing up. Please try again.");
@@ -47,6 +47,7 @@ const SignUp = () => {
           onSubmit={handleSignUp}
           className="flex flex-col items-center space-y-6 px-16 mt-[4rem]"
         >
+          <h1 className="text-2xl font-bold">Sign Up</h1>
           <input
             type="email"
             className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
@@ -85,7 +86,7 @@ const SignUp = () => {
             className="text-black w-fit underline"
             onClick={() => navigate("/login")}
           >
-            Log in
+            Log in instead
           </button>
         </div>
       </div>
