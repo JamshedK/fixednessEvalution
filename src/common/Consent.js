@@ -37,7 +37,7 @@ const ConsentForm = () => {
     try {
       await updateDoc(usersRef, consentData);
       console.log("Consent form submitted successfully");
-      navigate("/home");
+      navigate("/home?refresh=true");
     } catch (e) {
       console.error(e);
     }

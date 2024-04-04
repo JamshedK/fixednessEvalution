@@ -77,7 +77,7 @@ function ChatBox() {
       });
       const typingStartTime = new Date();
       const completion = await openai.createChatCompletion({
-        model: "gpt-3.5-turbo",
+        model: "gpt-4-turbo-preview",
         messages: filteredMessages,
       });
       const message = completion.data.choices[0].message;
