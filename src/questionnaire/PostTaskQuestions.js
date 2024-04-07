@@ -7,9 +7,17 @@ const PostTaskQuestions = ({ itemId, ratings, onRatingsChange }) => {
   const location = useLocation();
   const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
 
-  const instructionString = isPostTask
-    ? "Based on your experience in the session you just completed, please classify the intention described above into one of the following categories."
-    : "Based on your Expectation, please classify the intention described above into one of the following categories.";
+  const instructionString = isPostTask ? (
+    <span>
+      <strong>
+        Based on your experience in the session you just completed
+      </strong>
+      , please classify the intention described above into one of the following
+      categories.
+    </span>
+  ) : (
+    "Based on your Expectation, please classify the intention described above into one of the following categories."
+  );
 
   let service = "";
   const urlParams = new URLSearchParams(window.location.search);

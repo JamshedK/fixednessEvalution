@@ -26,12 +26,19 @@ const NoteBar = (props) => {
           <NoteContainer />
         </div>
       </div>
-      <button
-        className="bg-[#FFFFFF] text-black px-6 py-2 rounded-lg w-fit mt-4"
-        onClick={() => taskCtx.setShowEndTaskPopUp(true)}
-      >
-        Submit
-      </button>
+      <div className="flex flex-col items-center">
+        <button
+          className="bg-[#FFFFFF] text-black px-6 py-2 rounded-lg w-fit mt-4"
+          onClick={() => taskCtx.setShowEndTaskPopUp(true)}
+        >
+          Submit
+        </button>
+        <label className="text-[12px] italic mt-2">
+          Please submit your response ONLY when you are ready to complete/exit
+          the current task. You can edit and save your response at any time
+          before the completion.
+        </label>
+      </div>
     </div>
   );
 };

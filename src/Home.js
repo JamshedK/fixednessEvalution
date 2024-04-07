@@ -18,6 +18,7 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.demographyCompleted,
       path: "/demography",
       canNavigate: true,
+      allowEntryUponCompletion: true,
     },
     {
       title: "First Task",
@@ -28,24 +29,28 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.preTask1Completed,
       path: `/pre-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.demographyCompleted,
+      allowEntryUponCompletion: false,
     },
     {
       title: `Task 1: ${taskCtx.tasks.firstTask}`,
       completed: flowCtx.task1Completed,
       path: `/${taskCtx.tasks.firstTask}?firstTask=true`,
       canNavigate: flowCtx.preTask1Completed,
+      allowEntryUponCompletion: false,
     },
     {
       title: "Post-task Questionnaire 1",
       completed: flowCtx.postTask1Completed,
       path: `/post-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.task1Completed,
+      allowEntryUponCompletion: true,
     },
     {
       title: "Session Experience Survey 1",
       completed: flowCtx.sessionExperienceSurvey1Completed,
       path: `/session-experience?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.postTask1Completed,
+      allowEntryUponCompletion: true,
     },
     {
       title: "Second Task",
@@ -56,24 +61,28 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.preTask2Completed,
       path: `/pre-task?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,
+      allowEntryUponCompletion: false,
     },
     {
       title: `Task 2: ${taskCtx.tasks.secondTask}`,
       completed: flowCtx.task2Completed,
       path: `/${taskCtx.tasks.secondTask}?firstTask=false`,
       canNavigate: flowCtx.preTask2Completed,
+      allowEntryUponCompletion: false,
     },
     {
       title: "Post-task Questionnaire 2",
       path: `/post-task?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       completed: flowCtx.postTask2Completed,
       canNavigate: flowCtx.task2Completed,
+      allowEntryUponCompletion: true,
     },
     {
       title: "Session Experience Survey 2",
       completed: flowCtx.sessionExperienceSurvey2Completed,
       path: `/session-experience?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.postTask2Completed,
+      allowEntryUponCompletion: true,
     },
     {
       title: "End of Study",
@@ -84,6 +93,7 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.isEndOfStudySurveyCompleted,
       path: "/end",
       canNavigate: flowCtx.sessionExperienceSurvey2Completed,
+      allowEntryUponCompletion: true,
     },
   ];
 
@@ -98,7 +108,13 @@ const Home = ({ onSelectItem }) => {
 
   const handleNavigation = (task) => () => {
     if (task.canNavigate) {
-      navigate(task.path);
+      // If the task is completed and the task is pre-task or chat/search task, don't allow entry
+      if (task.completed && !task.allowEntryUponCompletion) {
+        alert("You have already completed this task");
+        return;
+      } else {
+        navigate(task.path);
+      }
     } else {
       alert("Please complete the previous item");
     }

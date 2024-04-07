@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import SignUp from "./common/SignUp";
 import MainChatTask from "./chat/MainChatTask";
@@ -20,6 +20,25 @@ function App() {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
   const flowCtx = useContext(FlowContext);
+
+  useEffect(() => {
+    const handleBeforeUnload = (event) => {
+      // Standard way to trigger the confirmation dialog
+      event.preventDefault();
+      // Chrome requires returnValue to be set
+      event.returnValue =
+        "Are you ready to exit the study by closing this page?";
+    };
+
+    // Add the event listener for 'beforeunload'
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Remove the event listener when the component unmounts
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
+
   return (
     <div>
       <Routes>
