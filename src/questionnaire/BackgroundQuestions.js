@@ -29,13 +29,39 @@ const DemographyQuestions = ({ onResponsesChange }) => {
     fetchData();
   }, [authCtx]);
 
-  const handleInputChange = (questionId, optionValue, isCheckbox = false) => {
+  const handleInputChange = (
+    questionId,
+    optionValue,
+    isCheckbox = false,
+    selectUpto
+  ) => {
     setResponses((prev) => {
-      const updatedResponse = isCheckbox
-        ? prev[questionId]?.includes(optionValue)
-          ? prev[questionId].filter((item) => item !== optionValue)
-          : [...(prev[questionId] || []), optionValue]
-        : optionValue;
+      let updatedResponse;
+      if (isCheckbox) {
+        // Check if the current selection is already in the array
+        const alreadySelected = prev[questionId]?.includes(optionValue);
+        const currentSelections = prev[questionId] ? [...prev[questionId]] : [];
+        if (alreadySelected) {
+          // If it's already selected, remove it from the array
+          updatedResponse = currentSelections.filter(
+            (item) => item !== optionValue
+          );
+        } else {
+          // Check if we can add a new selection based on selectUpto limit
+          if (
+            selectUpto !== undefined &&
+            currentSelections.length < selectUpto
+          ) {
+            updatedResponse = [...currentSelections, optionValue];
+          } else {
+            // If we've reached the limit, return the current selections without adding a new one
+            alert(`You can select up to ${selectUpto} options.`);
+            return prev; // Early return to avoid updating the state
+          }
+        }
+      } else {
+        updatedResponse = optionValue;
+      }
       return { ...prev, [questionId]: updatedResponse };
     });
   };
@@ -58,7 +84,7 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       alert("Please answer all required questions before submitting.");
       return;
     }
-
+    console.log(responses);
     try {
       const userDocRef = doc(db, "users", authCtx?.user?.uid);
       await updateDoc(userDocRef, {
@@ -80,7 +106,12 @@ const DemographyQuestions = ({ onResponsesChange }) => {
     >
       {demographyJSON.map((question, qIndex) => (
         <div key={qIndex} className="bg-[#e3e3e3] py-6 px-16 rounded-md mb-4">
-          <h1 className="text-[20px] mb-5">{question.category}</h1>
+          <h1 className="text-[20px]">{question.category}</h1>
+          {question.selectUpto && (
+            <label className="text-[13px] mb-2 text-red-500 italic">
+              Select upto {question.selectUpto} options
+            </label>
+          )}
           {question.options.map((option, oIndex) => {
             const isChecked = question.allowMultipleSelections
               ? responses[question.category]?.includes(option)
@@ -91,7 +122,7 @@ const DemographyQuestions = ({ onResponsesChange }) => {
             return (
               <div
                 key={oIndex}
-                className="flex flex-row space-x-4 items-center"
+                className="flex flex-row space-x-4 items-center mt-5"
               >
                 <input
                   type={formType}
@@ -103,7 +134,8 @@ const DemographyQuestions = ({ onResponsesChange }) => {
                     handleInputChange(
                       question.category,
                       e.target.value,
-                      question.allowMultipleSelections
+                      question.allowMultipleSelections,
+                      question.selectUpto
                     )
                   }
                   className={`w-4 h-4 form-${formType}`}

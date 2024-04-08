@@ -72,7 +72,9 @@
       "Personal interest/hobby",
       "Entertainment",
       "Other"
-    ]
+    ],
+    "allowMultipleSelections": true,
+    "selectUpto": 2
   },
   {
     "category": "What is your primary purpose for using Search Engines (e.g. Google, Bing)?",
@@ -82,7 +84,9 @@
       "Personal interest/hobby",
       "Entertainment",
       "Other"
-    ]
+    ],
+    "allowMultipleSelections": true,
+    "selectUpto": 2
   },
   {
     "category": "How did you first hear about ChatGPT?",
