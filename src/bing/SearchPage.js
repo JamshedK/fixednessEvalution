@@ -14,10 +14,12 @@ import {
   runTransaction,
   Timestamp,
 } from "firebase/firestore";
+import { getFunctions, httpsCallable } from "firebase/functions";
 import SingleResultContainer from "./SingleResultContainer";
 import EditNoteReminder from "../chat/EditNoteReminder";
 import RatePrompt from "../chat/RatePrompt";
 import RateSearchResults from "../bing/RateSearchResults";
+import { click } from "@testing-library/user-event/dist/click";
 
 const SearchPage = () => {
   const [query, setQuery] = useState("");
@@ -29,10 +31,26 @@ const SearchPage = () => {
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
   const user = authCtx.user;
+  const functions = getFunctions();
 
   const textRef = useRef();
 
   const handleSearchResultClick = async (clickedObj) => {
+    // Prepare to invoke the Cloud Function
+    const fetchAndStoreWebPage = httpsCallable(
+      functions,
+      "fetchAndStoreWebPage"
+    );
+
+    // Call the Cloud Function with the URL and customID
+    fetchAndStoreWebPage({ url: clickedObj.url, customID: clickedObj.customID })
+      .then((result) => {
+        console.log(result.data); // Handle success
+      })
+      .catch((error) => {
+        console.error("Error:", error); // Handle error
+      });
+
     // Reference to the searchTask document
     const searchTaskRef = doc(db, "searchTask", user.uid);
 
@@ -213,6 +231,7 @@ const SearchPage = () => {
                 handleSearchResultClick({
                   url: page.displayUrl,
                   customID: page.customID,
+                  ts: Timestamp.now(),
                 })
               }
             />
