@@ -41,7 +41,7 @@ const EndTaskPopUp = (props) => {
     }
     // delay for 1 second
     setTimeout(() => {
-      navigate("/home?refresh=true");
+      navigate("/home");
     }, 1000);
   };
 
