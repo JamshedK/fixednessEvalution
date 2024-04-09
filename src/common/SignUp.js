@@ -4,10 +4,12 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase-config";
 import AuthContext from "../context/auth-context";
 import TaskContext from "../context/task-context";
+import Jabber from "jabber";
 
 const SignUp = () => {
+  const jabber = new Jabber();
   const navigate = useNavigate();
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState(jabber.createEmail("example.com"));
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
   const authCtx = useContext(AuthContext);
@@ -18,6 +20,10 @@ const SignUp = () => {
 
     if (password !== verifyPassword) {
       alert("Passwords do not match!");
+      return;
+    }
+    if (password.length < 6) {
+      alert("Password must be at least 6 characters long.");
       return;
     }
     try {
@@ -48,14 +54,22 @@ const SignUp = () => {
           className="flex flex-col items-center space-y-6 px-16 mt-[4rem]"
         >
           <h1 className="text-2xl font-bold">Sign Up</h1>
-          <input
-            type="email"
-            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
+          <p className="text-sm text-gray-600">
+            A random email has been generated for you to preserve privacy.
+            Please remember this email as you may need it to log in.
+          </p>
+
+          <label
+            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3 flex items-center"
             value={email}
-            required
-            placeholder="Email"
-            onChange={(e) => setEmail(e.target.value)}
-          />
+            contentEditable={false}
+          >
+            {email}
+          </label>
+          <p className="text-sm text-gray-600">
+            Create a password with a length of at least 6 characters.
+          </p>
+
           <input
             type="password"
             className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
@@ -65,7 +79,7 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
-            type="Verify password"
+            type="password"
             className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={verifyPassword}
             required

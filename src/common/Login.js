@@ -113,12 +113,6 @@ const Login = () => {
           >
             Create an account
           </button>
-          <button
-            className="text-black w-fit underline"
-            onClick={handleGoogleLogin}
-          >
-            Continue with Google
-          </button>
         </div>
       </div>
     </div>
