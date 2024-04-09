@@ -66,7 +66,8 @@ const RatePrompt = (props) => {
       {/* <h1 className="text-black text-center mb-2">How did the system perform compared to your expectation?</h1> */}
       <div className="flex flex-col text-black space-y-4 ma x-w-[28rem]">
         <h1 className="text-lg">
-          How did the system perform compared to your expectation?{" "}
+          How did the system perform compared to your expectation under the most
+          recent prompt?
         </h1>
         <div className="flex flex-col pl-8 pr-16 justify-between space-y-">
           {/* Array to generate the radio buttons */}

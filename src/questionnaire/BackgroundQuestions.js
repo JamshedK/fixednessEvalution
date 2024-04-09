@@ -47,16 +47,20 @@ const DemographyQuestions = ({ onResponsesChange }) => {
             (item) => item !== optionValue
           );
         } else {
-          // Check if we can add a new selection based on selectUpto limit
-          if (
-            selectUpto !== undefined &&
-            currentSelections.length < selectUpto
-          ) {
+          if (selectUpto === undefined) {
             updatedResponse = [...currentSelections, optionValue];
           } else {
-            // If we've reached the limit, return the current selections without adding a new one
-            alert(`You can select up to ${selectUpto} options.`);
-            return prev; // Early return to avoid updating the state
+            // Check if we can add a new selection based on selectUpto limit
+            if (
+              selectUpto !== undefined &&
+              currentSelections.length < selectUpto
+            ) {
+              updatedResponse = [...currentSelections, optionValue];
+            } else {
+              // If we've reached the limit, return the current selections without adding a new one
+              alert(`You can select up to ${selectUpto} options.`);
+              return prev; // Early return to avoid updating the state
+            }
           }
         }
       } else {
