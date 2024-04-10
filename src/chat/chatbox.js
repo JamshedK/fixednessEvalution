@@ -216,7 +216,7 @@ function ChatBox() {
           />
         )}
       </div>
-      <div className="fixed bottom-0 mb-8 w-[50%] flex flex-col left-[50%] transform -translate-x-1/2 ">
+      <div className="fixed bottom-0 mb-8 flex flex-col left-[45%] w-[50%] transform -translate-x-1/2 ">
         <MsgEntry
           saveChatHistory={saveChatHistory}
           setPromptID={setPromptID}
