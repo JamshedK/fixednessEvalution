@@ -19,6 +19,7 @@ const Home = ({ onSelectItem }) => {
       path: "/demography",
       canNavigate: true,
       allowEntryUponCompletion: true,
+      estimatedTime: "1-2 minutes",
     },
     {
       title: "First Task",
@@ -30,6 +31,7 @@ const Home = ({ onSelectItem }) => {
       path: `/pre-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.demographyCompleted,
       allowEntryUponCompletion: false,
+      estimatedTime: "3-4 minutes",
     },
     {
       title: `Task 1: ${taskCtx.tasks.firstTask}`,
@@ -37,6 +39,7 @@ const Home = ({ onSelectItem }) => {
       path: `/${taskCtx.tasks.firstTask}?firstTask=true`,
       canNavigate: flowCtx.preTask1Completed,
       allowEntryUponCompletion: false,
+      estimatedTime: "10-12 minutes",
     },
     {
       title: "Post-task Questionnaire 1",
@@ -44,6 +47,7 @@ const Home = ({ onSelectItem }) => {
       path: `/post-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.task1Completed,
       allowEntryUponCompletion: true,
+      estimatedTime: "3-4 minutes",
     },
     {
       title: "Session Experience Survey 1",
@@ -51,6 +55,7 @@ const Home = ({ onSelectItem }) => {
       path: `/session-experience?firstTask=true&currentTask=${taskCtx.tasks.firstTask}`,
       canNavigate: flowCtx.postTask1Completed,
       allowEntryUponCompletion: true,
+      estimatedTime: "1-2 minutes",
     },
     {
       title: "Second Task",
@@ -62,6 +67,7 @@ const Home = ({ onSelectItem }) => {
       path: `/pre-task?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,
       allowEntryUponCompletion: false,
+      estimatedTime: "3-4 minutes",
     },
     {
       title: `Task 2: ${taskCtx.tasks.secondTask}`,
@@ -69,6 +75,7 @@ const Home = ({ onSelectItem }) => {
       path: `/${taskCtx.tasks.secondTask}?firstTask=false`,
       canNavigate: flowCtx.preTask2Completed,
       allowEntryUponCompletion: false,
+      estimatedTime: "10-12 minutes",
     },
     {
       title: "Post-task Questionnaire 2",
@@ -76,6 +83,7 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.postTask2Completed,
       canNavigate: flowCtx.task2Completed,
       allowEntryUponCompletion: true,
+      estimatedTime: "3-4 minutes",
     },
     {
       title: "Session Experience Survey 2",
@@ -83,6 +91,7 @@ const Home = ({ onSelectItem }) => {
       path: `/session-experience?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.postTask2Completed,
       allowEntryUponCompletion: true,
+      estimatedTime: "1-2 minutes",
     },
     {
       title: "End of Study",
@@ -94,6 +103,7 @@ const Home = ({ onSelectItem }) => {
       path: "/end",
       canNavigate: flowCtx.sessionExperienceSurvey2Completed,
       allowEntryUponCompletion: true,
+      estimatedTime: "~1 minute",
     },
   ];
 
@@ -122,7 +132,7 @@ const Home = ({ onSelectItem }) => {
 
   return (
     <div className="flex flex-col justify-center w-screen h-screen items-center">
-      <div className="task-list w-[30%] overflow-y-auto mt-10">
+      <div className="task-list w-[40%] overflow-y-auto mt-10">
         {tasks.map((task, index) => {
           if (task.isText) {
             return (
@@ -137,7 +147,7 @@ const Home = ({ onSelectItem }) => {
             return (
               <div
                 key={index}
-                className="flex items-center justify-between bg-[#e3e3e3] p-4 text-black w-full 
+                className="flex items-center justify-stretch bg-[#e3e3e3] p-4 text-black w-full 
                         border-b-[1px] border-[#f9f9f9] text-[14px] hover:cursor-pointer"
                 onClick={handleNavigation(task)}
               >
@@ -156,9 +166,19 @@ const Home = ({ onSelectItem }) => {
                     />
                   )}
                 </span>
-                <span className={`${task.completed ? "" : "ml-4"} w-full px-4`}>
-                  {task.title}
-                </span>
+                <div className="w-full flex flex-col">
+                  <span
+                    className={`${task.completed ? "" : "ml-4"} w-full px-4`}
+                  >
+                    {task.title}
+                  </span>
+                  <span className="text-[12px] ml-8">
+                    Estimated duration:
+                    <span className="text-red-600 ml-2">
+                      {task.estimatedTime}
+                    </span>
+                  </span>
+                </div>
                 <span>
                   <button>
                     <img
