@@ -21,6 +21,7 @@ const TaskContext = createContext({
   note: null,
   showEndTaskPopUp: false,
   tasks: {},
+  timeRemaining: 0,
   setSearchEngineTask: () => {},
   setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
   setShowPopUp: () => {},
@@ -30,6 +31,7 @@ const TaskContext = createContext({
   setIsRatingNeeded: () => {},
   setShowRatingPopUp: () => {},
   setTasks: () => {},
+  setTimeRemaining: () => {},
 });
 
 export const TaskContextProvider = (props) => {
@@ -41,6 +43,7 @@ export const TaskContextProvider = (props) => {
   const [showEndTaskPopUp, setShowEndTaskPopUpState] = useState(false);
   const [isRatingNeeded, setIsRatingNeededState] = useState(false);
   const [showRatingPopUp, setShowRatingPopUpState] = useState(false);
+  const [timeRemaining, setTimeRemainingState] = useState(0);
   const [tasks, setTasksState] = useState({
     firstTask: null,
     firstTaskTopic: null,
@@ -155,6 +158,10 @@ export const TaskContextProvider = (props) => {
     setSearchEngineTaskState(task);
   };
 
+  const setTimeRemaining = (time) => {
+    setTimeRemainingState(time);
+  };
+
   const contextValue = {
     SearchEngineTask,
     showEditNoteReminder,
@@ -165,6 +172,7 @@ export const TaskContextProvider = (props) => {
     isRatingNeeded,
     showRatingPopUp,
     tasks,
+    timeRemaining,
     setSearchEngineTask,
     setShowEditNoteReminder,
     setShowPopUp,
@@ -174,6 +182,7 @@ export const TaskContextProvider = (props) => {
     setIsRatingNeeded,
     setShowRatingPopUp,
     setTasks,
+    setTimeRemaining,
   };
 
   return (
