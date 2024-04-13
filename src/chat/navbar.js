@@ -15,7 +15,7 @@ import { db } from "../firebase-config";
 import TaskContext from "../context/task-context";
 
 const Navbar = (props) => {
-  const [timeLeft, setTimeLeft] = useState(60 * 5); // For a 5-minute countdown
+  const [timeLeft, setTimeLeft] = useState(60 * 12); // For a 5-minute countdown
   const taskCtx = useContext(TaskContext);
 
   useEffect(() => {
