@@ -7,9 +7,15 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   const location = useLocation();
   const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
 
-  const instructionString = isPostTask
+  var instructionString = isPostTask
     ? "Based on your experience in the session you just completed, please classify the intention described above into one of the following categories."
     : "Based on your Expectation, please classify the intention described above into one of the following categories.";
+
+  if (itemId.includes("2")) {
+    instructionString =
+      "If you are reading this message, for this specific question, please carefully select the third option from the list below to verify your attention to detail.";
+    // remove the text attention check from the itemId
+  }
 
   let service = "";
   const urlParams = new URLSearchParams(window.location.search);
