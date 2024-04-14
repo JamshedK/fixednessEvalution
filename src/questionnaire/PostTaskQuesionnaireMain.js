@@ -57,6 +57,34 @@ const PostTaskQuestionnaireMain = () => {
     }
   }, [authCtx]);
 
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const isFirstTask = searchParams.get("firstTask") === "true";
+    if (isFirstTask) {
+      // return if postTask1 is completed
+      if (flowCtx.postTask1Completed) {
+        return;
+      }
+    } else {
+      // return if postTask2 is completed
+      if (flowCtx.postTask2Completed) {
+        return;
+      }
+    }
+    const randomPos = Math.floor(
+      Math.random() * topologyJSON[3].intention_list.length
+    );
+    // Create a deep copy of the intention to be repeated
+    const repeatedItention = {
+      ...topologyJSON[3].intention_list[randomPos],
+      short_text: topologyJSON[3].intention_list[randomPos].short_text + " 2",
+      attentionCheck: true, // Adding new field for attention check
+    };
+
+    // Insert the modified copy into the list at the chosen position
+    topologyJSON[3].intention_list.splice(randomPos + 1, 0, repeatedItention);
+  }, []);
+
   const handleSelectItem = (itemId) => {
     setSelectedItem(itemId);
   };
@@ -132,6 +160,7 @@ const PostTaskQuestionnaireMain = () => {
             <IntentionBox
               selectedItem={selectedItem}
               key={index}
+              index={index}
               title={item.intention_type}
               intentionList={item.intention_list}
               onSelectItem={handleSelectItem}
