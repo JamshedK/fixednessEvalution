@@ -34,7 +34,7 @@ const MsgEntry = (props) => {
 
   const sendPrompt = async (e) => {
     if (taskCtx.isRatingNeeded) {
-      // taskCtx.setShowRatingPopUp(true);
+      taskCtx.setShowRatingPopUp(true);
     } else if (taskCtx.showEditNoteReminder) {
       taskCtx.setShowPopUp(true);
     } else {
