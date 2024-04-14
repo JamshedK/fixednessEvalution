@@ -20,7 +20,7 @@ import InstructionsPopUp from "./InstructionsPopUp";
 import { useLocation } from "react-router-dom";
 
 const instructionText =
-  "In the following phase, please complete the two survey questions under each intention presented on the left sidebar. Please read the intention description first before answering the two questions. After your complete the questions under one intention, you can click on the next intention on the sidebar, which will take you to a new set of survey questions. Please complete the survey questions for all intentions listed on the left sidebar.";
+  "Read the intention on the left, answer the two survey questions below it, then click the next intention for more questions. Complete all listed intentions.";
 
 const QuestionnnaireMain = () => {
   const [selectedItem, setSelectedItem] = useState(null);
