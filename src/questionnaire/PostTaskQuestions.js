@@ -21,7 +21,7 @@ const PostTaskQuestions = ({ itemId, ratings, onRatingsChange }) => {
 
   if (itemId.includes("2")) {
     instructionString =
-      "If you are reading this message, for this specific question, please carefully select the third option from the list below to verify your attention to detail.";
+      "If you are reading this message, for this specific question, please carefully select the first option from the list below to verify your attention to detail.";
     // remove the text attention check from the itemId
   }
 
