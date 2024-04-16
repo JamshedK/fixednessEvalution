@@ -39,7 +39,7 @@ const Home = ({ onSelectItem }) => {
       path: `/${taskCtx.tasks.firstTask}?firstTask=true`,
       canNavigate: flowCtx.preTask1Completed,
       allowEntryUponCompletion: false,
-      estimatedTime: "10-12 minutes",
+      estimatedTime: "12 minutes",
     },
     {
       title: "Post-task Questionnaire 1",
@@ -75,7 +75,7 @@ const Home = ({ onSelectItem }) => {
       path: `/${taskCtx.tasks.secondTask}?firstTask=false`,
       canNavigate: flowCtx.preTask2Completed,
       allowEntryUponCompletion: false,
-      estimatedTime: "10-12 minutes",
+      estimatedTime: "12 minutes",
     },
     {
       title: "Post-task Questionnaire 2",
