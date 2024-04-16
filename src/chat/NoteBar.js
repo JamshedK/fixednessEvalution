@@ -8,10 +8,35 @@ import {
   addDoc,
 } from "firebase/firestore";
 import { db } from "../firebase-config";
+
 import NoteContainer from "./NoteContainer";
 import TaskContext from "../context/task-context";
+import { useLocation } from "react-router-dom";
+
 const NoteBar = (props) => {
   const taskCtx = useContext(TaskContext);
+  const location = useLocation();
+
+  const handleEndTask = async () => {
+    const timeRemainingInMinutes = taskCtx.timeRemaining / 60;
+    const currentPath = location.pathname;
+    var alert_message;
+    if (currentPath === "/chat") {
+      alert_message =
+        "You can end the task either before the time runs out or after 4 interactions with the ChatGPT.";
+    } else {
+      alert_message =
+        "You can end the task either before the time runs out or after 4 interactions with the search engine.";
+    }
+    if (timeRemainingInMinutes < 1 || taskCtx.queryCount >= 4) {
+      taskCtx.setShowEndTaskPopUp(true);
+    } else {
+      console.log("timeRemainingInMinutes", timeRemainingInMinutes);
+      console.log("taskCtx.queryCount", taskCtx.queryCount);
+      alert(alert_message);
+      return;
+    }
+  };
 
   return (
     <div className="bg-[#e3e3e3] w-[50%] h-screen sticky flex top-0 pl-1 flex-col text-[18px] pb-10 pt-10 justify-between items-center overflow-y-auto">
@@ -29,7 +54,7 @@ const NoteBar = (props) => {
       <div className="flex flex-col items-center">
         <button
           className="bg-[#FFFFFF] text-black px-6 py-2 rounded-lg w-fit mt-4"
-          onClick={() => taskCtx.setShowEndTaskPopUp(true)}
+          onClick={handleEndTask}
         >
           Submit
         </button>

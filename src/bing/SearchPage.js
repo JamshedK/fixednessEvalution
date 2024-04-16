@@ -161,6 +161,7 @@ const SearchPage = () => {
     }
     setIsLoading(true); // Start loading
     setTypingStartTime(null);
+    taskCtx.setQueryCount();
     const qID = uid();
     setQueryID(qID);
     const subscriptionKey = process.env.REACT_APP_BING_API_KEY;

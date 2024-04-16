@@ -20,7 +20,7 @@ import InstructionsPopUp from "./InstructionsPopUp";
 import { useLocation } from "react-router-dom";
 
 const instructionText =
-  "In the following phase, please complete the two survey questions under each intention presented on the left sidebar. Please read the intention description first before answering the two questions. After your complete the questions under one intention, you can click on the next intention on the sidebar, which will take you to a new set of survey questions. Please complete the survey questions for all intentions listed on the left sidebar.";
+  "Read the intention on the left, answer the two survey questions below it, then click the next intention for more questions. Complete all listed intentions.";
 
 const QuestionnnaireMain = () => {
   const [selectedItem, setSelectedItem] = useState(null);
@@ -58,6 +58,21 @@ const QuestionnnaireMain = () => {
     }
   }, [authCtx]);
 
+  useEffect(() => {
+    const randomPos = Math.floor(
+      Math.random() * topologyJSON[3].intention_list.length
+    );
+    // Create a deep copy of the intention to be repeated
+    const repeatedItention = {
+      ...topologyJSON[3].intention_list[randomPos],
+      short_text: topologyJSON[3].intention_list[randomPos].short_text + " 2",
+      attentionCheck: true, // Adding new field for attention check
+    };
+
+    // Insert the modified copy into the list at the chosen position
+    topologyJSON[3].intention_list.splice(randomPos + 1, 0, repeatedItention);
+  }, []);
+
   const handleSelectItem = (itemId) => {
     setSelectedItem(itemId);
   };
@@ -85,6 +100,7 @@ const QuestionnnaireMain = () => {
       currentTask,
       ts: Timestamp.now(),
     };
+    console.log(dataToSave);
     try {
       // Reference to your Firestore collection
       const docRef = await addDoc(
@@ -110,10 +126,11 @@ const QuestionnnaireMain = () => {
 
   // Calculate the progress percentage
   const progressPercentage = useMemo(() => {
-    const totalItems = topologyJSON.reduce(
+    var totalItems = topologyJSON.reduce(
       (acc, curr) => acc + curr.intention_list.length,
       0
     );
+    // totalItems += 1; // Add one for the attention check
     const completedItems = Object.values(ratings).filter(
       (rating) =>
         rating.expectationRating !== undefined &&
@@ -139,6 +156,7 @@ const QuestionnnaireMain = () => {
             <IntentionBox
               selectedItem={selectedItem}
               key={index}
+              index={index}
               title={item.intention_type}
               intentionList={item.intention_list}
               onSelectItem={handleSelectItem}

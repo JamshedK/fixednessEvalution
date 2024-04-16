@@ -34,10 +34,11 @@ const MsgEntry = (props) => {
 
   const sendPrompt = async (e) => {
     if (taskCtx.isRatingNeeded) {
-      taskCtx.setShowRatingPopUp(true);
+      // taskCtx.setShowRatingPopUp(true);
     } else if (taskCtx.showEditNoteReminder) {
       taskCtx.setShowPopUp(true);
     } else {
+      taskCtx.setQueryCount();
       const newMessage = textRef.current.value;
       if (newMessage.trim() != "") {
         // Save the prompt to Firestore database

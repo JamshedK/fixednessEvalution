@@ -20,8 +20,7 @@ import InstructionsPopUp from "./InstructionsPopUp";
 import { useLocation } from "react-router-dom";
 
 const instructionText =
-  "In the following phase, please complete the two survey questions under each intention presented on the left sidebar. Please read the intention description first before answering the two questions. After your complete the questions under one intention, you can click on the next intention on the sidebar, which will take you to a new set of survey questions. Please complete the survey questions for all intentions listed on the left sidebar.";
-
+  "Read the intention on the left, then answer the two survey questions below it. Click the next intention in the sidebar for new questions. Complete all intentions listed.";
 const PostTaskQuestionnaireMain = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [ratings, setRatings] = useState({});
@@ -57,6 +56,34 @@ const PostTaskQuestionnaireMain = () => {
       fetchData();
     }
   }, [authCtx]);
+
+  useEffect(() => {
+    const searchParams = new URLSearchParams(location.search);
+    const isFirstTask = searchParams.get("firstTask") === "true";
+    if (isFirstTask) {
+      // return if postTask1 is completed
+      if (flowCtx.postTask1Completed) {
+        return;
+      }
+    } else {
+      // return if postTask2 is completed
+      if (flowCtx.postTask2Completed) {
+        return;
+      }
+    }
+    const randomPos = Math.floor(
+      Math.random() * topologyJSON[3].intention_list.length
+    );
+    // Create a deep copy of the intention to be repeated
+    const repeatedItention = {
+      ...topologyJSON[3].intention_list[randomPos],
+      short_text: topologyJSON[3].intention_list[randomPos].short_text + " 2",
+      attentionCheck: true, // Adding new field for attention check
+    };
+
+    // Insert the modified copy into the list at the chosen position
+    topologyJSON[3].intention_list.splice(randomPos + 1, 0, repeatedItention);
+  }, []);
 
   const handleSelectItem = (itemId) => {
     setSelectedItem(itemId);
@@ -133,6 +160,7 @@ const PostTaskQuestionnaireMain = () => {
             <IntentionBox
               selectedItem={selectedItem}
               key={index}
+              index={index}
               title={item.intention_type}
               intentionList={item.intention_list}
               onSelectItem={handleSelectItem}
