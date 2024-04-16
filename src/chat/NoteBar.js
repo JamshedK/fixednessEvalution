@@ -18,20 +18,18 @@ const NoteBar = (props) => {
   const location = useLocation();
 
   const handleEndTask = async () => {
-    const timeRemainingInMinutes = taskCtx.timeRemaining / 60;
     const currentPath = location.pathname;
     var alert_message;
     if (currentPath === "/chat") {
       alert_message =
-        "You can end the task either before the time runs out or after 4 interactions with the ChatGPT.";
+        "You can end the task only after 4 interactions with the ChatGPT utilizing 'Type a prompt..'.";
     } else {
       alert_message =
-        "You can end the task either before the time runs out or after 4 interactions with the search engine.";
+        "You can end the task only after 4 interactions with the search engine utilizing 'Search the web..'";
     }
-    if (timeRemainingInMinutes < 1 || taskCtx.queryCount >= 4) {
+    if (taskCtx.queryCount >= 4) {
       taskCtx.setShowEndTaskPopUp(true);
     } else {
-      console.log("timeRemainingInMinutes", timeRemainingInMinutes);
       console.log("taskCtx.queryCount", taskCtx.queryCount);
       alert(alert_message);
       return;
