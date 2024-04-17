@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
-import { doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc, Timestamp } from "firebase/firestore";
 import { FlowContext } from "../context/flow-context";
 
 const EndOfStudy = () => {
@@ -21,6 +21,7 @@ const EndOfStudy = () => {
       // Update the user document with the MTurk ID
       await updateDoc(useDocRef, {
         mturkId: mturkId,
+        EndOfStudyTs: Timestamp.now(),
       });
       flowCtx.setIsEndOfStudySurveyCompleted(true);
       setShowInput(false);
