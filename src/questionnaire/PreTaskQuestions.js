@@ -10,10 +10,12 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   var instructionString = isPostTask
     ? "Based on your experience in the session you just completed, please classify the intention described above into one of the following categories."
     : "Based on your Expectation, please classify the intention described above into one of the following categories.";
-
+  var instructionString2 = undefined;
   if (itemId.includes("2")) {
     instructionString =
       "If you are reading this message, for this specific question, please carefully select the third option from the list below to verify your attention to detail.";
+    instructionString2 =
+      "If you are reading this message, for this specific question, please select the last option from the list below";
     // remove the text attention check from the itemId
   }
 
@@ -97,10 +99,17 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
       </div>
       {!isPostTask && (
         <div className="bg-[#e3e3e3] py-6 px-16">
-          <h1 className="text-[20px] lg:text-[16px] mb-5">
-            In your prior interaction experiences, how often did you try to use{" "}
-            {service} to fulfill the intention described above?
-          </h1>
+          {instructionString2 === undefined && (
+            <h1 className="text-[20px] lg:text-[16px] mb-5">
+              In your prior interaction experiences, how often did you try to
+              use {service} to fulfill the intention described above?
+            </h1>
+          )}
+          {instructionString2 !== undefined && (
+            <h1 className="text-[20px] lg:text-[16px] mb-5">
+              {instructionString2}
+            </h1>
+          )}
           {usageFrequency.map((item, index) => (
             <div key={index} className="flex flex-row space-x-4 items-center">
               <input

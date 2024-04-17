@@ -25,6 +25,7 @@ const PostTaskQuestionnaireMain = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [ratings, setRatings] = useState({});
   const [showInstructions, setShowInstructions] = useState(true);
+  const [localTopology, setLocalTopology] = useState(topologyJSON);
 
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
@@ -71,18 +72,28 @@ const PostTaskQuestionnaireMain = () => {
         return;
       }
     }
+    const topologyCopy = localTopology.map((section) => ({
+      ...section,
+      intention_list: [...section.intention_list],
+    }));
+    const randomSectionIndex = 3; // Attention check needs to be in section index 3
     const randomPos = Math.floor(
-      Math.random() * topologyJSON[3].intention_list.length
+      Math.random() * topologyCopy[randomSectionIndex].intention_list.length
     );
-    // Create a deep copy of the intention to be repeated
-    const repeatedItention = {
-      ...topologyJSON[3].intention_list[randomPos],
-      short_text: topologyJSON[3].intention_list[randomPos].short_text + " 2",
-      attentionCheck: true, // Adding new field for attention check
+    const repeatedIntention = {
+      ...topologyCopy[randomSectionIndex].intention_list[randomPos],
+      short_text:
+        topologyCopy[randomSectionIndex].intention_list[randomPos].short_text +
+        " 2",
+      attentionCheck: true,
     };
 
-    // Insert the modified copy into the list at the chosen position
-    topologyJSON[3].intention_list.splice(randomPos + 1, 0, repeatedItention);
+    topologyCopy[randomSectionIndex].intention_list.splice(
+      randomPos + 1,
+      0,
+      repeatedIntention
+    );
+    setLocalTopology(topologyCopy);
   }, []);
 
   const handleSelectItem = (itemId) => {
@@ -133,7 +144,7 @@ const PostTaskQuestionnaireMain = () => {
 
   // Calculate the progress percentage
   const progressPercentage = useMemo(() => {
-    const totalItems = topologyJSON.reduce(
+    const totalItems = localTopology.reduce(
       (acc, curr) => acc + curr.intention_list.length,
       0
     );
@@ -156,7 +167,7 @@ const PostTaskQuestionnaireMain = () => {
                 scrollbar-thumb-[#d58d8d] scrollbar-thumb-rounded-full text-[14px] 
                 sticky top-0 scrollbar-w-2 scrollbar-h-4"
         >
-          {topologyJSON.map((item, index) => (
+          {localTopology.map((item, index) => (
             <IntentionBox
               selectedItem={selectedItem}
               key={index}
