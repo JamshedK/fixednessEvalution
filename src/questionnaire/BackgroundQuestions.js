@@ -10,6 +10,9 @@ const DemographyQuestions = ({ onResponsesChange }) => {
   const [responses, setResponses] = useState({});
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
+  const [demographyStartedTs, setDemographyStartedTs] = useState(
+    Timestamp.now()
+  );
   const navigate = useNavigate();
 
   // get saved data from firebase
@@ -93,6 +96,7 @@ const DemographyQuestions = ({ onResponsesChange }) => {
       const userDocRef = doc(db, "users", authCtx?.user?.uid);
       await updateDoc(userDocRef, {
         backgroundResponses: responses,
+        demographyStartedTs: demographyStartedTs,
         demographyCompletedTs: Timestamp.now(),
       });
       console.log("Document successfully updated!");

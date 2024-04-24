@@ -27,6 +27,7 @@ const QuestionnnaireMain = () => {
   const [ratings, setRatings] = useState({});
   const [showInstructions, setShowInstructions] = useState(true);
   const [localTopology, setLocalTopology] = useState(topologyJSON);
+  const [startedTs, setStartedTs] = useState(Timestamp.now());
 
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
@@ -109,7 +110,8 @@ const QuestionnnaireMain = () => {
       ratings,
       isPostTask,
       currentTask,
-      ts: Timestamp.now(),
+      startedTs: startedTs,
+      completedTs: Timestamp.now(),
     };
     console.log(dataToSave);
     try {

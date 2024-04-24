@@ -9,6 +9,9 @@ const EndOfStudy = () => {
   const [mturkId, setMturkId] = useState("");
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
+  const [endOfStudyStartedTs, setEndOfStudyStartedTs] = useState(
+    Timestamp.now()
+  );
   const [showInput, setShowInput] = useState(true);
   const navigate = useNavigate();
 
@@ -21,7 +24,8 @@ const EndOfStudy = () => {
       // Update the user document with the MTurk ID
       await updateDoc(useDocRef, {
         mturkId: mturkId,
-        EndOfStudyTs: Timestamp.now(),
+        endOfStudyStartedTs: endOfStudyStartedTs,
+        endOfStudyCompleted: Timestamp.now(),
       });
       flowCtx.setIsEndOfStudySurveyCompleted(true);
       setShowInput(false);

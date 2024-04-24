@@ -7,6 +7,7 @@ import {
   where,
   getDocs,
   query,
+  Timestamp,
 } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { auth, db } from "../firebase-config";
@@ -15,6 +16,7 @@ import { FlowContext } from "../context/flow-context";
 
 const ExperienceSurveyMain = () => {
   const [currentTask, setCurrentTask] = useState();
+  const [startedTs, setStartedTs] = useState(Timestamp.now());
   const flowCtx = useContext(FlowContext);
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
@@ -101,7 +103,8 @@ const ExperienceSurveyMain = () => {
       const taskName = queryParams.get("currentTask");
       await addDoc(collection(db, "experienceSurvey"), {
         ...responses,
-        ts: serverTimestamp(),
+        startedTs: startedTs,
+        completedTs: serverTimestamp(),
         task: taskName,
         userId: authCtx.user.uid,
       });
