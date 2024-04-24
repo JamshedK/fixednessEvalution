@@ -70,7 +70,7 @@ const EndOfStudy = () => {
         {!showInput && (
           <div>
             <p className="text-xl mb-4 font-bold underline">
-              Email to submit for MTurk:
+              Email to submit for MTurk
             </p>
             <p className="text-xl mb-4">{authCtx.user.email}</p>
           </div>
