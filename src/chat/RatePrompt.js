@@ -10,9 +10,11 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase-config";
 import TaskContext from "../context/task-context";
+import AuthContext from "../context/auth-context";
 
 const RatePrompt = (props) => {
   const [rating, setRating] = useState(null);
+  const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
   var array = [
     "Does not meet my expectation",
@@ -24,6 +26,7 @@ const RatePrompt = (props) => {
     const formData = {
       promptID: props.promptID,
       rating: array[rating],
+      userID: authCtx.user.uid,
       ts: Timestamp.now(),
     };
 
