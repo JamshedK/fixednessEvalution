@@ -41,11 +41,6 @@ function ChatBox() {
 
   const bgObj = { user: "bg-[#f9f9f9]", ai: "bg-[#FFFFFF]" };
 
-  // to handle automatic scrolling to the end
-  useEffect(() => {
-    window.scrollTo(0, document.documentElement.scrollHeight);
-  }, [promptResponseArray]);
-
   // pull the chat history from the database
   useEffect(() => {
     const getChatHistory = async () => {
