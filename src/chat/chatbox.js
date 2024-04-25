@@ -2,8 +2,6 @@ import { useState, useContext } from "react";
 import { useRef, useEffect } from "react";
 import MsgEntry from "./MsgEntry";
 import Prompt from "./prompt";
-
-import { openai } from "../openai-config";
 import user_profile from "../assets/chatbox/user_profile.svg";
 import ai_profile from "../assets/chatbox/ai_profile.svg";
 import {
@@ -23,6 +21,12 @@ import hljs from "highlight.js";
 import TaskContext from "../context/task-context";
 import EditNoteReminder from "./EditNoteReminder";
 import RatePrompt from "./RatePrompt";
+import OpenAI from "openai";
+
+const openai = new OpenAI({
+  apiKey: process.env.REACT_APP_OPENAI_API_KEY,
+  dangerouslyAllowBrowser: true,
+});
 
 function ChatBox() {
   const [prompt, setPrompt] = useState("");
@@ -50,7 +54,8 @@ function ChatBox() {
       const chatHistory = [];
       if (docSnap.exists()) {
         const data = docSnap.data();
-        const prompts = data.prompts;
+        const prompts = data?.prompts;
+        if (!prompts) return;
         for (const prompt of prompts) {
           const obj = {
             role: prompt.role,
@@ -65,35 +70,53 @@ function ChatBox() {
     if (authCtx.user) {
       getChatHistory();
     }
-  }, [authCtx]);
+  }, [authCtx.user]);
 
   const getAPIResponse = async (array, promptID) => {
     try {
       setIsLoading(true);
-      // Filter out the IDs from the array
-      const filteredMessages = array.map((message) => {
-        const { role, content } = message;
-        return { role, content };
-      });
+      const filteredMessages = array.map((message) => ({
+        role: message.role,
+        content: message.content,
+      }));
+
       const typingStartTime = new Date();
-      const completion = await openai.createChatCompletion({
+
+      const stream = await openai.chat.completions.create({
         model: "gpt-4-turbo-preview",
         messages: filteredMessages,
+        stream: true,
       });
-      const message = completion.data.choices[0].message;
-      const typingEndTime = new Date();
       const tempResponseID = uid();
+      let allResponses = "";
+      for await (const part of stream) {
+        if (part.choices && part.choices.length > 0) {
+          const message = part.choices[0].delta?.content || "";
+          allResponses += message;
+          const updatedArray = [
+            ...array,
+            {
+              role: "assistant",
+              content: allResponses,
+              id: tempResponseID,
+            },
+          ];
+          setPromptResponseArray(updatedArray); // Update the state with each part of the response
+        }
+      }
       setResponseID(tempResponseID);
-      array.push({ ...message, id: tempResponseID });
-      setPromptResponseArray([...array]);
-      // Save the response to Firestore database
-      await saveResponseToFirestore(
-        message,
-        promptID,
-        tempResponseID,
+
+      const formData = {
+        id: tempResponseID,
+        responseTo: promptID,
+        prompt: allResponses,
+        userID: authCtx?.user.uid || "",
+        role: "assistant",
         typingStartTime,
-        typingEndTime
-      );
+        typingEndTime: new Date(),
+      };
+      // Save the complete response to Firestore database
+      saveChatHistory(formData);
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -118,31 +141,6 @@ function ChatBox() {
         prompts: [formData],
         userID: authCtx.user.uid,
       });
-    }
-  };
-
-  const saveResponseToFirestore = async (
-    message,
-    promptID,
-    tempResponseID,
-    typingStartTime,
-    typingEndTime
-  ) => {
-    try {
-      const promptRef = collection(db, "chatsIndividual");
-      const formData = {
-        id: tempResponseID,
-        responseTo: promptID,
-        prompt: message.content,
-        userID: authCtx?.user.uid || "",
-        role: "assistant",
-        typingStartTime,
-        typingEndTime,
-      };
-      await addDoc(promptRef, formData);
-      await saveChatHistory(formData);
-    } catch (error) {
-      console.error("Error saving prompt:", error);
     }
   };
 
@@ -206,16 +204,7 @@ function ChatBox() {
 
   return (
     <div className="bg-[#FFFFFF] flex w-full flex-col">
-      <div className="w-full mb-56">
-        {messageComponents}
-        {isLoading && (
-          <Prompt
-            text="Loading..."
-            bgColor={bgObj.ai}
-            profile_image={ai_profile}
-          />
-        )}
-      </div>
+      <div className="w-full mb-56">{messageComponents}</div>
       <div className="fixed bottom-0 mb-8 flex flex-col left-[45%] w-[50%] transform -translate-x-1/2 ">
         <MsgEntry
           saveChatHistory={saveChatHistory}
