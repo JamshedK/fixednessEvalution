@@ -1,10 +1,49 @@
 import { useState, useEffect, useContext } from "react";
 import TaskContext from "../context/task-context";
 import { useLocation } from "react-router-dom";
+import { addDoc } from "firebase/firestore";
+import AuthContext from "../context/auth-context";
+import { db } from "../firebase-config";
+import { collection, serverTimestamp } from "firebase/firestore";
 
 const PostTaskQuestions = ({ itemId, ratings, onRatingsChange }) => {
   const taskCtx = useContext(TaskContext);
+  const authCtx = useContext(AuthContext);
   const location = useLocation();
+  // Initialize states with the passed ratings if available
+  const [expectationRating, setExpectationRating] = useState(
+    ratings?.expectationRating || ""
+  );
+
+  useEffect(() => {
+    const checkAttention = async () => {
+      if (itemId.includes("2")) {
+        const service = location.search.includes("chat")
+          ? "ChatGPT"
+          : "Search Engine";
+        const expectedRating = `${service} can always fully fulfill the intention`;
+        const currentTask = urlParams.get("currentTask");
+        if (expectationRating !== expectedRating && expectationRating !== "") {
+          alert(
+            "Uh-oh, wrong pick! Please pay closer attention to maintain data accuracy."
+          );
+          // add to firebase that this user selected the incorrect option
+          await addDoc(collection(db, "attentionFails"), {
+            task: currentTask,
+            survey: "post-task",
+            question: instructionString,
+            intention: itemId,
+            expectedRating: expectedRating,
+            selectedRating: expectationRating,
+            userID: authCtx.user.uid,
+            ts: serverTimestamp(),
+          });
+        }
+      }
+    };
+    checkAttention();
+  }, [expectationRating]);
+
   const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
 
   var instructionString = isPostTask ? (
@@ -40,11 +79,6 @@ const PostTaskQuestions = ({ itemId, ratings, onRatingsChange }) => {
     `${service}  may be able to partially fulfill the intention if/once an effective query/prompt is successfully formulated.`,
     `${service}  is unlikely to fulfill the intention described above at all.`,
   ];
-
-  // Initialize states with the passed ratings if available
-  const [expectationRating, setExpectationRating] = useState(
-    ratings?.expectationRating || ""
-  );
 
   // Update local state when the passed ratings change
   useEffect(() => {
