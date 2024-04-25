@@ -1,11 +1,71 @@
 import { useState, useEffect, useContext } from "react";
 import TaskContext from "../context/task-context";
 import { useLocation } from "react-router-dom";
+import { addDoc, collection, serverTimestamp } from "firebase/firestore";
+import AuthContext from "../context/auth-context";
+import { db } from "../firebase-config";
 
 const Questions = ({ itemId, ratings, onRatingsChange }) => {
+  // Initialize states with the passed ratings if available
+  const [expectationRating, setExpectationRating] = useState(
+    ratings?.expectationRating || ""
+  );
+  const [usageFrequencyRating, setUsageFrequencyRating] = useState(
+    ratings?.usageFrequencyRating || ""
+  );
   const taskCtx = useContext(TaskContext);
   const location = useLocation();
+  const authCtx = useContext(AuthContext);
   const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
+
+  useEffect(() => {
+    const checkAttention = async () => {
+      if (itemId.includes("2")) {
+        const service = location.search.includes("chat")
+          ? "ChatGPT"
+          : "Search Engine";
+        const expectedRating = `${service}  may be able to partially fulfill the intention if/once an effective query/prompt is successfully formulated.`;
+        const expectedUsageFrequency = usageFrequency[4];
+        const currentTask = urlParams.get("currentTask");
+        if (expectationRating !== expectedRating && expectationRating !== "") {
+          alert(
+            "Uh-oh, wrong pick! Please pay closer attention to maintain data accuracy."
+          );
+          // add to firebase that this user selected the incorrect option
+          await addDoc(collection(db, "attentionFails"), {
+            task: currentTask,
+            survey: "pre-task",
+            question: instructionString,
+            intention: itemId,
+            expectedRating: expectedRating,
+            selectedRating: expectationRating,
+            userID: authCtx.user.uid,
+            ts: serverTimestamp(),
+          });
+        }
+        if (
+          usageFrequencyRating !== expectedUsageFrequency &&
+          usageFrequencyRating !== ""
+        ) {
+          alert(
+            "Uh-oh, wrong pick! Please pay closer attention to maintain data accuracy."
+          );
+          // add to firebase that this user selected the incorrect option
+          await addDoc(collection(db, "attentionFails"), {
+            task: currentTask,
+            survey: "pre-task",
+            question: instructionString,
+            intention: itemId,
+            expectedRating: expectedUsageFrequency,
+            selectedRating: usageFrequencyRating,
+            userID: authCtx.user.uid,
+            ts: serverTimestamp(),
+          });
+        }
+      }
+    };
+    checkAttention();
+  }, [expectationRating, usageFrequencyRating]);
 
   var instructionString = isPostTask
     ? "Based on your experience in the session you just completed, please classify the intention described above into one of the following categories."
@@ -42,14 +102,6 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
     "Frequently Used: use the system several times a week",
     "Heavily Used: use the system daily or almost daily",
   ];
-
-  // Initialize states with the passed ratings if available
-  const [expectationRating, setExpectationRating] = useState(
-    ratings?.expectationRating || ""
-  );
-  const [usageFrequencyRating, setUsageFrequencyRating] = useState(
-    ratings?.usageFrequencyRating || ""
-  );
 
   // Update local state when the passed ratings change
   useEffect(() => {
