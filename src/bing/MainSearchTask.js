@@ -27,8 +27,9 @@ const MainSearchTask = () => {
         console.error("Error saving start time:", error);
       }
     };
-
-    saveStartTime();
+    if (authCtx.user) {
+      saveStartTime();
+    }
   }, [authCtx.user]);
 
   return (
