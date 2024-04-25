@@ -102,7 +102,6 @@ const NoteContainer = (props) => {
         setIsSaveButtonVisible(false);
         taskCtx.setShowSaveButton(false);
         taskCtx.setShowEditNoteReminder(false);
-        taskCtx.setShowPopUp(false);
         console.log("Note saved successfully");
       } catch (error) {
         console.error("Error saving note:", error);
