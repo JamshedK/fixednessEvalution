@@ -26,6 +26,7 @@ const ExperienceSurveyMain = () => {
     responseSatisfaction: "",
     objectiveAchievement: "",
     additionalComments: "",
+    threeExamples: "",
   });
 
   useEffect(() => {
@@ -87,10 +88,10 @@ const ExperienceSurveyMain = () => {
   };
 
   // Handler for the open-ended question
-  const handleOpenEndedChange = (e) => {
+  const handleOpenEndedChange = (e, key) => {
     setResponses((prevResponses) => ({
       ...prevResponses,
-      additionalComments: e.target.value,
+      [key]: e.target.value,
     }));
   };
 
@@ -129,15 +130,31 @@ const ExperienceSurveyMain = () => {
       >
         {sessionExperienceJSON.map((question, index) => {
           if (question.responseType === "open-ended") {
+            var questionText = "";
+            var localCurrentTask = currentTask;
+            if (question.question.includes("three example")) {
+              if (localCurrentTask === "ChatGPT") {
+                localCurrentTask = "Chatbot";
+              } else if (localCurrentTask === "Search Engine") {
+                localCurrentTask = "search engine";
+              }
+              questionText = question.question.replace(
+                "current task",
+                localCurrentTask
+              );
+            } else {
+              questionText = question.question.replace(
+                "current task",
+                localCurrentTask
+              );
+            }
             return (
               <div key={index} className="w-full p-4">
-                <label>
-                  {question.question.replace("current task", currentTask)}
-                </label>
+                <label>{questionText}</label>
                 <textarea
                   className="w-full p-2 text-black form-textarea outline-none rounded-md"
-                  value={responses.additionalComments}
-                  onChange={handleOpenEndedChange}
+                  value={responses[question.key]}
+                  onChange={(e) => handleOpenEndedChange(e, question.key)}
                 />
               </div>
             );
