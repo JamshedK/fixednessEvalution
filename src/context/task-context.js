@@ -99,7 +99,10 @@ export const TaskContextProvider = (props) => {
     const latinSquareTopics = generateLatinSquare(tasksJSON);
     console.log(latinSquareTopics);
     const firstTaskObj = selectRandomTask(latinSquareTopics);
-    const secondTaskObj = selectRandomTask(latinSquareTopics);
+    let secondTaskObj = selectRandomTask(latinSquareTopics);
+    while (firstTaskObj.title === secondTaskObj.title) {
+      secondTaskObj = selectRandomTask(latinSquareTopics);
+    }
     const taskTypes = ["chat", "search"];
     const firstTaskIndex = Math.floor(Math.random() * taskTypes.length);
     const firstTask = taskTypes[firstTaskIndex];
