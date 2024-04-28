@@ -11,7 +11,6 @@ const Home = ({ onSelectItem }) => {
   const flowCtx = useContext(FlowContext);
   const taskCtx = useContext(TaskContext);
   const navigate = useNavigate();
-
   const tasks = [
     {
       title: "Background Survey",
@@ -34,12 +33,12 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "3-4 minutes",
     },
     {
-      title: `Task 1: ${taskCtx.tasks.firstTask}`,
+      title: `Task 1: ${taskCtx.tasks.firstTask} + Answer the Question`,
       completed: flowCtx.task1Completed,
       path: `/${taskCtx.tasks.firstTask}?firstTask=true`,
       canNavigate: flowCtx.preTask1Completed,
       allowEntryUponCompletion: false,
-      estimatedTime: "12 minutes",
+      estimatedTime: "15 minutes or above",
     },
     {
       title: "Post-task Questionnaire 1",
@@ -70,12 +69,12 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "3-4 minutes",
     },
     {
-      title: `Task 2: ${taskCtx.tasks.secondTask}`,
+      title: `Task 2: ${taskCtx.tasks.secondTask} + Answer the Question`,
       completed: flowCtx.task2Completed,
       path: `/${taskCtx.tasks.secondTask}?firstTask=false`,
       canNavigate: flowCtx.preTask2Completed,
       allowEntryUponCompletion: false,
-      estimatedTime: "12 minutes",
+      estimatedTime: "15 minutes or above",
     },
     {
       title: "Post-task Questionnaire 2",
