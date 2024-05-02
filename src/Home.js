@@ -63,7 +63,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Questionnaire",
       completed: flowCtx.preTask2Completed,
-      path: `/pre-task?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
+      path: `/pre-task?firstTask=false&currentTask=search`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,
       allowEntryUponCompletion: false,
       estimatedTime: "3-4 minutes",
