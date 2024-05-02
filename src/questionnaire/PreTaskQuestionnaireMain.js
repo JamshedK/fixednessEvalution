@@ -19,7 +19,7 @@ import { useNavigate } from "react-router-dom";
 import InstructionsPopUp from "./InstructionsPopUp";
 import { useLocation } from "react-router-dom";
 
-const instructionText =
+let instructionText =
   "Read the intention on the left, answer the two survey questions below it, then click the next intention for more questions. Complete all listed intentions.";
 
 const QuestionnnaireMain = () => {
@@ -33,6 +33,13 @@ const QuestionnnaireMain = () => {
   const flowCtx = useContext(FlowContext);
   const navigate = useNavigate();
   const location = useLocation(); // Hook to get location object
+
+  // check if current task is search, if it is, change the instruction text
+  const currentTask = new URLSearchParams(location.search).get("currentTask");
+  if (currentTask === "search") {
+    instructionText =
+      "Please reflect on your personal experience of using search engines (e.g. Google, Bing), and answer the following questions (see left sidebar).";
+  }
 
   // get ratings from firebase
   useEffect(() => {
