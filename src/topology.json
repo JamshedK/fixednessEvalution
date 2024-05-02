@@ -1,69 +1,39 @@
 [
   {
-    "intention_type": "Identify search information",
+    "intention_type": "Identify new information",
     "intention_list": [
       {
-        "short_text": "Identify something to get started",
-        "long_text": "For instance, find good query keywords, chat prompts, questions or task description"
+        "short_text": "Identify an appropriate starting point to search or chat",
+        "long_text": "for instance, find good query keywords, appropriate chat prompts, questions or problem descriptions"
       },
       {
-        "short_text": "Identify something more to search",
-        "long_text": "Explore a target topic more broadly"
+        "short_text": "Identify something more to search or learn",
+        "long_text": "explore a target topic or domain more broadly or deeper, and obtain more relevant information"
       },
       {
         "short_text": "Identify something new or unexpected",
-        "long_text": "Identify and explore new information and advice that are completely new or unexpected, and unlikely to be retrieved or generated with users’ own queries or prompts (e.g. in order to think out of the box or facilitate brainstorming)"
+        "long_text": "explore pieces of information, interest, or advice that are completely new or unexpected; obtain inspiration or ideas for creative projects"
+      },
+      {
+        "short_text": "Obtain explanations",
+        "long_text": "search or ask for explanations or clarifications about phenomena, concepts, problems, or potential solutions"
       }
     ]
   },
   {
-    "intention_type": "Learn",
+    "intention_type": "Find information",
     "intention_list": [
       {
-        "short_text": "Learn domain knowledge",
-        "long_text": "learn more about the topical or general domain knowledge of a search"
-      },
-      {
-        "short_text": "Learn database content",
-        "long_text": "Learn the type of information/resources available at a particular website or source – e.g., a government database, a Q&A site, a flight and hotel booking platform"
-      }
-    ]
-  },
-  {
-    "intention_type": "Find",
-    "intention_list": [
-      {
-        "short_text": "Find a known item",
-        "long_text": "Searching for an item that you were familiar with in advance."
-      },
-      {
-        "short_text": "Find specific information",
-        "long_text": "Finding a predetermined piece of information."
+        "short_text": "Find a known item or site",
+        "long_text": "searching or asking for an item (e.g., a bag, book, name of a restaurant or celebrity), website or information source that you were familiar with in advance."
       },
       {
         "short_text": "Find items sharing a named characteristic",
-        "long_text": "Finding items with something in common."
+        "long_text": "finding items or information with something in common."
       },
       {
         "short_text": "Find items without predefined criteria",
-        "long_text": "Finding items that will be useful for a task, but which haven't been specified in advance."
-      }
-    ]
-  },
-  {
-    "intention_type": "Access an item or set of items",
-    "intention_list": [
-      {
-        "short_text": "Access a specific item",
-        "long_text": "Go to some item that you already know about."
-      },
-      {
-        "short_text": "Access items with common characteristics",
-        "long_text": "Go to some set of items with one or more predefined common characteristics."
-      },
-      {
-        "short_text": "Access a web site/home page or similar",
-        "long_text": "Relocating or going to a website."
+        "long_text": "finding items that are potentially useful for a task or problem, but which have not been specified in advance."
       }
     ]
   },
@@ -72,57 +42,57 @@
     "intention_list": [
       {
         "short_text": "Evaluate correctness of an item",
-        "long_text": "Determine whether an item is factually correct."
+        "long_text": "determine whether an item (e.g., retrieved information, generated chat response) is factually correct."
       },
       {
         "short_text": "Evaluate usefulness of an item",
-        "long_text": "Evaluate how useful an item is for a given need."
-      },
-      {
-        "short_text": "Compare and Pick best item(s) from all the useful ones",
-        "long_text": "Select the most appropriate item(s) after comparing several options."
-      },
-      {
-        "short_text": "Evaluate specificity of an item",
-        "long_text": "Determine whether an item is specific or general enough for a particular need."
-      },
-      {
-        "short_text": "Evaluate a decision or judgment",
-        "long_text": "Analyzing the pros and cons, and risks associated with different options available to support decision-making."
+        "long_text": "evaluate usefulness of an item (e.g., retrieved information, generated chat response) for resolving a problem or completing a task."
       }
     ]
   },
   {
-    "intention_type": "Advanced Information Processing: Rephrasing, Synthesis and Summarization",
+    "intention_type": "Advanced information processing",
     "intention_list": [
       {
-        "short_text": "Rephrasing prompt(s), retrieved results, and/or response(s)",
-        "long_text": ""
+        "short_text": "Content Creation",
+        "long_text": "help in writing, proofreading, visually representing, or designing original content."
       },
       {
-        "short_text": "Directly Organize, synthesize, analyze, and/or summarize online information from the open Web",
-        "long_text": ""
+        "short_text": "Synthesize and summarize online information",
+        "long_text": "synthesize, analyze, and/or summarize online information from the open Web."
       },
       {
-        "short_text": "Organize, synthesize, analyze, and/or summarize the information retrieved or generated under your previous queries, questions or prompts within the current conversation/session with the system",
-        "long_text": ""
+        "short_text": "Synthesize and summarize previous Information",
+        "long_text": "synthesize, analyze, and/or summarize the information retrieved or generated under your previous queries, questions or prompts within the current conversation/interaction with the system."
+      },
+      {
+        "short_text": "Data processing",
+        "long_text": "Help in processing, analyzing, and visualizing data."
+      },
+      {
+        "short_text": "Multimedia processing",
+        "long_text": "Retrieve or generate information to answer queries or questions that involve both text and image contents."
       }
     ]
   },
   {
-    "intention_type": "Direct Problem-Solving",
+    "intention_type": "Problem-solving",
     "intention_list": [
       {
-        "short_text": "Transactions",
-        "long_text": "Directly complete actions like a flight/hotel booking, restaurant reservation, etc. (not just find the information about the available flights and hotels)."
+        "short_text": "Tutorial request",
+        "long_text": "step-by-step instructions or guidance."
       },
       {
-        "short_text": "Technical Problems",
-        "long_text": "Directly answer a math question or address a coding problem (not just find relevant information about the theorems involved); coordinate a schedule based on all information provided in queries/prompt(s)."
+        "short_text": "Decision support",
+        "long_text": "assistance in decision-making through insights, comparisons of options and/or outcomes, discussions, and evaluations."
       },
       {
-        "short_text": "Multimedia Problems",
-        "long_text": "Answer questions or generate responses to inputs that involve both text and image contents."
+        "short_text": "Technical problems",
+        "long_text": "assistance with technical tasks or questions, coding, or problem-solving in a professional context."
+      },
+      {
+        "short_text": "Societal and ethical queries",
+        "long_text": "exploring societal, cultural, or ethical topics."
       }
     ]
   }
