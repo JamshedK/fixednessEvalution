@@ -34,7 +34,7 @@
   },
   {
     "key": "threeExamples",
-    "question": "Please give me three example tasks that you would do using this current task.",
+    "question": "Please give me three example tasks that you would do using current task.",
     "responseType": "open-ended"
   },
   {

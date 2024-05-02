@@ -26,7 +26,7 @@ const ExperienceSurveyMain = () => {
     responseSatisfaction: "",
     objectiveAchievement: "",
     additionalComments: "",
-    threeExamples: "",
+    threeExamples: ["", "", ""],
   });
 
   useEffect(() => {
@@ -68,6 +68,7 @@ const ExperienceSurveyMain = () => {
             responseSatisfaction: restult.responseSatisfaction,
             objectiveAchievement: restult.objectiveAchievement,
             additionalComments: restult.additionalComments,
+            threeExamples: restult.threeExamples || ["", "", ""],
           });
         });
       } catch (error) {
@@ -88,11 +89,20 @@ const ExperienceSurveyMain = () => {
   };
 
   // Handler for the open-ended question
-  const handleOpenEndedChange = (e, key) => {
-    setResponses((prevResponses) => ({
-      ...prevResponses,
-      [key]: e.target.value,
-    }));
+  const handleOpenEndedChange = (e, key, index) => {
+    if (key === "threeExamples") {
+      const newExamples = [...responses.threeExamples];
+      newExamples[index] = e.target.value;
+      setResponses((prevResponses) => ({
+        ...prevResponses,
+        threeExamples: newExamples,
+      }));
+    } else {
+      setResponses((prevResponses) => ({
+        ...prevResponses,
+        [key]: e.target.value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -129,35 +139,40 @@ const ExperienceSurveyMain = () => {
         onSubmit={handleSubmit}
       >
         {sessionExperienceJSON.map((question, index) => {
+          const questionText = question.question.replace(
+            "current task",
+            currentTask
+          );
           if (question.responseType === "open-ended") {
-            var questionText = "";
-            var localCurrentTask = currentTask;
-            if (question.question.includes("three example")) {
-              if (localCurrentTask === "ChatGPT") {
-                localCurrentTask = "Chatbot";
-              } else if (localCurrentTask === "Search Engine") {
-                localCurrentTask = "search engine";
-              }
-              questionText = question.question.replace(
-                "current task",
-                localCurrentTask
+            if (question.key === "threeExamples") {
+              return (
+                <div key={index} className="w-full p-4">
+                  <label>{questionText}</label>
+                  {responses.threeExamples.map((example, idx) => (
+                    <input
+                      key={idx}
+                      className="w-full p-2 text-black form-input outline-none rounded-md mt-2"
+                      value={example}
+                      onChange={(e) =>
+                        handleOpenEndedChange(e, question.key, idx)
+                      }
+                      placeholder={`Example ${idx + 1}`}
+                    />
+                  ))}
+                </div>
               );
             } else {
-              questionText = question.question.replace(
-                "current task",
-                localCurrentTask
+              return (
+                <div key={index} className="w-full p-4">
+                  <label>{questionText}</label>
+                  <textarea
+                    className="w-full p-2 text-black form-textarea outline-none rounded-md"
+                    value={responses[question.key]}
+                    onChange={(e) => handleOpenEndedChange(e, question.key)}
+                  />
+                </div>
               );
             }
-            return (
-              <div key={index} className="w-full p-4">
-                <label>{questionText}</label>
-                <textarea
-                  className="w-full p-2 text-black form-textarea outline-none rounded-md"
-                  value={responses[question.key]}
-                  onChange={(e) => handleOpenEndedChange(e, question.key)}
-                />
-              </div>
-            );
           } else {
             return (
               <div key={index} className="w-full p-4 space-y-2">
