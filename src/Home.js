@@ -21,7 +21,7 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "1-2 minutes",
     },
     {
-      title: "First Task",
+      title: "ChatGPT Task",
       isText: true,
     },
     {
@@ -57,11 +57,11 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "1-2 minutes",
     },
     {
-      title: "Second Task",
+      title: "Search Engine questionnaire",
       isText: true,
     },
     {
-      title: "Pre-task Questionnaire 2",
+      title: "Questionnaire",
       completed: flowCtx.preTask2Completed,
       path: `/pre-task?firstTask=false&currentTask=${taskCtx.tasks.secondTask}`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,
