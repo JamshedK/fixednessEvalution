@@ -12,7 +12,6 @@ import AuthContext from "./auth-context";
 import tasksJSON from "../tasks.json";
 
 const TaskContext = createContext({
-  SearchEngineTask: null,
   showEditNoteReminder: false, // Default value
   showPopUp: null, // you need showEditNoteReminder and showPopUp because otherwise you won't be able to display the popup properly
   showSaveButton: null, // if user clicks on Edit your draft
@@ -23,7 +22,6 @@ const TaskContext = createContext({
   tasks: {},
   timeRemaining: 0,
   queryCount: 0,
-  setSearchEngineTask: () => {},
   setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
   setShowPopUp: () => {},
   setShowSaveButton: () => {},
@@ -50,8 +48,6 @@ export const TaskContextProvider = (props) => {
   const [tasks, setTasksState] = useState({
     firstTask: null,
     firstTaskTopic: null,
-    secondTask: null,
-    secondTaskTopic: null,
   });
   const authCtx = useContext(AuthContext);
 
@@ -99,23 +95,13 @@ export const TaskContextProvider = (props) => {
     const latinSquareTopics = generateLatinSquare(tasksJSON);
     console.log(latinSquareTopics);
     const firstTaskObj = selectRandomTask(latinSquareTopics);
-    let secondTaskObj = selectRandomTask(latinSquareTopics);
-    while (firstTaskObj.title === secondTaskObj.title) {
-      secondTaskObj = selectRandomTask(latinSquareTopics);
-    }
-    const taskTypes = ["chat", "search"];
-    const firstTaskIndex = Math.floor(Math.random() * taskTypes.length);
-    const firstTask = taskTypes[firstTaskIndex];
-    const secondTask = taskTypes[firstTaskIndex === 0 ? 1 : 0]; // Ensure the second task is different
+
+    const firstTask = "chat";
     const obj = {
       firstTask,
       firstTaskTopic: firstTaskObj.title,
       firstTaskDescription: firstTaskObj.description,
-      secondTask,
-      secondTaskTopic: secondTaskObj.title,
-      secondTaskDescription: secondTaskObj.description,
     };
-    console.log(obj);
     try {
       if (user && user.uid) {
         const userDocRef = doc(db, "users", user.uid);
