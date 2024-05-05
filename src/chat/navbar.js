@@ -15,7 +15,7 @@ import { db } from "../firebase-config";
 import TaskContext from "../context/task-context";
 
 const Navbar = (props) => {
-  const [timeLeft, setTimeLeft] = useState(60 * 15);
+  const [timeLeft, setTimeLeft] = useState(60 * 20);
   const taskCtx = useContext(TaskContext);
 
   useEffect(() => {
@@ -84,12 +84,10 @@ const Navbar = (props) => {
         <div className="h-fit rounded-xl py-2 w-fit text-xl lg:text-[30px] text-black">
           <label className="">{formatTimeLeft()}</label>
         </div>
-        {minutes === 0 && (
-          <label className="text-[12px] italic mt-2">
-            If you have not yet completed your task, please continue working on
-            it and submit once you fully complete it
-          </label>
-        )}
+        <label className="text-[12px] italic mt-2 text-red-600">
+          You can continue to adjust your response even after the 20-minute
+          countdown
+        </label>
       </div>
     </div>
   );
