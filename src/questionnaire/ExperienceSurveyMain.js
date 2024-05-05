@@ -20,6 +20,7 @@ const ExperienceSurveyMain = () => {
   const flowCtx = useContext(FlowContext);
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isFormValid, setIsFormValid] = useState(false);
   // State to hold responses
   const [responses, setResponses] = useState({
     overallExperience: "",
@@ -80,6 +81,19 @@ const ExperienceSurveyMain = () => {
     }
   }, [authCtx]);
 
+  // Validate the form whenever responses change
+  useEffect(() => {
+    const allExamplesFilled = responses.threeExamples.every(
+      (example) => example.trim() !== ""
+    );
+    const allResponsesFilled = Object.values(responses).every((response) => {
+      if (Array.isArray(response))
+        return response.every((r) => r.trim() !== "");
+      return response.trim() !== "";
+    });
+    setIsFormValid(allResponsesFilled && allExamplesFilled);
+  }, [responses]);
+
   // Handler for changes in radio button selections
   const handleRadioChange = (key, option) => {
     setResponses((prevResponses) => ({
@@ -107,27 +121,31 @@ const ExperienceSurveyMain = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(responses);
-    try {
-      const queryParams = new URLSearchParams(window.location.search);
-      const isFirstTask = queryParams.get("firstTask");
-      const taskName = queryParams.get("currentTask");
-      await addDoc(collection(db, "experienceSurvey"), {
-        ...responses,
-        startedTs: startedTs,
-        completedTs: serverTimestamp(),
-        task: taskName,
-        userId: authCtx.user.uid,
-      });
+    if (!isFormValid) {
+      alert("Please answer all questions before submitting.");
+    } else {
+      console.log(responses);
+      try {
+        const queryParams = new URLSearchParams(window.location.search);
+        const isFirstTask = queryParams.get("firstTask");
+        const taskName = queryParams.get("currentTask");
+        await addDoc(collection(db, "experienceSurvey"), {
+          ...responses,
+          startedTs: startedTs,
+          completedTs: serverTimestamp(),
+          task: taskName,
+          userId: authCtx.user.uid,
+        });
 
-      if (isFirstTask === "true") {
-        flowCtx.setSessionExperienceSurvey1Completed(true);
-      } else {
-        flowCtx.setSessionExperienceSurvey2Completed(true);
+        if (isFirstTask === "true") {
+          flowCtx.setSessionExperienceSurvey1Completed(true);
+        } else {
+          flowCtx.setSessionExperienceSurvey2Completed(true);
+        }
+        navigate("/");
+      } catch (error) {
+        console.error("Error adding document: ", error);
       }
-      navigate("/");
-    } catch (error) {
-      console.error("Error adding document: ", error);
     }
   };
 
