@@ -22,6 +22,7 @@ import TaskContext from "../context/task-context";
 import EditNoteReminder from "./EditNoteReminder";
 import RatePrompt from "./RatePrompt";
 import OpenAI from "openai";
+import Reminder from "../common/Reminder";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -30,6 +31,7 @@ const openai = new OpenAI({
 
 function ChatBox() {
   const [prompt, setPrompt] = useState("");
+  const [showDataQualityReminder, setShowDataQualityReminder] = useState(true);
   const [response, setResponse] = useState("");
   const [promptID, setPromptID] = useState("");
   const [responseID, setResponseID] = useState("");
@@ -202,6 +204,7 @@ function ChatBox() {
       <div className="w-full mb-56">{messageComponents}</div>
       <div className="fixed bottom-0 mb-8 flex flex-col left-[45%] w-[50%] transform -translate-x-1/2 ">
         <MsgEntry
+          setShowDataQualityReminder={setShowDataQualityReminder}
           saveChatHistory={saveChatHistory}
           setPromptID={setPromptID}
           responseID={responseID}
@@ -211,6 +214,11 @@ function ChatBox() {
           getAPIResponse={getAPIResponse}
         />
       </div>
+      {showDataQualityReminder && (
+        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
+          <Reminder setShowReminder={setShowDataQualityReminder} />
+        </div>
+      )}
       {taskCtx.showPopUp && !taskCtx.isRatingNeeded && (
         <div className="fixed top-0 left-0 z-10 w-screen h-screen flex items-center justify-center">
           <EditNoteReminder />
