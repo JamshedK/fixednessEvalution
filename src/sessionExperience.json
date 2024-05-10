@@ -33,6 +33,11 @@
     ]
   },
   {
+    "key": "threeExamples",
+    "question": "Please give me three example tasks that you would do using current task.",
+    "responseType": "open-ended"
+  },
+  {
     "key": "additionalComments",
     "question": "Please provide any additional comments or feedback you have about your experience. If possible, please comment on both unexpected positive experiences and encountered obstacles.",
     "responseType": "open-ended"

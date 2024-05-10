@@ -7,6 +7,7 @@ import {
   where,
   getDocs,
   query,
+  Timestamp,
 } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { auth, db } from "../firebase-config";
@@ -15,15 +16,18 @@ import { FlowContext } from "../context/flow-context";
 
 const ExperienceSurveyMain = () => {
   const [currentTask, setCurrentTask] = useState();
+  const [startedTs, setStartedTs] = useState(Timestamp.now());
   const flowCtx = useContext(FlowContext);
   const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
+  const [isFormValid, setIsFormValid] = useState(false);
   // State to hold responses
   const [responses, setResponses] = useState({
     overallExperience: "",
     responseSatisfaction: "",
     objectiveAchievement: "",
     additionalComments: "",
+    threeExamples: ["", "", ""],
   });
 
   useEffect(() => {
@@ -65,6 +69,7 @@ const ExperienceSurveyMain = () => {
             responseSatisfaction: restult.responseSatisfaction,
             objectiveAchievement: restult.objectiveAchievement,
             additionalComments: restult.additionalComments,
+            threeExamples: restult.threeExamples || ["", "", ""],
           });
         });
       } catch (error) {
@@ -76,6 +81,19 @@ const ExperienceSurveyMain = () => {
     }
   }, [authCtx]);
 
+  // Validate the form whenever responses change
+  useEffect(() => {
+    const allExamplesFilled = responses.threeExamples.every(
+      (example) => example.trim() !== ""
+    );
+    const allResponsesFilled = Object.values(responses).every((response) => {
+      if (Array.isArray(response))
+        return response.every((r) => r.trim() !== "");
+      return response.trim() !== "";
+    });
+    setIsFormValid(allResponsesFilled && allExamplesFilled);
+  }, [responses]);
+
   // Handler for changes in radio button selections
   const handleRadioChange = (key, option) => {
     setResponses((prevResponses) => ({
@@ -85,35 +103,49 @@ const ExperienceSurveyMain = () => {
   };
 
   // Handler for the open-ended question
-  const handleOpenEndedChange = (e) => {
-    setResponses((prevResponses) => ({
-      ...prevResponses,
-      additionalComments: e.target.value,
-    }));
+  const handleOpenEndedChange = (e, key, index) => {
+    if (key === "threeExamples") {
+      const newExamples = [...responses.threeExamples];
+      newExamples[index] = e.target.value;
+      setResponses((prevResponses) => ({
+        ...prevResponses,
+        threeExamples: newExamples,
+      }));
+    } else {
+      setResponses((prevResponses) => ({
+        ...prevResponses,
+        [key]: e.target.value,
+      }));
+    }
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(responses);
-    try {
-      const queryParams = new URLSearchParams(window.location.search);
-      const isFirstTask = queryParams.get("firstTask");
-      const taskName = queryParams.get("currentTask");
-      await addDoc(collection(db, "experienceSurvey"), {
-        ...responses,
-        ts: serverTimestamp(),
-        task: taskName,
-        userId: authCtx.user.uid,
-      });
+    if (!isFormValid) {
+      alert("Please answer all questions before submitting.");
+    } else {
+      console.log(responses);
+      try {
+        const queryParams = new URLSearchParams(window.location.search);
+        const isFirstTask = queryParams.get("firstTask");
+        const taskName = queryParams.get("currentTask");
+        await addDoc(collection(db, "experienceSurvey"), {
+          ...responses,
+          startedTs: startedTs,
+          completedTs: serverTimestamp(),
+          task: taskName,
+          userId: authCtx.user.uid,
+        });
 
-      if (isFirstTask === "true") {
-        flowCtx.setSessionExperienceSurvey1Completed(true);
-      } else {
-        flowCtx.setSessionExperienceSurvey2Completed(true);
+        if (isFirstTask === "true") {
+          flowCtx.setSessionExperienceSurvey1Completed(true);
+        } else {
+          flowCtx.setSessionExperienceSurvey2Completed(true);
+        }
+        navigate("/");
+      } catch (error) {
+        console.error("Error adding document: ", error);
       }
-      navigate("/");
-    } catch (error) {
-      console.error("Error adding document: ", error);
     }
   };
 
@@ -125,19 +157,40 @@ const ExperienceSurveyMain = () => {
         onSubmit={handleSubmit}
       >
         {sessionExperienceJSON.map((question, index) => {
+          const questionText = question.question.replace(
+            "current task",
+            currentTask
+          );
           if (question.responseType === "open-ended") {
-            return (
-              <div key={index} className="w-full p-4">
-                <label>
-                  {question.question.replace("current task", currentTask)}
-                </label>
-                <textarea
-                  className="w-full p-2 text-black form-textarea outline-none rounded-md"
-                  value={responses.additionalComments}
-                  onChange={handleOpenEndedChange}
-                />
-              </div>
-            );
+            if (question.key === "threeExamples") {
+              return (
+                <div key={index} className="w-full p-4">
+                  <label>{questionText}</label>
+                  {responses.threeExamples.map((example, idx) => (
+                    <input
+                      key={idx}
+                      className="w-full p-2 text-black form-input outline-none rounded-md mt-2"
+                      value={example}
+                      onChange={(e) =>
+                        handleOpenEndedChange(e, question.key, idx)
+                      }
+                      placeholder={`Example ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              );
+            } else {
+              return (
+                <div key={index} className="w-full p-4">
+                  <label>{questionText}</label>
+                  <textarea
+                    className="w-full p-2 text-black form-textarea outline-none rounded-md"
+                    value={responses[question.key]}
+                    onChange={(e) => handleOpenEndedChange(e, question.key)}
+                  />
+                </div>
+              );
+            }
           } else {
             return (
               <div key={index} className="w-full p-4 space-y-2">

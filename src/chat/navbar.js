@@ -15,7 +15,7 @@ import { db } from "../firebase-config";
 import TaskContext from "../context/task-context";
 
 const Navbar = (props) => {
-  const [timeLeft, setTimeLeft] = useState(60 * 12); // For a 5-minute countdown
+  const [timeLeft, setTimeLeft] = useState(60 * 20);
   const taskCtx = useContext(TaskContext);
 
   useEffect(() => {
@@ -47,6 +47,14 @@ const Navbar = (props) => {
     taskDescription = taskCtx.tasks.secondTaskDescription;
   }
 
+  // get the variable for current task from url /search or /chat
+  let currentTask = window.location.pathname.split("/").pop();
+  // Capitalize the first letter of the task
+  currentTask =
+    currentTask.charAt(0).toUpperCase() +
+    currentTask.slice(1) +
+    " + Answer the Question";
+
   return (
     <div
       className="bg-[#e3e3e3] w-[34%] h-screen sticky flex top-0 flex-col text-[18px] 
@@ -55,6 +63,9 @@ const Navbar = (props) => {
       <div>
         <div className="pl-8 text-black font-bold underline mb-2">
           <label className="">Current task</label>
+        </div>
+        <div className="pl-8 text-[14px] text-black mb-2">
+          <label className="">{currentTask}</label>
         </div>
         <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-4 py-4 w-fit text-md lg:text-[14px] text-black">
           <label className="">{task}</label>
@@ -73,12 +84,10 @@ const Navbar = (props) => {
         <div className="h-fit rounded-xl py-2 w-fit text-xl lg:text-[30px] text-black">
           <label className="">{formatTimeLeft()}</label>
         </div>
-        {minutes === 0 && (
-          <label className="text-[12px] italic mt-2">
-            If you have not yet completed your task, please continue working on
-            it and submit once you fully complete it
-          </label>
-        )}
+        <label className="text-[12px] italic mt-2 text-red-600">
+          You can continue to adjust your response even after the 20-minute
+          countdown
+        </label>
       </div>
     </div>
   );

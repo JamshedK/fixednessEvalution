@@ -9,6 +9,9 @@ const EndOfStudy = () => {
   const [mturkId, setMturkId] = useState("");
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
+  const [endOfStudyStartedTs, setEndOfStudyStartedTs] = useState(
+    Timestamp.now()
+  );
   const [showInput, setShowInput] = useState(true);
   const navigate = useNavigate();
 
@@ -21,7 +24,8 @@ const EndOfStudy = () => {
       // Update the user document with the MTurk ID
       await updateDoc(useDocRef, {
         mturkId: mturkId,
-        EndOfStudyTs: Timestamp.now(),
+        endOfStudyStartedTs: endOfStudyStartedTs,
+        endOfStudyCompleted: Timestamp.now(),
       });
       flowCtx.setIsEndOfStudySurveyCompleted(true);
       setShowInput(false);
@@ -33,7 +37,7 @@ const EndOfStudy = () => {
 
   return (
     <div className="flex w-screen h-screen justify-center items-center">
-      <div className="flex flex-col items-center bg-[#f0f0f0] p-8 rounded-lg w-[30%]">
+      <div className="flex flex-col items-center bg-[#f0f0f0] p-8 rounded-lg w-fit">
         <h1 className="text-xl mb-4">
           Thank you for participating in our study!
         </h1>
@@ -62,6 +66,14 @@ const EndOfStudy = () => {
         )}
         {!showInput && (
           <p className="text-xl mb-4"> You may now close this page</p>
+        )}
+        {!showInput && (
+          <div>
+            <p className="text-xl mb-4 font-bold underline">
+              Email to submit for MTurk
+            </p>
+            <p className="text-xl mb-4">{authCtx.user.email}</p>
+          </div>
         )}
       </div>
     </div>

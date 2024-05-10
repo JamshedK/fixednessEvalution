@@ -26,7 +26,7 @@ const PostTaskQuestionnaireMain = () => {
   const [ratings, setRatings] = useState({});
   const [showInstructions, setShowInstructions] = useState(true);
   const [localTopology, setLocalTopology] = useState(topologyJSON);
-
+  const [startedTs, setStartedTs] = useState(Timestamp.now());
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
   const navigate = useNavigate();
@@ -117,7 +117,8 @@ const PostTaskQuestionnaireMain = () => {
       ratings,
       isPostTask,
       currentTask,
-      ts: Timestamp.now(),
+      startedTs: startedTs,
+      completedTs: Timestamp.now(),
     };
     try {
       // Reference to your Firestore collection

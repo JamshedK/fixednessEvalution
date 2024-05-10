@@ -83,13 +83,12 @@ const ConsentForm = () => {
       </p>
       <p className="mb-4">
         <strong>What will I be asked to do? </strong>
-        If you agree to be in this research, you will be asked to perform some
-        search tasks both on Bing search engine and ChatGPT.{" "}
+        If you agree to be in this research, you will be asked to perform a task
+        using ChatGPT and answer a questionnaire about your search engine usage.
       </p>
       <p className="mb-4">
         <strong>How long will this take? </strong>
-        Your participation will take 30-40 minutes, including 15 to 20 minutes
-        for each two-task performance.
+        Your participation will take 25-30 minutes.
       </p>
       <p className="mb-4">
         <strong>What are the risks and benefits if I participate? </strong>
@@ -99,7 +98,7 @@ const ConsentForm = () => {
       </p>
       <p className="mb-4">
         <strong>Will I be compensated for participating? </strong>
-        Each participant will receive a $10 upon completion.
+        Each participant will receive a $6 upon completion.
       </p>
       <p className="mb-4">
         <strong>Who will see my information? </strong>

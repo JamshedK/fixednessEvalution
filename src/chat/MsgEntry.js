@@ -33,11 +33,16 @@ const MsgEntry = (props) => {
   };
 
   const sendPrompt = async (e) => {
+    if (props.isLoading) return;
     if (taskCtx.isRatingNeeded) {
       taskCtx.setShowRatingPopUp(true);
     } else if (taskCtx.showEditNoteReminder) {
       taskCtx.setShowPopUp(true);
     } else {
+      // show data quality reminder after 2 queries
+      if (taskCtx.queryCount === 2) {
+        props.setShowDataQualityReminder(true);
+      }
       taskCtx.setQueryCount();
       const newMessage = textRef.current.value;
       if (newMessage.trim() != "") {
