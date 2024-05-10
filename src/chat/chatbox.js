@@ -102,7 +102,7 @@ function ChatBox() {
         }
       }
       setResponseID(tempResponseID);
-
+      setIsLoading(false);
       const formData = {
         id: tempResponseID,
         responseTo: promptID,
@@ -204,6 +204,7 @@ function ChatBox() {
       <div className="w-full mb-56">{messageComponents}</div>
       <div className="fixed bottom-0 mb-8 flex flex-col left-[45%] w-[50%] transform -translate-x-1/2 ">
         <MsgEntry
+          isLoading={isLoading}
           setShowDataQualityReminder={setShowDataQualityReminder}
           saveChatHistory={saveChatHistory}
           setPromptID={setPromptID}
