@@ -57,12 +57,6 @@ const EditNoteReminder = (props) => {
       </p>
       <div className="flex space-x-4">
         <button
-          className="bg-[#FFFFFF] text-gray-500 px-6 py-2 rounded-lg"
-          onClick={handleResubmitClicked}
-        >
-          Resubmit the same
-        </button>
-        <button
           className="bg-white text-black px-6 py-2 rounded-lg"
           onClick={handleEditDraftClicked}
         >
