@@ -39,7 +39,8 @@ const SignUp = () => {
       // assing a task to the user
       taskCtx.setTasks(user);
       // Redirect to login page after successful sign up
-      navigate("/consent?refresh=true");
+      // wait for the user a few milliseconds to be logged in
+      setTimeout(() => navigate("/home?refresh=true"), 300);
     } catch (error) {
       console.error("Error signing up:", error);
       alert("An error occurred while signing up. Please try again.");

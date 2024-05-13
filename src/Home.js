@@ -92,18 +92,6 @@ const Home = ({ onSelectItem }) => {
       allowEntryUponCompletion: true,
       estimatedTime: "1-2 minutes",
     },
-    {
-      title: "End of Study",
-      isText: true,
-    },
-    {
-      title: "End of Study Survey",
-      completed: flowCtx.isEndOfStudySurveyCompleted,
-      path: "/end",
-      canNavigate: flowCtx.sessionExperienceSurvey2Completed,
-      allowEntryUponCompletion: true,
-      estimatedTime: "~1 minute",
-    },
   ];
 
   useEffect(() => {
