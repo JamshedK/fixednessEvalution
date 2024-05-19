@@ -85,8 +85,8 @@ export const TaskContextProvider = (props) => {
   };
 
   const selectRandomTask = (latinSquare) => {
-    const row = Math.floor(Math.random() * latinSquare.length);
-    const column = Math.floor(Math.random() * latinSquare[row].length);
+    const row = Math.floor(Math.random() * 9);
+    const column = Math.floor(Math.random() * 9);
     return latinSquare[row][column];
   };
 
