@@ -2,9 +2,8 @@ import React, { useContext, useState } from "react";
 import {
   collection,
   addDoc,
-  query,
-  where,
-  getDocs,
+  doc,
+  getDoc,
   updateDoc,
   Timestamp,
 } from "firebase/firestore";
@@ -34,30 +33,26 @@ const RatePrompt = (props) => {
       // Save the form data to Firestore
       const docRef = await addDoc(collection(db, "promptRatings"), formData);
       console.log("Document written with ID:", docRef.id);
-      // Query for the chat document matching the promptID
-      const chatsCollection = collection(db, "chatsIndividual");
-      const q = query(chatsCollection, where("id", "==", props.promptID));
 
-      const querySnapshot = await getDocs(q);
-      if (!querySnapshot.empty) {
-        // Get the first document (assuming only one document will match)
-        const chatDoc = querySnapshot.docs[0];
+      // Get the chat document reference
+      const chatTaskRef = doc(db, "chatTasks", authCtx.user.uid);
+      const chatTaskSnap = await getDoc(chatTaskRef);
 
-        // Update the chat document with the new ratingID
-        await updateDoc(chatDoc.ref, {
-          ratingID: docRef.id,
+      if (chatTaskSnap.exists()) {
+        // Get the data and find the specific prompt
+        const chatData = chatTaskSnap.data();
+        const prompts = chatData.prompts.map((prompt) => {
+          if (prompt.id === props.promptID) {
+            return { ...prompt, rating: array[rating], ratingID: docRef.id };
+          }
+          return prompt;
         });
-        if (taskCtx.showEditNoteReminder) {
-          taskCtx.setShowPopUp(true);
-        }
-      } else {
-        console.error(
-          "No matching chat document found for promptID:",
-          props.promptID
-        );
+
+        // Update the document with the new prompts array
+        await updateDoc(chatTaskRef, { prompts });
       }
+
       // Close the prompt and handle any further actions here (if needed)
-      taskCtx.setIsRatingNeeded(false);
       taskCtx.setShowRatingPopUp(false);
     } catch (error) {
       console.error("Error adding document:", error);
@@ -90,12 +85,18 @@ const RatePrompt = (props) => {
           })}
         </div>
       </div>
-      <div className="flex flex-row justify-around mt-16">
+      <div className="flex flex-row justify-center mt-16 space-x-6">
         <button
           className="bg-white px-6 py-2 rounded-2xl"
           onClick={handleSubmit}
         >
           Save
+        </button>
+        <button
+          className=" px-6 py-2 rounded-2xl"
+          onClick={() => taskCtx.setShowRatingPopUp(false)}
+        >
+          Cancel
         </button>
       </div>
     </div>

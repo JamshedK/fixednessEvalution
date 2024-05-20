@@ -22,6 +22,7 @@ const TaskContext = createContext({
   tasks: {},
   timeRemaining: 0,
   queryCount: 0,
+  allResponsesRated: false,
   setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
   setShowPopUp: () => {},
   setShowSaveButton: () => {},
@@ -32,6 +33,7 @@ const TaskContext = createContext({
   setTasks: () => {},
   setTimeRemaining: () => {},
   setQueryCount: () => {},
+  setAllResponsesRated: () => {},
 });
 
 export const TaskContextProvider = (props) => {
@@ -49,6 +51,7 @@ export const TaskContextProvider = (props) => {
     firstTask: null,
     firstTaskTopic: null,
   });
+  const [allResponsesRated, setAllResponsesRatedState] = useState(false);
   const authCtx = useContext(AuthContext);
 
   useEffect(() => {
@@ -85,8 +88,8 @@ export const TaskContextProvider = (props) => {
   };
 
   const selectRandomTask = (latinSquare) => {
-    const row = Math.floor(Math.random() * latinSquare.length);
-    const column = Math.floor(Math.random() * latinSquare[row].length);
+    const row = Math.floor(Math.random() * 9);
+    const column = Math.floor(Math.random() * 9);
     return latinSquare[row][column];
   };
 
@@ -159,6 +162,10 @@ export const TaskContextProvider = (props) => {
     setQueryCountState(queryCount + 1);
   };
 
+  const setAllResponsesRated = (value) => {
+    setAllResponsesRatedState(value);
+  };
+
   const contextValue = {
     SearchEngineTask,
     showEditNoteReminder,
@@ -171,6 +178,7 @@ export const TaskContextProvider = (props) => {
     tasks,
     timeRemaining,
     queryCount,
+    allResponsesRated,
     setSearchEngineTask,
     setShowEditNoteReminder,
     setShowPopUp,
@@ -182,6 +190,7 @@ export const TaskContextProvider = (props) => {
     setTasks,
     setTimeRemaining,
     setQueryCount,
+    setAllResponsesRated,
   };
 
   return (

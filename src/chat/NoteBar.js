@@ -28,7 +28,14 @@ const NoteBar = (props) => {
         "You can end the task only after 4 interactions with the search engine utilizing 'Search the web..'";
     }
     if (taskCtx.queryCount >= 4) {
-      taskCtx.setShowEndTaskPopUp(true);
+      if (!taskCtx.allResponsesRated) {
+        alert(
+          "Please click the star to rate ChatGPT response before submitting the task"
+        );
+        return;
+      } else {
+        taskCtx.setShowEndTaskPopUp(true);
+      }
     } else {
       console.log("taskCtx.queryCount", taskCtx.queryCount);
       alert(alert_message);

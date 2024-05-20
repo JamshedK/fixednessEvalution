@@ -1,18 +1,10 @@
 import { useState, useContext } from "react";
-import { useRef, useEffect } from "react";
+import { useEffect } from "react";
 import MsgEntry from "./MsgEntry";
 import Prompt from "./prompt";
 import user_profile from "../assets/chatbox/user_profile.svg";
 import ai_profile from "../assets/chatbox/ai_profile.svg";
-import {
-  collection,
-  doc,
-  arrayUnion,
-  getDoc,
-  updateDoc,
-  setDoc,
-  addDoc,
-} from "firebase/firestore";
+import { doc, arrayUnion, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 import { uid } from "uid";
@@ -20,7 +12,6 @@ import ReactMarkdown from "react-markdown";
 import hljs from "highlight.js";
 import TaskContext from "../context/task-context";
 import EditNoteReminder from "./EditNoteReminder";
-import RatePrompt from "./RatePrompt";
 import OpenAI from "openai";
 import Reminder from "../common/Reminder";
 
@@ -46,6 +37,7 @@ function ChatBox() {
   // pull the chat history from the database
   useEffect(() => {
     const getChatHistory = async () => {
+      console.log("Getting the updated chat history");
       const chatTaskRef = doc(db, "chatTasks", authCtx.user.uid);
       const docSnap = await getDoc(chatTaskRef);
       const chatHistory = [];
@@ -58,6 +50,7 @@ function ChatBox() {
             role: prompt.role,
             content: prompt.prompt,
             id: prompt.id,
+            ratingID: prompt.ratingID || null,
           };
           chatHistory.push(obj);
         }
@@ -67,7 +60,7 @@ function ChatBox() {
     if (authCtx.user) {
       getChatHistory();
     }
-  }, [authCtx.user]);
+  }, [authCtx.user, taskCtx.showRatingPopUp]);
 
   const getAPIResponse = async (array, promptID) => {
     try {
@@ -199,11 +192,17 @@ function ChatBox() {
     );
   });
 
+  const isAllResponsesRated = promptResponseArray
+    .filter((prompt) => prompt.role === "assistant")
+    .every((prompt) => prompt.ratingID);
+  taskCtx.setAllResponsesRated(isAllResponsesRated);
+
   return (
     <div className="bg-[#FFFFFF] flex w-full flex-col">
       <div className="w-full mb-56">{messageComponents}</div>
       <div className="fixed bottom-0 mb-8 flex flex-col left-[45%] w-[50%] transform -translate-x-1/2 ">
         <MsgEntry
+          isAllResponsesRated={isAllResponsesRated}
           isLoading={isLoading}
           setShowDataQualityReminder={setShowDataQualityReminder}
           saveChatHistory={saveChatHistory}
@@ -220,14 +219,9 @@ function ChatBox() {
           <Reminder setShowReminder={setShowDataQualityReminder} />
         </div>
       )}
-      {taskCtx.showPopUp && !taskCtx.isRatingNeeded && (
+      {taskCtx.showPopUp && (
         <div className="fixed top-0 left-0 z-10 w-screen h-screen flex items-center justify-center">
           <EditNoteReminder />
-        </div>
-      )}
-      {taskCtx.showRatingPopUp && (
-        <div className="fixed top-0 z-10 left-0 w-screen h-screen flex items-center justify-center">
-          <RatePrompt promptID={responseID} />
         </div>
       )}
     </div>
