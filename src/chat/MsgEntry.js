@@ -34,8 +34,10 @@ const MsgEntry = (props) => {
 
   const sendPrompt = async (e) => {
     if (props.isLoading) return;
-    if (taskCtx.isRatingNeeded) {
-      taskCtx.setShowRatingPopUp(true);
+    if (!props.isAllResponsesRated) {
+      alert(
+        "Please click the star to rate ChatGPT response before sending the next prompt"
+      );
     } else if (taskCtx.showEditNoteReminder) {
       taskCtx.setShowPopUp(true);
     } else {

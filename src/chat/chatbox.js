@@ -192,11 +192,16 @@ function ChatBox() {
     );
   });
 
+  const isAllResponsesRated = promptResponseArray
+    .filter((prompt) => prompt.role === "assistant")
+    .every((prompt) => prompt.ratingID);
+
   return (
     <div className="bg-[#FFFFFF] flex w-full flex-col">
       <div className="w-full mb-56">{messageComponents}</div>
       <div className="fixed bottom-0 mb-8 flex flex-col left-[45%] w-[50%] transform -translate-x-1/2 ">
         <MsgEntry
+          isAllResponsesRated={isAllResponsesRated}
           isLoading={isLoading}
           setShowDataQualityReminder={setShowDataQualityReminder}
           saveChatHistory={saveChatHistory}
@@ -213,7 +218,7 @@ function ChatBox() {
           <Reminder setShowReminder={setShowDataQualityReminder} />
         </div>
       )}
-      {taskCtx.showPopUp && !taskCtx.isRatingNeeded && (
+      {taskCtx.showPopUp && (
         <div className="fixed top-0 left-0 z-10 w-screen h-screen flex items-center justify-center">
           <EditNoteReminder />
         </div>
