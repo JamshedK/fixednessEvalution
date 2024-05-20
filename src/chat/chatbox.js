@@ -195,6 +195,7 @@ function ChatBox() {
   const isAllResponsesRated = promptResponseArray
     .filter((prompt) => prompt.role === "assistant")
     .every((prompt) => prompt.ratingID);
+  taskCtx.setAllResponsesRated(isAllResponsesRated);
 
   return (
     <div className="bg-[#FFFFFF] flex w-full flex-col">

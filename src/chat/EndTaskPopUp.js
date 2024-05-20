@@ -13,10 +13,6 @@ const EndTaskPopUp = (props) => {
   const navigate = useNavigate();
 
   const handleYesClicked = () => {
-    if (taskCtx.isRatingNeeded) {
-      taskCtx.setShowRatingPopUp(true);
-      return;
-    }
     if (taskCtx.showEditNoteReminder) {
       taskCtx.setShowPopUp(true);
       return;
