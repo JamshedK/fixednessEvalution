@@ -10,6 +10,7 @@ import {
 } from "firebase/firestore";
 import AuthContext from "./auth-context";
 import tasksJSON from "../tasks.json";
+import { set } from "firebase/database";
 
 const TaskContext = createContext({
   showEditNoteReminder: false, // Default value
@@ -23,6 +24,7 @@ const TaskContext = createContext({
   timeRemaining: 0,
   queryCount: 0,
   allResponsesRated: false,
+  questionnaireOrder: {},
   setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
   setShowPopUp: () => {},
   setShowSaveButton: () => {},
@@ -34,6 +36,8 @@ const TaskContext = createContext({
   setTimeRemaining: () => {},
   setQueryCount: () => {},
   setAllResponsesRated: () => {},
+  setQuestionnaireOrder: () => {},
+  getQuestionnaireText: () => {},
 });
 
 export const TaskContextProvider = (props) => {
@@ -51,6 +55,10 @@ export const TaskContextProvider = (props) => {
     firstTask: null,
     firstTaskTopic: null,
   });
+  const [questionnaireOrder, setQuestionnaireOrderState] = useState({
+    firstQuestionnaire: null,
+    secondQuestionnaire: null,
+  });
   const [allResponsesRated, setAllResponsesRatedState] = useState(false);
   const authCtx = useContext(AuthContext);
 
@@ -62,6 +70,7 @@ export const TaskContextProvider = (props) => {
           const docSnap = await getDoc(userDocRef);
           if (docSnap.exists() && docSnap.data().tasks) {
             setTasksState(docSnap.data().tasks);
+            setQuestionnaireOrderState(docSnap.data().questionnaireOrder);
           } else {
             console.log("No assigned tasks found or user does not exist.");
           }
@@ -98,7 +107,15 @@ export const TaskContextProvider = (props) => {
     const latinSquareTopics = generateLatinSquare(tasksJSON);
     console.log(latinSquareTopics);
     const firstTaskObj = selectRandomTask(latinSquareTopics);
-
+    const questionnaires = ["search", "virtual-asssistant"];
+    const firstQuestionnaire = questionnaires[Math.floor(Math.random() * 2)];
+    const secondQuestionnaire = questionnaires.filter(
+      (questionnaire) => questionnaire !== firstQuestionnaire
+    )[0];
+    const questionnaireOrder = {
+      firstQuestionnaire,
+      secondQuestionnaire,
+    };
     const firstTask = "chat";
     const obj = {
       firstTask,
@@ -110,6 +127,7 @@ export const TaskContextProvider = (props) => {
         const userDocRef = doc(db, "users", user.uid);
         updateDoc(userDocRef, {
           tasks: obj,
+          questionnaireOrder,
         });
         console.log("User was assigned tasks successfully");
       }
@@ -166,6 +184,18 @@ export const TaskContextProvider = (props) => {
     setAllResponsesRatedState(value);
   };
 
+  const setQuestionnaireOrder = (value) => {
+    setQuestionnaireOrderState(value);
+  };
+
+  const getQuestionnaireText = (questionnaire) => {
+    if (questionnaire === "search") {
+      return "Search Engine ";
+    } else {
+      return "Virtual Assistant";
+    }
+  };
+
   const contextValue = {
     SearchEngineTask,
     showEditNoteReminder,
@@ -179,6 +209,7 @@ export const TaskContextProvider = (props) => {
     timeRemaining,
     queryCount,
     allResponsesRated,
+    questionnaireOrder,
     setSearchEngineTask,
     setShowEditNoteReminder,
     setShowPopUp,
@@ -191,6 +222,8 @@ export const TaskContextProvider = (props) => {
     setTimeRemaining,
     setQueryCount,
     setAllResponsesRated,
+    setQuestionnaireOrder,
+    getQuestionnaireText,
   };
 
   return (

@@ -6,11 +6,18 @@ import { FlowContext } from "./context/flow-context";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import TaskContext from "./context/task-context";
+import { get } from "firebase/database";
 
 const Home = ({ onSelectItem }) => {
   const flowCtx = useContext(FlowContext);
   const taskCtx = useContext(TaskContext);
   const navigate = useNavigate();
+  const firstQuestionnaireText = taskCtx.getQuestionnaireText(
+    taskCtx.questionnaireOrder.firstQuestionnaire
+  );
+  const secondQuestionnaireText = taskCtx.getQuestionnaireText(
+    taskCtx.questionnaireOrder.secondQuestionnaire
+  );
   const tasks = [
     {
       title: "Background Survey",
@@ -19,6 +26,18 @@ const Home = ({ onSelectItem }) => {
       canNavigate: true,
       allowEntryUponCompletion: true,
       estimatedTime: "1-2 minutes",
+    },
+    {
+      title: `${firstQuestionnaireText} questionnaire`,
+      isText: true,
+    },
+    {
+      title: "Questionnaire",
+      completed: flowCtx.preTask2Completed,
+      path: `/pre-task?firstTask=false&currentTask=${taskCtx.questionnaireOrder.firstQuestionnaire}`,
+      canNavigate: flowCtx.sessionExperienceSurvey1Completed,
+      allowEntryUponCompletion: false,
+      estimatedTime: "3-4 minutes",
     },
     {
       title: "ChatGPT Task",
@@ -57,13 +76,13 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "1-2 minutes",
     },
     {
-      title: "Search Engine questionnaire",
+      title: `${secondQuestionnaireText} questionnaire`,
       isText: true,
     },
     {
       title: "Questionnaire",
       completed: flowCtx.preTask2Completed,
-      path: `/pre-task?firstTask=false&currentTask=search`,
+      path: `/pre-task?firstTask=false&currentTask=${taskCtx.questionnaireOrder.secondQuestionnaire}`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,
       allowEntryUponCompletion: false,
       estimatedTime: "3-4 minutes",
@@ -92,17 +111,17 @@ const Home = ({ onSelectItem }) => {
   }, [flowCtx.isLoading]);
 
   const handleNavigation = (task) => () => {
-    if (task.canNavigate) {
-      // If the task is completed and the task is pre-task or chat/search task, don't allow entry
-      if (task.completed && !task.allowEntryUponCompletion) {
-        alert("You have already completed this task");
-        return;
-      } else {
-        navigate(task.path);
-      }
+    // if (task.canNavigate) {
+    // If the task is completed and the task is pre-task or chat/search task, don't allow entry
+    if (task.completed && !task.allowEntryUponCompletion) {
+      alert("You have already completed this task");
+      return;
     } else {
-      alert("Please complete the previous item");
+      navigate(task.path);
     }
+    // } else {
+    //   alert("Please complete the previous item");
+    // }
   };
 
   return (
