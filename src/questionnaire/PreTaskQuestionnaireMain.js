@@ -18,6 +18,7 @@ import { FlowContext } from "../context/flow-context";
 import { useNavigate } from "react-router-dom";
 import InstructionsPopUp from "./InstructionsPopUp";
 import { useLocation } from "react-router-dom";
+import IntroPage from "./IntroPage";
 
 let instructionText =
   "Read the intention on the left, answer the two survey questions below it, then click the next intention for more questions. Complete all listed intentions.";
@@ -28,6 +29,7 @@ const QuestionnnaireMain = () => {
   const [showInstructions, setShowInstructions] = useState(true);
   const [localTopology, setLocalTopology] = useState(topologyJSON);
   const [startedTs, setStartedTs] = useState(Timestamp.now());
+  const [showIntroPage, setShowIntroPage] = useState(false);
 
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
@@ -40,6 +42,13 @@ const QuestionnnaireMain = () => {
     instructionText =
       "Please reflect on your personal experience of using search engines (e.g. Google, Bing), and answer the following questions (see left sidebar).";
   }
+  // For showing the intro page
+  useEffect(() => {
+    const currentTask = new URLSearchParams(location.search).get("currentTask");
+    if (currentTask !== "chat") {
+      setShowIntroPage(true);
+    }
+  }, []);
 
   // get ratings from firebase
   useEffect(() => {
@@ -165,58 +174,70 @@ const QuestionnnaireMain = () => {
   }, [progressPercentage]);
 
   return (
-    <div className="flex flex-row bg-[#FFFFFF] items-center pt-4">
-      <div className="flex flex-col w-[30%] h-screen">
-        <div
-          className="bg-[#e3e3e3] max-h-screen overflow-y-auto scrollbar 
+    <div>
+      {showIntroPage ? (
+        <IntroPage
+          currentTask={currentTask}
+          setShowIntroPage={setShowIntroPage}
+        />
+      ) : (
+        <>
+          <div className="flex flex-row bg-[#FFFFFF] items-center pt-4">
+            <div className="flex flex-col w-[30%] h-screen">
+              <div
+                className="bg-[#e3e3e3] max-h-screen overflow-y-auto scrollbar 
                 scrollbar-thumb-[#d58d8d] scrollbar-thumb-rounded-full text-[14px] 
                 sticky top-0 scrollbar-w-2 scrollbar-h-4"
-        >
-          {localTopology.map((item, index) => (
-            <IntentionBox
-              selectedItem={selectedItem}
-              key={index}
-              index={index}
-              title={item.intention_type}
-              intentionList={item.intention_list}
-              onSelectItem={handleSelectItem}
-              ratings={ratings}
-            />
-          ))}
-        </div>
-        <div className="text-black p-4 bg-[#white] flex flex-col space-y-2 pt-2 border-r-8 border-[#e3e3e3]">
-          <label>Progress</label>
-          <ProgressBar completed={Number(progressPercentage.toFixed(0))} />
-        </div>
-      </div>
-      <div className="w-full flex justify-center mr-16 overflow-auto">
-        {selectedItem && (
-          <Questions
-            itemId={selectedItem}
-            ratings={ratings[selectedItem]}
-            onRatingsChange={handleRatingsChange}
-          />
-        )}
-      </div>
-      {allQuestionsAnswered && (
-        <div className="flex flex-row justify-around mt-16 border-2">
-          <button
-            className="bg-[#e3e3e3] px-6 py-2 rounded-2xl fixed bottom-4 right-4"
-            onClick={handleSubmit}
-          >
-            Submit
-          </button>
-        </div>
+              >
+                {localTopology.map((item, index) => (
+                  <IntentionBox
+                    selectedItem={selectedItem}
+                    key={index}
+                    index={index}
+                    title={item.intention_type}
+                    intentionList={item.intention_list}
+                    onSelectItem={handleSelectItem}
+                    ratings={ratings}
+                  />
+                ))}
+              </div>
+              <div className="text-black p-4 bg-[#white] flex flex-col space-y-2 pt-2 border-r-8 border-[#e3e3e3]">
+                <label>Progress</label>
+                <ProgressBar
+                  completed={Number(progressPercentage.toFixed(0))}
+                />
+              </div>
+            </div>
+            <div className="w-full flex justify-center mr-16 overflow-auto">
+              {selectedItem && (
+                <Questions
+                  itemId={selectedItem}
+                  ratings={ratings[selectedItem]}
+                  onRatingsChange={handleRatingsChange}
+                />
+              )}
+            </div>
+            {allQuestionsAnswered && (
+              <div className="flex flex-row justify-around mt-16 border-2">
+                <button
+                  className="bg-[#e3e3e3] px-6 py-2 rounded-2xl fixed bottom-4 right-4"
+                  onClick={handleSubmit}
+                >
+                  Submit
+                </button>
+              </div>
+            )}
+            {showInstructions && (
+              <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
+                <InstructionsPopUp
+                  instructionText={instructionText}
+                  setShowInstructions={setShowInstructions}
+                />
+              </div>
+            )}
+          </div>
+        </>
       )}
-      {showInstructions && (
-        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
-          <InstructionsPopUp
-            instructionText={instructionText}
-            setShowInstructions={setShowInstructions}
-          />
-        </div>
-      )}
-      ;
     </div>
   );
 };
