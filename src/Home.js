@@ -18,6 +18,7 @@ const Home = ({ onSelectItem }) => {
   const secondQuestionnaireText = taskCtx.getQuestionnaireText(
     taskCtx.questionnaireOrder.secondQuestionnaire
   );
+
   const tasks = [
     {
       title: "Background Survey",
@@ -28,11 +29,11 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "1-2 minutes",
     },
     {
-      title: `${firstQuestionnaireText} questionnaire`,
+      title: `${firstQuestionnaireText}`,
       isText: true,
     },
     {
-      title: "Questionnaire",
+      title: `${firstQuestionnaireText} Questionnaire`,
       completed: flowCtx.preTask2Completed,
       path: `/pre-task?firstTask=false&currentTask=${taskCtx.questionnaireOrder.firstQuestionnaire}`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,
@@ -76,11 +77,11 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "1-2 minutes",
     },
     {
-      title: `${secondQuestionnaireText} questionnaire`,
+      title: `${secondQuestionnaireText}`,
       isText: true,
     },
     {
-      title: "Questionnaire",
+      title: `${secondQuestionnaireText} Questionnaire`,
       completed: flowCtx.preTask2Completed,
       path: `/pre-task?firstTask=false&currentTask=${taskCtx.questionnaireOrder.secondQuestionnaire}`,
       canNavigate: flowCtx.sessionExperienceSurvey1Completed,

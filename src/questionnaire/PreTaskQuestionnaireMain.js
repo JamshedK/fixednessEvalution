@@ -41,6 +41,9 @@ const QuestionnnaireMain = () => {
   if (currentTask === "search") {
     instructionText =
       "Please reflect on your personal experience of using search engines (e.g. Google, Bing), and answer the following questions (see left sidebar).";
+  } else if (currentTask === "virtual-asssistant") {
+    instructionText =
+      "Please reflect on your personal experience of using virtual assistants (e.g. Siri, Cortana, Google Assistant, Amazon Alexa), and answer the following questions (see left sidebar).";
   }
   // For showing the intro page
   useEffect(() => {

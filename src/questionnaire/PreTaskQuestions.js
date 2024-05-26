@@ -17,13 +17,21 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
   const location = useLocation();
   const authCtx = useContext(AuthContext);
   const isPostTask = location.pathname.includes("post-task"); // Check if the current path includes 'post-task'
+  let service = "";
+  const urlParams = new URLSearchParams(window.location.search);
+  const currentTask = urlParams.get("currentTask");
+
+  if (currentTask === "chat") {
+    service = "ChatGPT";
+  } else if (currentTask === "virtual-asssistant") {
+    service = "Virtual Assistant";
+  } else {
+    service = "Search Engine";
+  }
 
   useEffect(() => {
     const checkAttention = async () => {
       if (itemId.includes("2")) {
-        const service = location.search.includes("chat")
-          ? "ChatGPT"
-          : "Search Engine";
         const expectedRating = `${service}  may be able to partially fulfill the intention if/once an effective query/prompt is successfully formulated.`;
         const expectedUsageFrequency = usageFrequency[4];
         const currentTask = urlParams.get("currentTask");
@@ -77,15 +85,6 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
     instructionString2 =
       "If you are reading this message, for this specific question, please select the last option from the list below";
     // remove the text attention check from the itemId
-  }
-
-  let service = "";
-  const urlParams = new URLSearchParams(window.location.search);
-  const currentTask = urlParams.get("currentTask");
-  if (currentTask === "chat") {
-    service = "ChatGPT";
-  } else {
-    service = "Search Engine";
   }
 
   const expectationList = [
