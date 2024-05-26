@@ -85,7 +85,7 @@ const Navbar = (props) => {
           <label className="">{formatTimeLeft()}</label>
         </div>
         <label className="text-[12px] italic mt-2 text-red-600">
-          You can continue to adjust your response even after the 20-minute
+          You can continue adjusting your response even after the 20-minute
           countdown
         </label>
       </div>
