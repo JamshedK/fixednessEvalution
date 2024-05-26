@@ -23,7 +23,16 @@ const MsgEntry = (props) => {
   const taskCtx = useContext(TaskContext);
 
   const handleTextareaChange = () => {
-    if (textRef.current) {
+    if (props.isLoading) return;
+    if (!props.isAllResponsesRated) {
+      alert(
+        "Please click the star to rate ChatGPT response before sending the next prompt"
+      );
+      textRef.current.value = "";
+    } else if (taskCtx.showEditNoteReminder) {
+      taskCtx.setShowPopUp(true);
+      textRef.current.value = "";
+    } else if (textRef.current) {
       textRef.current.style.height = "7px"; // Reset the height 7px
       textRef.current.style.height = `${textRef.current.scrollHeight}px`; // Set the height to the scrollHeight
       if (!typingStartTime) {
@@ -33,56 +42,47 @@ const MsgEntry = (props) => {
   };
 
   const sendPrompt = async (e) => {
-    if (props.isLoading) return;
-    if (!props.isAllResponsesRated) {
-      alert(
-        "Please click the star to rate ChatGPT response before sending the next prompt"
-      );
-    } else if (taskCtx.showEditNoteReminder) {
-      taskCtx.setShowPopUp(true);
-    } else {
-      // show data quality reminder after 2 queries
-      if (taskCtx.queryCount === 2) {
-        props.setShowDataQualityReminder(true);
+    // show data quality reminder after 2 queries
+    if (taskCtx.queryCount === 2) {
+      props.setShowDataQualityReminder(true);
+    }
+    taskCtx.setQueryCount();
+    const newMessage = textRef.current.value;
+    if (newMessage.trim() != "") {
+      // Save the prompt to Firestore database
+      try {
+        const promptRef = collection(db, "chatsIndividual");
+        const promptID = uid();
+        props.setPromptID(promptID);
+        const formData = {
+          id: promptID,
+          responseTo: props.responseID,
+          prompt: newMessage,
+          userID: authCtx?.user.uid || "",
+          role: "user",
+          typingStartTime,
+          typingEndTime: new Date(),
+        };
+        await props.saveChatHistory(formData);
+        const docRef = await addDoc(promptRef, formData);
+        props.setPrompt(newMessage);
+        const updatedMessagesArray = [
+          ...props.promptResponseArray,
+          { role: "user", content: newMessage, id: promptID },
+        ];
+        // get the response from API
+        props.setPromptResponseArray(updatedMessagesArray);
+        textRef.current.value = "";
+        handleTextareaChange();
+        // get API response
+        await props.getAPIResponse(updatedMessagesArray, promptID);
+        window.scrollTo(0, document.documentElement.scrollHeight);
+        taskCtx.setIsRatingNeeded(true);
+        taskCtx.setShowEditNoteReminder(true);
+      } catch (error) {
+        console.error("Error saving prompt:", error);
       }
-      taskCtx.setQueryCount();
-      const newMessage = textRef.current.value;
-      if (newMessage.trim() != "") {
-        // Save the prompt to Firestore database
-        try {
-          const promptRef = collection(db, "chatsIndividual");
-          const promptID = uid();
-          props.setPromptID(promptID);
-          const formData = {
-            id: promptID,
-            responseTo: props.responseID,
-            prompt: newMessage,
-            userID: authCtx?.user.uid || "",
-            role: "user",
-            typingStartTime,
-            typingEndTime: new Date(),
-          };
-          await props.saveChatHistory(formData);
-          const docRef = await addDoc(promptRef, formData);
-          props.setPrompt(newMessage);
-          const updatedMessagesArray = [
-            ...props.promptResponseArray,
-            { role: "user", content: newMessage, id: promptID },
-          ];
-          // get the response from API
-          props.setPromptResponseArray(updatedMessagesArray);
-          textRef.current.value = "";
-          handleTextareaChange();
-          // get API response
-          await props.getAPIResponse(updatedMessagesArray, promptID);
-          window.scrollTo(0, document.documentElement.scrollHeight);
-          taskCtx.setIsRatingNeeded(true);
-          taskCtx.setShowEditNoteReminder(true);
-        } catch (error) {
-          console.error("Error saving prompt:", error);
-        }
-        setTypingStartTime(null); // Reset typing start time when message is sent
-      }
+      setTypingStartTime(null); // Reset typing start time when message is sent
     }
   };
 
