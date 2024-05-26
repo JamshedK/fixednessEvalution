@@ -26,6 +26,7 @@ const ExperienceSurveyMain = () => {
     overallExperience: "",
     responseSatisfaction: "",
     objectiveAchievement: "",
+    topicFamiliarity: "",
     additionalComments: "",
     threeExamples: ["", "", ""],
   });
@@ -68,6 +69,7 @@ const ExperienceSurveyMain = () => {
             overallExperience: restult.overallExperience,
             responseSatisfaction: restult.responseSatisfaction,
             objectiveAchievement: restult.objectiveAchievement,
+            topicFamiliarity: restult.topicFamiliarity,
             additionalComments: restult.additionalComments,
             threeExamples: restult.threeExamples || ["", "", ""],
           });

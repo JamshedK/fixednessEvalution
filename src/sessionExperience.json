@@ -33,6 +33,17 @@
     ]
   },
   {
+    "key": "topicFamiliarity",
+    "question": "To what extent were you familiar with the topic of the “chat + answer” task?",
+    "options": [
+      "Not at all familiar",
+      "Slightly familiar",
+      "Somewhat familiar",
+      "Moderately familiar",
+      "Extremely familiar"
+    ]
+  },
+  {
     "key": "threeExamples",
     "question": "Please give me three example tasks that you would do using current task.",
     "responseType": "open-ended"
