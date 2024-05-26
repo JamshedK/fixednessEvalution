@@ -97,8 +97,9 @@ export const TaskContextProvider = (props) => {
   };
 
   const selectRandomTask = (latinSquare) => {
-    const row = Math.floor(Math.random() * 9);
-    const column = Math.floor(Math.random() * 9);
+    console.log(latinSquare.length);
+    const row = Math.floor(Math.random() * latinSquare.length);
+    const column = Math.floor(Math.random() * latinSquare.length);
     return latinSquare[row][column];
   };
 
