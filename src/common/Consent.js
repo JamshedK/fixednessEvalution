@@ -88,7 +88,7 @@ const ConsentForm = () => {
       </p>
       <p className="mb-4">
         <strong>How long will this take? </strong>
-        Your participation will take 25-30 minutes.
+        Your participation will take 35-40 minutes.
       </p>
       <p className="mb-4">
         <strong>What are the risks and benefits if I participate? </strong>
@@ -98,7 +98,7 @@ const ConsentForm = () => {
       </p>
       <p className="mb-4">
         <strong>Will I be compensated for participating? </strong>
-        Each participant will receive a $6 upon completion.
+        Each participant will receive a $8 upon completion.
       </p>
       <p className="mb-4">
         <strong>Who will see my information? </strong>
