@@ -108,7 +108,7 @@ export const TaskContextProvider = (props) => {
     const latinSquareTopics = generateLatinSquare(tasksJSON);
     console.log(latinSquareTopics);
     const firstTaskObj = selectRandomTask(latinSquareTopics);
-    const questionnaires = ["search", "virtual-asssistant"];
+    const questionnaires = ["search", "virtual-assistant"];
     const firstQuestionnaire = questionnaires[Math.floor(Math.random() * 2)];
     const secondQuestionnaire = questionnaires.filter(
       (questionnaire) => questionnaire !== firstQuestionnaire

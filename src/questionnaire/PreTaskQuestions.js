@@ -23,7 +23,7 @@ const Questions = ({ itemId, ratings, onRatingsChange }) => {
 
   if (currentTask === "chat") {
     service = "ChatGPT";
-  } else if (currentTask === "virtual-asssistant") {
+  } else if (currentTask === "virtual-assistant") {
     service = "Virtual Assistant";
   } else {
     service = "Search Engine";

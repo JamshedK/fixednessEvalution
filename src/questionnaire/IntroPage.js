@@ -10,7 +10,7 @@ const IntroPage = (props) => {
       "Think about your previous use of search engines (e.g., Google, Bing) and respond to the questions on the next page based on those experiences. ";
     imgSrc = search;
   }
-  if (props.currentTask === "virtual-asssistant") {
+  if (props.currentTask === "virtual-assistant") {
     instructions =
       "Think about your previous use of virtual assistants (e.g., Siri, Cortana, Google Assistant, Amazon Alexa) and respond to the questions on the next page based on those experiences.";
     imgSrc = virtual;
