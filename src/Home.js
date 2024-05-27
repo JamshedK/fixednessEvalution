@@ -19,6 +19,8 @@ const Home = ({ onSelectItem }) => {
     taskCtx.questionnaireOrder.secondQuestionnaire
   );
 
+  console.log(firstQuestionnaireText, secondQuestionnaireText);
+
   const tasks = [
     {
       title: "Background Survey",
@@ -132,7 +134,7 @@ const Home = ({ onSelectItem }) => {
           if (task.isText) {
             return (
               <div
-                key={task.title}
+                key={index}
                 className="text-black text-[16px] text-center my-2 mr-20"
               >
                 {task.title}
