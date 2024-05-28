@@ -11,6 +11,7 @@ const Prompt = (props) => {
   const role = props.role;
   const isStarred = props.ratingID != null;
   const taskCtx = useContext(TaskContext);
+  const needsRating = !isStarred && role === "assistant";
 
   const handleStartClicked = () => {
     if (!isStarred) {
@@ -31,13 +32,25 @@ const Prompt = (props) => {
         </div>
       </div>
       {role === "assistant" && (
-        <div className="flex items-start ml">
-          <button onClick={handleStartClicked}>
-            <img
-              className="w-7  ml-4"
-              src={isStarred ? star_filled_icon : star_icon}
-            />
-          </button>
+        <div className="flex flex-col items-center">
+          <div className="flex items ml">
+            <button onClick={handleStartClicked}>
+              <img
+                className="w-7  ml-4"
+                src={isStarred ? star_filled_icon : star_icon}
+              />
+            </button>
+          </div>
+          {needsRating && (
+            <label className="text-red flex items-center text-[12px] ml-4">
+              Click to rate
+            </label>
+          )}
+          {!needsRating && (
+            <label className="text-green flex items-center text-[12px] ml-4">
+              Rated
+            </label>
+          )}
         </div>
       )}
       {taskCtx.showRatingPopUp && role === "assistant" && (
