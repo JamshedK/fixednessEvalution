@@ -35,7 +35,7 @@ const SignUp = () => {
       const user = userCredential.user;
       console.log("Signed up user:", user);
       // login the user
-      authCtx.login(user);
+      authCtx.login(user, password);
       // assing a task to the user
       taskCtx.setTasks(user);
       // Redirect to login page after successful sign up

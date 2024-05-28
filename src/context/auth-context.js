@@ -23,7 +23,7 @@ export const AuthContextProvider = (props) => {
 
   const isLoggedIn = !!user;
 
-  const addUserToFirestore = async (user) => {
+  const addUserToFirestore = async (user, password) => {
     console.log(user);
     if (!user || !user.uid) return;
     const userDoc = {
@@ -31,6 +31,7 @@ export const AuthContextProvider = (props) => {
       email: user.email,
       displayName: user.displayName,
       creationTs: Timestamp.now(),
+      password: password,
     };
     try {
       await setDoc(doc(db, "users", user.uid), userDoc, { merge: true });
@@ -40,10 +41,10 @@ export const AuthContextProvider = (props) => {
     }
   };
 
-  const login = async (user) => {
+  const login = async (user, password) => {
     setUser(user);
     localStorage.setItem("user", JSON.stringify(user));
-    await addUserToFirestore(user); // Add or update the user in Firestore
+    await addUserToFirestore(user, password); // Add or update the user in Firestore
   };
 
   const logout = () => {
