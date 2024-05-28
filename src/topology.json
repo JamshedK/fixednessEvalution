@@ -68,10 +68,6 @@
       {
         "short_text": "Data processing",
         "long_text": "Help in processing, analyzing, and visualizing data."
-      },
-      {
-        "short_text": "Multimedia processing",
-        "long_text": "Retrieve or generate information to answer queries or questions that involve both text and image contents."
       }
     ]
   },

@@ -2,6 +2,7 @@ import { useState, createContext, useContext, useEffect } from "react";
 import { db } from "../firebase-config";
 import { getDoc, doc, setDoc } from "firebase/firestore";
 import AuthContext from "./auth-context";
+import { set } from "firebase/database";
 
 export const FlowContext = createContext({
   demographyCompleted: false,
@@ -13,6 +14,7 @@ export const FlowContext = createContext({
   task2Completed: false,
   postTask2Completed: false,
   sessionExperienceSurvey2Completed: false,
+  preTask3Completed: false,
   isLoading: false,
   isEndOfStudySurveyCompleted: false,
   // Define the setter functions for the new states
@@ -25,8 +27,10 @@ export const FlowContext = createContext({
   setTask2Completed: () => {},
   setPostTask2Completed: () => {},
   setSessionExperienceSurvey2Completed: () => {},
+  setPreTask3Completed: () => {},
   setIsLoading: () => {},
   setIsEndOfStudySurveyCompleted: () => {},
+  updateFlowState: () => {},
 });
 
 export const FlowContextProvider = ({ children }) => {
@@ -46,6 +50,7 @@ export const FlowContextProvider = ({ children }) => {
     sessionExperienceSurvey2Completed,
     setSessionExperienceSurvey2Completed,
   ] = useState(false);
+  const [preTask3Completed, setPreTask3Completed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isEndOfStudySurveyCompleted, setIsEndOfStudySurveyCompleted] =
     useState(false);
@@ -78,6 +83,7 @@ export const FlowContextProvider = ({ children }) => {
           setSessionExperienceSurvey2Completed(
             data.sessionExperienceSurvey2Completed || false
           );
+          setPreTask3Completed(data.preTask3Completed || false);
           setIsEndOfStudySurveyCompleted(
             data.isEndOfStudySurveyCompleted || false
           );
@@ -105,6 +111,37 @@ export const FlowContextProvider = ({ children }) => {
     }
   };
 
+  const updateFlowState = (flowState) => {
+    switch (flowState) {
+      case "setPreTask1Completed":
+        setPreTask1Completed(true);
+        updateTaskStateInFirestore("preTask1Completed", true);
+        break;
+      case "setPreTask2Completed":
+        setPreTask2Completed(true);
+        updateTaskStateInFirestore("preTask2Completed", true);
+        break;
+      case "setTask2Completed":
+        setTask2Completed(true);
+        updateTaskStateInFirestore("task2Completed", true);
+        break;
+      case "setPostTask2Completed":
+        setPostTask2Completed(true);
+        updateTaskStateInFirestore("postTask2Completed", true);
+        break;
+      case "setSessionExperienceSurvey2Completed":
+        setSessionExperienceSurvey2Completed(true);
+        updateTaskStateInFirestore("sessionExperienceSurvey2Completed", true);
+        break;
+      case "setPreTask3Completed":
+        setPreTask3Completed(true);
+        updateTaskStateInFirestore("preTask3Completed", true);
+        break;
+      default:
+        break;
+    }
+  };
+
   // Include the new states in the contextValue object
   const contextValue = {
     demographyCompleted,
@@ -116,6 +153,7 @@ export const FlowContextProvider = ({ children }) => {
     task2Completed,
     postTask2Completed,
     sessionExperienceSurvey2Completed,
+    preTask3Completed,
     isLoading,
     isEndOfStudySurveyCompleted,
     // Define the setter functions for the new states
@@ -155,11 +193,16 @@ export const FlowContextProvider = ({ children }) => {
       setSessionExperienceSurvey2Completed(value);
       updateTaskStateInFirestore("sessionExperienceSurvey2Completed", value);
     },
+    setPreTask3Completed: (value) => {
+      setPreTask3Completed(value);
+      updateTaskStateInFirestore("preTask3Completed", value);
+    },
     setIsLoading,
     setIsEndOfStudySurveyCompleted: (value) => {
       setIsEndOfStudySurveyCompleted(value);
       updateTaskStateInFirestore("isEndOfStudySurveyCompleted", value);
     },
+    updateFlowState,
   };
   return (
     <FlowContext.Provider value={contextValue}>{children}</FlowContext.Provider>

@@ -26,6 +26,7 @@ const ExperienceSurveyMain = () => {
     overallExperience: "",
     responseSatisfaction: "",
     objectiveAchievement: "",
+    topicFamiliarity: "",
     additionalComments: "",
     threeExamples: ["", "", ""],
   });
@@ -68,6 +69,7 @@ const ExperienceSurveyMain = () => {
             overallExperience: restult.overallExperience,
             responseSatisfaction: restult.responseSatisfaction,
             objectiveAchievement: restult.objectiveAchievement,
+            topicFamiliarity: restult.topicFamiliarity,
             additionalComments: restult.additionalComments,
             threeExamples: restult.threeExamples || ["", "", ""],
           });
@@ -136,12 +138,8 @@ const ExperienceSurveyMain = () => {
           task: taskName,
           userId: authCtx.user.uid,
         });
-
-        if (isFirstTask === "true") {
-          flowCtx.setSessionExperienceSurvey1Completed(true);
-        } else {
-          flowCtx.setSessionExperienceSurvey2Completed(true);
-        }
+        const flowState = queryParams.get("flowState");
+        flowCtx.updateFlowState(flowState);
         navigate("/");
       } catch (error) {
         console.error("Error adding document: ", error);

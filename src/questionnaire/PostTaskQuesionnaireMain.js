@@ -128,15 +128,8 @@ const PostTaskQuestionnaireMain = () => {
       );
       console.log("Document written with ID: ", docRef.id);
       // Conditionally updating based on firstTask query parameter
-      if (isFirstTask && !isPostTask) {
-        flowCtx.setPreTask1Completed(true);
-      } else if (isFirstTask && isPostTask) {
-        flowCtx.setPostTask1Completed(true);
-      } else if (!isFirstTask && !isPostTask) {
-        flowCtx.setPreTask2Completed(true);
-      } else {
-        flowCtx.setPostTask2Completed(true);
-      }
+      const flowState = searchParams.get("flowState");
+      flowCtx.updateFlowState(flowState);
       navigate("/");
     } catch (e) {
       console.error("Error adding document: ", e);

@@ -29,12 +29,8 @@ const EndTaskPopUp = (props) => {
     );
     // see the url parameter and get firstTask
     const urlParams = new URLSearchParams(window.location.search);
-    const isFirstTask = urlParams.get("firstTask");
-    if (isFirstTask === "true") {
-      flowCtx.setTask1Completed(true);
-    } else {
-      flowCtx.setTask2Completed(true);
-    }
+    const flowState = urlParams.get("flowState");
+    flowCtx.updateFlowState(flowState);
     // delay for 1 second
     setTimeout(() => {
       navigate("/home");
