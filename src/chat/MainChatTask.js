@@ -6,7 +6,7 @@ import TaskContext from "../context/task-context";
 import EndTaskPopUp from "./EndTaskPopUp";
 import MainSearchPage from "../bing/SearchPage";
 import InstructionsPopUp from "../questionnaire/InstructionsPopUp";
-import { Timestamp, setDoc, doc } from "firebase/firestore";
+import { Timestamp, setDoc, doc, getDoc } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { db } from "../firebase-config";
 
@@ -23,7 +23,14 @@ const MainChatTask = () => {
       try {
         const startTime = Timestamp.now();
         const userDocRef = doc(db, "chatTasks", authCtx.user.uid);
-        await setDoc(userDocRef, { startedTs: startTime }, { merge: true });
+        const docSnap = await getDoc(userDocRef);
+
+        if (!docSnap.exists()) {
+          // If the document does not exist, create it with the start time
+          await setDoc(userDocRef, { startedTs: startTime });
+        } else {
+          console.log("Task has already started");
+        }
         console.log("Start time saved");
       } catch (error) {
         console.error("Error saving start time:", error);
