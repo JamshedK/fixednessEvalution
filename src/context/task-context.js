@@ -25,6 +25,7 @@ const TaskContext = createContext({
   queryCount: 0,
   allResponsesRated: false,
   questionnaireOrder: {},
+  promptIDForRating: null,
   setShowEditNoteReminder: () => {}, // Function to update showEditNoteReminder
   setShowPopUp: () => {},
   setShowSaveButton: () => {},
@@ -38,6 +39,7 @@ const TaskContext = createContext({
   setAllResponsesRated: () => {},
   setQuestionnaireOrder: () => {},
   getQuestionnaireText: () => {},
+  setPromptIDForRating: () => {},
 });
 
 export const TaskContextProvider = (props) => {
@@ -51,6 +53,7 @@ export const TaskContextProvider = (props) => {
   const [showRatingPopUp, setShowRatingPopUpState] = useState(false);
   const [timeRemaining, setTimeRemainingState] = useState(0);
   const [queryCount, setQueryCountState] = useState(0);
+  const [promptIDForRating, setPromptIDForRatingState] = useState(null);
   const [tasks, setTasksState] = useState({
     firstTask: null,
     firstTaskTopic: null,
@@ -189,6 +192,10 @@ export const TaskContextProvider = (props) => {
     setQuestionnaireOrderState(value);
   };
 
+  const setPromptIDForRating = (value) => {
+    setPromptIDForRatingState(value);
+  };
+
   const getQuestionnaireText = (questionnaire) => {
     if (questionnaire === "search") {
       return "Search Engine ";
@@ -211,6 +218,7 @@ export const TaskContextProvider = (props) => {
     queryCount,
     allResponsesRated,
     questionnaireOrder,
+    promptIDForRating,
     setSearchEngineTask,
     setShowEditNoteReminder,
     setShowPopUp,
@@ -225,6 +233,7 @@ export const TaskContextProvider = (props) => {
     setAllResponsesRated,
     setQuestionnaireOrder,
     getQuestionnaireText,
+    setPromptIDForRating,
   };
 
   return (

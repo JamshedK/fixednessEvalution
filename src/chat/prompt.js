@@ -16,6 +16,7 @@ const Prompt = (props) => {
   const handleStartClicked = () => {
     if (!isStarred) {
       taskCtx.setShowRatingPopUp(true);
+      taskCtx.setPromptIDForRating(promptID);
     }
   };
 
@@ -55,7 +56,7 @@ const Prompt = (props) => {
       )}
       {taskCtx.showRatingPopUp && role === "assistant" && (
         <div className="fixed top-0 z-10 left-0 w-screen h-screen flex items-center justify-center">
-          <RatePrompt promptID={promptID} />
+          <RatePrompt promptID={taskCtx.promptIDForRating} />
         </div>
       )}
     </div>
