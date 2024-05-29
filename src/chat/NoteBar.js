@@ -30,7 +30,7 @@ const NoteBar = (props) => {
     if (taskCtx.queryCount >= 4) {
       if (!taskCtx.allResponsesRated) {
         alert(
-          "Please click the star to rate ChatGPT response before submitting the task"
+          "Not all responses are rated! Please click the star next to the ChatGPT response before submitting the task."
         );
         return;
       } else {

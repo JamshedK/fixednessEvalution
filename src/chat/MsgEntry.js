@@ -26,7 +26,7 @@ const MsgEntry = (props) => {
     if (props.isLoading) return;
     if (!props.isAllResponsesRated) {
       alert(
-        "Please click the star to rate ChatGPT response before sending the next prompt"
+        "Not all responses are rated! Please click the star next to the ChatGPT response before sending the next prompt. You may need to scroll to the top of each response to see the star. "
       );
       textRef.current.value = "";
     } else if (taskCtx.showEditNoteReminder) {
