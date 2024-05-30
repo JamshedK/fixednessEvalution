@@ -23,7 +23,10 @@ const MsgEntry = (props) => {
   const taskCtx = useContext(TaskContext);
 
   const handleTextareaChange = () => {
-    if (props.isLoading) return;
+    if (props.isLoading) {
+      textRef.current.value = "";
+      return;
+    }
     if (!props.isAllResponsesRated) {
       alert(
         "Not all responses are rated! Please click the star next to the ChatGPT response before sending the next prompt. You may need to scroll to the top of each response to see the star. "
@@ -42,6 +45,15 @@ const MsgEntry = (props) => {
   };
 
   const sendPrompt = async (e) => {
+    if (props.isLoading) {
+      textRef.current.value = "";
+      return;
+    }
+    if (taskCtx.showEditNoteReminder) {
+      taskCtx.setShowPopUp(true);
+      textRef.current.value = "";
+      return;
+    }
     // show data quality reminder after 2 queries
     if (taskCtx.queryCount === 2) {
       props.setShowDataQualityReminder(true);
@@ -93,14 +105,14 @@ const MsgEntry = (props) => {
           className="bg-transparent focus:outline-none h-7 text-black resize-none w-full"
           ref={textRef}
           placeholder="Type a prompt... "
-          onKeyDown={(event) => {
-            if (event.keyCode === 13) {
-              sendPrompt();
-            }
-          }}
           onChange={handleTextareaChange}
         ></textarea>
-        <button onClick={sendPrompt} title="Send prompt">
+        <button
+          className="disabled:opacity-50 disabled:cursor-not-allowed"
+          onClick={sendPrompt}
+          disabled={props.isLoading}
+          title="Send prompt"
+        >
           <img src={send_message_icon} />
         </button>
       </div>
