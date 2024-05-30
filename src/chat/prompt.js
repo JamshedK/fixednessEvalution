@@ -14,10 +14,8 @@ const Prompt = (props) => {
   const needsRating = !isStarred && role === "assistant";
 
   const handleStartClicked = () => {
-    if (!isStarred) {
-      taskCtx.setShowRatingPopUp(true);
-      taskCtx.setPromptIDForRating(promptID);
-    }
+    taskCtx.setShowRatingPopUp(true);
+    taskCtx.setPromptIDForRating(promptID);
   };
 
   return (
