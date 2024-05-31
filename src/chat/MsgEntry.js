@@ -17,13 +17,14 @@ import TaskContext from "../context/task-context";
 const MsgEntry = (props) => {
   const [prompt, setPrompt] = useState(null);
   const [typingStartTime, setTypingStartTime] = useState(null); // Timestamp for when user starts typing
+  const [isSending, setIsSending] = useState(false);
 
   const textRef = useRef();
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
 
   const handleTextareaChange = () => {
-    if (props.isLoading) {
+    if (props.isLoading || isSending) {
       textRef.current.value = "";
       return;
     }
@@ -45,13 +46,15 @@ const MsgEntry = (props) => {
   };
 
   const sendPrompt = async (e) => {
-    if (props.isLoading) {
+    if (props.isLoading || isSending) {
       textRef.current.value = "";
       return;
     }
+    setIsSending(true);
     if (taskCtx.showEditNoteReminder) {
       taskCtx.setShowPopUp(true);
       textRef.current.value = "";
+      setIsSending(false);
       return;
     }
     // show data quality reminder after 2 queries
@@ -96,6 +99,7 @@ const MsgEntry = (props) => {
       }
       setTypingStartTime(null); // Reset typing start time when message is sent
     }
+    setIsSending(false);
   };
 
   return (
@@ -110,7 +114,7 @@ const MsgEntry = (props) => {
         <button
           className="disabled:opacity-50 disabled:cursor-not-allowed"
           onClick={sendPrompt}
-          disabled={props.isLoading}
+          disabled={props.isLoading || isSending}
           title="Send prompt"
         >
           <img src={send_message_icon} />
