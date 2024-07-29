@@ -12,12 +12,17 @@ const SignUp = () => {
   const [email, setEmail] = useState(jabber.createEmail("example.com"));
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
+  const [mturkId, setMTurkId] = useState("");
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
+    // check if all the fields are filled
+    if (password === "" || mturkId === "") {
+      alert("Please fill all the fields.");
+      return;
+    }
     if (password !== verifyPassword) {
       alert("Passwords do not match!");
       return;
@@ -36,6 +41,7 @@ const SignUp = () => {
       console.log("Signed up user:", user);
       // login the user
       authCtx.login(user, password);
+      authCtx.updateMTurkId(mturkId, user.uid);
       // assing a task to the user
       taskCtx.setTasks(user);
       // Redirect to login page after successful sign up
@@ -85,6 +91,14 @@ const SignUp = () => {
             required
             placeholder="Verify password"
             onChange={(e) => setVerifyPassword(e.target.value)}
+          />
+          <input
+            type="text"
+            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
+            value={mturkId}
+            required
+            placeholder="mTurk ID"
+            onChange={(e) => setMTurkId(e.target.value)}
           />
         </form>
         <div className="flex flex-col w-full items-center justify-end space-y-8 mb-4 mt-2">

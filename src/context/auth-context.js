@@ -8,6 +8,7 @@ const AuthContext = React.createContext({
   login: (user) => {},
   logout: () => {},
   addUserToFirestore: (user) => {},
+  updateMTurkId: (mturkId) => {},
 });
 
 export const AuthContextProvider = (props) => {
@@ -24,7 +25,6 @@ export const AuthContextProvider = (props) => {
   const isLoggedIn = !!user;
 
   const addUserToFirestore = async (user, password) => {
-    console.log(user);
     if (!user || !user.uid) return;
     const userDoc = {
       uid: user.uid,
@@ -52,12 +52,18 @@ export const AuthContextProvider = (props) => {
     localStorage.removeItem("user");
   };
 
+  const updateMTurkId = async (mturkId, uid) => {
+    if (!uid) return;
+    await setDoc(doc(db, "users", uid), { mturkId }, { merge: true });
+  };
+
   const contextValue = {
     user: user,
     login: login,
     logout: logout,
     isLoggedIn: isLoggedIn,
     addUserToFirestore,
+    updateMTurkId,
   };
 
   return (

@@ -9,7 +9,8 @@
       "45-54",
       "55-64",
       "65 or older"
-    ]
+    ],
+    "required": true
   },
   {
     "category": "What is your gender?",
@@ -19,7 +20,8 @@
       "Non-binary/Third gender",
       "Prefer not to say",
       "Prefer to self-describe"
-    ]
+    ],
+    "required": true
   },
   {
     "category": "What is the highest level of education you have completed or currently pursuing?",
@@ -32,7 +34,8 @@
       "Bachelor’s degree",
       "Master’s degree",
       "Doctorate"
-    ]
+    ],
+    "required": true
   },
   {
     "category": "What is your current employment status?",
@@ -44,7 +47,8 @@
       "Student",
       "Retired",
       "Prefer not to say"
-    ]
+    ],
+    "required": true
   },
   {
     "category": "How frequently do you use ChatGPT?",
@@ -53,7 +57,8 @@
       "Occasionally (less than once a week)",
       "Regularly (once a week or more)",
       "Frequently (daily or almost daily)"
-    ]
+    ],
+    "required": true
   },
   {
     "category": "How frequently do you use Search Engines (e.g. Google, Bing)?",
@@ -62,7 +67,8 @@
       "Occasionally (less than once a week)",
       "Regularly (once a week or more)",
       "Frequently (daily or almost daily)"
-    ]
+    ],
+    "required": true
   },
   {
     "category": "How frequently do you use virtual assistants (e.g. Siri, Microsoft Crotana, Google Assistant, Alexa)?",
@@ -71,7 +77,8 @@
       "Occasionally (less than once a week)",
       "Regularly (once a week or more)",
       "Frequently (daily or almost daily)"
-    ]
+    ],
+    "required": true
   },
   {
     "category": "What is your primary purpose for using ChatGPT?",
@@ -83,7 +90,8 @@
       "Other"
     ],
     "allowMultipleSelections": true,
-    "selectUpto": 2
+    "selectUpto": 2,
+    "required": true
   },
   {
     "category": "What is your primary purpose for using Search Engines (e.g. Google, Bing)?",
@@ -95,7 +103,8 @@
       "Other"
     ],
     "allowMultipleSelections": true,
-    "selectUpto": 2
+    "selectUpto": 2,
+    "required": true
   },
   {
     "category": "What is your primary purpose for using virtual assistant?",
@@ -107,7 +116,8 @@
       "Other"
     ],
     "allowMultipleSelections": true,
-    "selectUpto": 2
+    "selectUpto": 2,
+    "required": true
   },
   {
     "category": "How did you first hear about ChatGPT?",
@@ -118,6 +128,7 @@
       "Academic course/workshop",
       "Other"
     ],
-    "allowMultipleSelections": true
+    "allowMultipleSelections": true,
+    "required": true
   }
 ]
