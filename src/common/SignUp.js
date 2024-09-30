@@ -38,8 +38,10 @@ const SignUp = () => {
       authCtx.login(user);
       // assing a task to the user
       taskCtx.setTasks(user);
+      // delay to ensure the user is logged in before navigating
+      await new Promise((resolve) => setTimeout(resolve, 1000));
       // Redirect to login page after successful sign up
-      navigate("/consent?refresh=true");
+      navigate("/home?refresh=true");
     } catch (error) {
       console.error("Error signing up:", error);
       alert("An error occurred while signing up. Please try again.");
