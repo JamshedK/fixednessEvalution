@@ -12,6 +12,7 @@ const SignUp = () => {
   const [email, setEmail] = useState(jabber.createEmail("example.com"));
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
+  const [participantID, setParticipantID] = useState("");
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
 
@@ -32,10 +33,13 @@ const SignUp = () => {
         email,
         password
       );
-      const user = userCredential.user;
+      let user = userCredential.user;
+      user = { ...user, participantID: participantID };
       console.log("Signed up user:", user);
       // login the user
       authCtx.login(user);
+      // delay to ensure user is added to firestore before assigning a task
+      await new Promise((resolve) => setTimeout(resolve, 400));
       // assing a task to the user
       taskCtx.setTasks(user);
       // delay to ensure the user is logged in before navigating
@@ -68,6 +72,12 @@ const SignUp = () => {
           >
             {email}
           </label>
+          <input
+            type="text"
+            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
+            placeholder="Participant ID"
+            onChange={(e) => setParticipantID(e.target.value)}
+          />
           <p className="text-sm text-gray-600">
             Create a password with a length of at least 6 characters.
           </p>
