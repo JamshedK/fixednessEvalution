@@ -24,15 +24,7 @@ const MsgEntry = (props) => {
 
   const handleTextareaChange = () => {
     if (props.isLoading) return;
-    if (!props.isAllResponsesRated) {
-      alert(
-        "Please click the star to rate ChatGPT response before sending the next prompt"
-      );
-      textRef.current.value = "";
-    } else if (taskCtx.showEditNoteReminder) {
-      taskCtx.setShowPopUp(true);
-      textRef.current.value = "";
-    } else if (textRef.current) {
+    if (textRef.current) {
       textRef.current.style.height = "7px"; // Reset the height 7px
       textRef.current.style.height = `${textRef.current.scrollHeight}px`; // Set the height to the scrollHeight
       if (!typingStartTime) {
@@ -51,7 +43,6 @@ const MsgEntry = (props) => {
     if (newMessage.trim() != "") {
       // Save the prompt to Firestore database
       try {
-        const promptRef = collection(db, "chatsIndividual");
         const promptID = uid();
         props.setPromptID(promptID);
         const formData = {
@@ -64,7 +55,6 @@ const MsgEntry = (props) => {
           typingEndTime: new Date(),
         };
         await props.saveChatHistory(formData);
-        const docRef = await addDoc(promptRef, formData);
         props.setPrompt(newMessage);
         const updatedMessagesArray = [
           ...props.promptResponseArray,
@@ -93,11 +83,6 @@ const MsgEntry = (props) => {
           className="bg-transparent focus:outline-none h-7 text-black resize-none w-full"
           ref={textRef}
           placeholder="Type a prompt... "
-          onKeyDown={(event) => {
-            if (event.keyCode === 13) {
-              sendPrompt();
-            }
-          }}
           onChange={handleTextareaChange}
         ></textarea>
         <button onClick={sendPrompt} title="Send prompt">

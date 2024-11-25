@@ -38,14 +38,10 @@ const SignUp = () => {
       console.log("Signed up user:", user);
       // login the user
       authCtx.login(user);
-      // delay to ensure user is added to firestore before assigning a task
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      // assing a task to the user
-      taskCtx.setTasks(user);
       // delay to ensure the user is logged in before navigating
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await new Promise((resolve) => setTimeout(resolve, 500));
       // Redirect to login page after successful sign up
-      navigate("/home?refresh=true");
+      navigate("/chat");
     } catch (error) {
       console.error("Error signing up:", error);
       alert("An error occurred while signing up. Please try again.");

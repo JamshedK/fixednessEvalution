@@ -57,37 +57,13 @@ const Navbar = (props) => {
 
   return (
     <div
-      className="bg-[#e3e3e3] w-[34%] h-screen sticky flex top-0 flex-col text-[18px] 
+      className="bg-[#e3e3e3] w-[30%] h-screen sticky flex top-0 flex-col text-[18px] 
     pb-10 pt-10 justify-between"
     >
       <div>
         <div className="pl-8 text-black font-bold underline mb-2">
-          <label className="">Current task</label>
+          <label className="">Chatbot</label>
         </div>
-        <div className="pl-8 text-[14px] text-black mb-2">
-          <label className="">{currentTask}</label>
-        </div>
-        <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-4 py-4 w-fit text-md lg:text-[14px] text-black">
-          <label className="">{task}</label>
-        </div>
-        <div className="pl-8 text-black md:text-[16px] mt-4 mb-2">
-          <label className="">Full task description</label>
-        </div>
-        <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-4 py-4 w-fit text-md lg:text-[14px] text-black">
-          <label className="">{taskDescription}</label>
-        </div>
-      </div>
-      <div className="pl-8">
-        <div className=" text-black md:text-[16px] mt-4 mb-1">
-          <label className="">Time remaining</label>
-        </div>
-        <div className="h-fit rounded-xl py-2 w-fit text-xl lg:text-[30px] text-black">
-          <label className="">{formatTimeLeft()}</label>
-        </div>
-        <label className="text-[12px] italic mt-2 text-red-600">
-          You can continue adjusting your response even after the 20-minute
-          countdown
-        </label>
       </div>
     </div>
   );

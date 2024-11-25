@@ -61,7 +61,7 @@ const Login = () => {
       // Redirect to home page after successful login
       // delay for one second
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate("/consent?refresh=true");
+      navigate("/chat");
     } catch (error) {
       console.error("Error logging in with Google:", error);
       alert(

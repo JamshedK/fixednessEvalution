@@ -11,9 +11,7 @@ import { uid } from "uid";
 import ReactMarkdown from "react-markdown";
 import hljs from "highlight.js";
 import TaskContext from "../context/task-context";
-import EditNoteReminder from "./EditNoteReminder";
 import OpenAI from "openai";
-import Reminder from "../common/Reminder";
 
 const openai = new OpenAI({
   apiKey: process.env.REACT_APP_OPENAI_API_KEY,
@@ -200,7 +198,7 @@ function ChatBox() {
   return (
     <div className="bg-[#FFFFFF] flex w-full flex-col">
       <div className="w-full mb-56">{messageComponents}</div>
-      <div className="fixed bottom-0 mb-8 flex flex-col left-[45%] w-[50%] transform -translate-x-1/2 ">
+      <div className="fixed bottom-0 mb-8 flex flex-col left-[60%] w-[50%] transform -translate-x-1/2 ">
         <MsgEntry
           isAllResponsesRated={isAllResponsesRated}
           isLoading={isLoading}
@@ -214,16 +212,6 @@ function ChatBox() {
           getAPIResponse={getAPIResponse}
         />
       </div>
-      {showDataQualityReminder && (
-        <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
-          <Reminder setShowReminder={setShowDataQualityReminder} />
-        </div>
-      )}
-      {taskCtx.showPopUp && (
-        <div className="fixed top-0 left-0 z-10 w-screen h-screen flex items-center justify-center">
-          <EditNoteReminder />
-        </div>
-      )}
     </div>
   );
 }
