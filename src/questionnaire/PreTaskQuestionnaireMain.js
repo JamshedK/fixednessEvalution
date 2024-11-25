@@ -212,16 +212,14 @@ const QuestionnnaireMain = () => {
                 />
               )}
             </div>
-            {allQuestionsAnswered && (
-              <div className="flex flex-row justify-around mt-16 border-2">
-                <button
-                  className="bg-[#e3e3e3] px-6 py-2 rounded-2xl fixed bottom-4 right-4"
-                  onClick={handleSubmit}
-                >
-                  Submit
-                </button>
-              </div>
-            )}
+            <div className="flex flex-row justify-around mt-16 border-2">
+              <button
+                className="bg-[#e3e3e3] px-6 py-2 rounded-2xl fixed bottom-4 right-4"
+                onClick={handleSubmit}
+              >
+                Submit
+              </button>
+            </div>
             {showInstructions && (
               <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">
                 <InstructionsPopUp
