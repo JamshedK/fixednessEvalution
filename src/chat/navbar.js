@@ -13,10 +13,12 @@ import {
 } from "firebase/firestore";
 import { db } from "../firebase-config";
 import TaskContext from "../context/task-context";
+import AuthContext from "../context/auth-context";
 
 const Navbar = (props) => {
   const [timeLeft, setTimeLeft] = useState(60 * 20);
   const taskCtx = useContext(TaskContext);
+  const authCtx = useContext(AuthContext);
 
   useEffect(() => {
     const timer =
@@ -61,8 +63,11 @@ const Navbar = (props) => {
     pb-10 pt-10 justify-between"
     >
       <div>
-        <div className="pl-8 text-black font-bold underline mb-2">
-          <label className="">Chatbot</label>
+        <div className="pl-8 text-black font-bold mb-2">
+          <label className="">Logged in user:</label>
+        </div>
+        <div className="pl-8 text-black  mb-2">
+          <label className="">{authCtx?.user?.email}</label>
         </div>
       </div>
     </div>
