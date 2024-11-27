@@ -5,14 +5,14 @@ import { auth } from "../firebase-config";
 import AuthContext from "../context/auth-context";
 import TaskContext from "../context/task-context";
 import Jabber from "jabber";
+import manual_user_credentials from "../manual_user_credentials.json";
 
 const SignUp = () => {
   const jabber = new Jabber();
   const navigate = useNavigate();
-  const [email, setEmail] = useState(jabber.createEmail("example.com"));
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [verifyPassword, setVerifyPassword] = useState("");
-  const [participantID, setParticipantID] = useState("");
   const authCtx = useContext(AuthContext);
   const taskCtx = useContext(TaskContext);
 
@@ -23,10 +23,18 @@ const SignUp = () => {
       alert("Passwords do not match!");
       return;
     }
-    if (password.length < 6) {
-      alert("Password must be at least 6 characters long.");
+    // check if username and password are in the manual_user_credentials.json file
+    let found = false;
+    manual_user_credentials.forEach((user) => {
+      if (user.email === email && user.password === password) {
+        found = true;
+      }
+    });
+    if (!found) {
+      alert("Please make sure you are using the correct email and password");
       return;
     }
+
     try {
       const userCredential = await createUserWithEmailAndPassword(
         auth,
@@ -34,7 +42,11 @@ const SignUp = () => {
         password
       );
       let user = userCredential.user;
-      user = { ...user, participantID: participantID };
+      let currentdate = new Date();
+      // expiration date is current date + 1 day
+      let expiration_date = new Date();
+      expiration_date.setDate(currentdate.getDate() + 1);
+      user = { ...user, expiration_date: expiration_date };
       console.log("Signed up user:", user);
       // login the user
       authCtx.login(user);
@@ -43,6 +55,12 @@ const SignUp = () => {
       // Redirect to login page after successful sign up
       navigate("/chat");
     } catch (error) {
+      // if the error is due to the user already existing, alert the user
+      if (error.code === "auth/email-already-in-use") {
+        alert("User already exists. Sign up with a different credentials.");
+        return;
+      }
+
       console.error("Error signing up:", error);
       alert("An error occurred while signing up. Please try again.");
     }
@@ -57,29 +75,24 @@ const SignUp = () => {
         >
           <h1 className="text-2xl font-bold">Sign Up</h1>
           <p className="text-sm text-gray-600">
-            A random email has been generated for you to preserve privacy.
-            Please remember this email as you may need it to log in.
+            Enter the email address you were assigned.
           </p>
 
-          <label
-            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3 flex items-center"
+          <input
+            type="email"
+            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={email}
-            contentEditable={false}
-          >
-            {email}
-          </label>
+            required
+            placeholder="Email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <p className="text-sm text-gray-600 ">
+            Enter the password you were assigned
+          </p>
+
           <input
             type="text"
-            className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
-            placeholder="Participant ID"
-            onChange={(e) => setParticipantID(e.target.value)}
-          />
-          <p className="text-sm text-gray-600">
-            Create a password with a length of at least 6 characters.
-          </p>
-
-          <input
-            type="password"
             className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={password}
             required
@@ -87,7 +100,7 @@ const SignUp = () => {
             onChange={(e) => setPassword(e.target.value)}
           />
           <input
-            type="password"
+            type="text"
             className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={verifyPassword}
             required

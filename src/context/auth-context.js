@@ -27,7 +27,7 @@ export const AuthContextProvider = (props) => {
     console.log(user);
     if (!user || !user.uid) return;
 
-    const userRef = doc(db, "users", user.uid);
+    const userRef = doc(db, "users", user.email);
 
     // Check if the user already exists in Firestore
     const userSnapshot = await getDoc(userRef);
@@ -39,10 +39,10 @@ export const AuthContextProvider = (props) => {
         email: user.email,
         displayName: user.displayName,
         creationTs: Timestamp.now(),
-        participantID: user?.participantID,
+        expirationTs: user.expiration_date,
       };
       try {
-        await setDoc(doc(db, "users", user.uid), userDoc, { merge: true });
+        await setDoc(doc(db, "users", user.email), userDoc, { merge: true });
         console.log("User added to Firestore successfully");
       } catch (error) {
         console.error("Error adding user to Firestore:", error);

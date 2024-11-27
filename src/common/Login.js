@@ -23,6 +23,17 @@ const Login = () => {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
+      // check if user exists in Firestore
+      const userRef = doc(db, "users", email);
+      const userSnapshot = await getDoc(userRef);
+      // if user exists and the expiration date is in the past, alert saying the user is expired
+      if (
+        userSnapshot.exists() &&
+        userSnapshot.data().expirationTs.toDate() < new Date()
+      ) {
+        alert("User has expired. Please sign up again.");
+        return;
+      }
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
@@ -34,39 +45,10 @@ const Login = () => {
       // Redirect to home page after successful login
       // delay for one second
       await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate("/home?refresh=true");
+      navigate("/chat");
     } catch (error) {
       console.error("Error logging in:", error);
       alert("Invalid email or password. Please try again.");
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
-    try {
-      const userCredential = await signInWithPopup(auth, provider);
-      const user = userCredential.user;
-
-      // Check if the user document exists in Firestore
-      const userDocRef = doc(db, "users", user.uid);
-      const userDocSnap = await getDoc(userDocRef);
-      // Login the user
-      authCtx.login(user);
-      if (!userDocSnap.exists()) {
-        // User document does not exist, indicating a new user
-        taskCtx.setTasks(user);
-      } else {
-        console.log("User already exists,  so not assigning an LLM task");
-      }
-      // Redirect to home page after successful login
-      // delay for one second
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      navigate("/chat");
-    } catch (error) {
-      console.error("Error logging in with Google:", error);
-      alert(
-        "An error occurred while logging in with Google. Please try again."
-      );
     }
   };
 
@@ -86,7 +68,7 @@ const Login = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
           <input
-            type="password"
+            type="text"
             className="w-[20rem] bg-[#FFFFFF] h-8 text-black rounded py-2 px-3"
             value={password}
             required
