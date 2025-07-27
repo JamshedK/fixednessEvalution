@@ -57,10 +57,8 @@ export const TaskContextProvider = (props) => {
   const [tasks, setTasksState] = useState({
     firstTask: null,
     firstTaskTopic: null,
-  });
-  const [questionnaireOrder, setQuestionnaireOrderState] = useState({
-    firstQuestionnaire: null,
-    secondQuestionnaire: null,
+    secondTask: null,
+    secondTaskTopic: null,
   });
   const [allResponsesRated, setAllResponsesRatedState] = useState(false);
   const authCtx = useContext(AuthContext);
@@ -73,7 +71,6 @@ export const TaskContextProvider = (props) => {
           const docSnap = await getDoc(userDocRef);
           if (docSnap.exists() && docSnap.data().tasks) {
             setTasksState(docSnap.data().tasks);
-            setQuestionnaireOrderState(docSnap.data().questionnaireOrder);
           } else {
             console.log("No assigned tasks found or user does not exist.");
           }
@@ -106,32 +103,33 @@ export const TaskContextProvider = (props) => {
     return latinSquare[row][column];
   };
 
-  const setTasks = (user) => {
+const setTasks = (user) => {
     // Generate Latin Square for task topics
     const latinSquareTopics = generateLatinSquare(tasksJSON);
     console.log(latinSquareTopics);
     const firstTaskObj = selectRandomTask(latinSquareTopics);
-    const questionnaires = ["search", "virtual-assistant"];
-    const firstQuestionnaire = questionnaires[Math.floor(Math.random() * 2)];
-    const secondQuestionnaire = questionnaires.filter(
-      (questionnaire) => questionnaire !== firstQuestionnaire
-    )[0];
-    const questionnaireOrder = {
-      firstQuestionnaire,
-      secondQuestionnaire,
-    };
-    const firstTask = "chat";
+    let secondTaskObj = selectRandomTask(latinSquareTopics);
+    while (firstTaskObj.title === secondTaskObj.title) {
+      secondTaskObj = selectRandomTask(latinSquareTopics);
+    }
+    const taskTypes = ["chat", "search"];
+    const firstTaskIndex = Math.floor(Math.random() * taskTypes.length);
+    const firstTask = taskTypes[firstTaskIndex];
+    const secondTask = taskTypes[firstTaskIndex === 0 ? 1 : 0]; // Ensure the second task is different
     const obj = {
       firstTask,
       firstTaskTopic: firstTaskObj.title,
       firstTaskDescription: firstTaskObj.description,
+      secondTask,
+      secondTaskTopic: secondTaskObj.title,
+      secondTaskDescription: secondTaskObj.description,
     };
+    console.log(obj);
     try {
       if (user && user.uid) {
         const userDocRef = doc(db, "users", user.uid);
         updateDoc(userDocRef, {
           tasks: obj,
-          questionnaireOrder,
         });
         console.log("User was assigned tasks successfully");
       }
@@ -188,10 +186,6 @@ export const TaskContextProvider = (props) => {
     setAllResponsesRatedState(value);
   };
 
-  const setQuestionnaireOrder = (value) => {
-    setQuestionnaireOrderState(value);
-  };
-
   const setPromptIDForRating = (value) => {
     setPromptIDForRatingState(value);
   };
@@ -217,7 +211,6 @@ export const TaskContextProvider = (props) => {
     timeRemaining,
     queryCount,
     allResponsesRated,
-    questionnaireOrder,
     promptIDForRating,
     setSearchEngineTask,
     setShowEditNoteReminder,
@@ -231,7 +224,6 @@ export const TaskContextProvider = (props) => {
     setTimeRemaining,
     setQueryCount,
     setAllResponsesRated,
-    setQuestionnaireOrder,
     getQuestionnaireText,
     setPromptIDForRating,
   };

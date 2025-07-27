@@ -117,6 +117,18 @@ export const FlowContextProvider = ({ children }) => {
         setPreTask1Completed(true);
         updateTaskStateInFirestore("preTask1Completed", true);
         break;
+      case "setTask1Completed":
+        setTask1Completed(true);
+        updateTaskStateInFirestore("task1Completed", true);
+        break;
+      case "setPostTask1Completed":
+        setPostTask1Completed(true);
+        updateTaskStateInFirestore("postTask1Completed", true);
+        break;
+      case "setSessionExperienceSurvey1Completed":
+        setSessionExperienceSurvey1Completed(true);
+        updateTaskStateInFirestore("sessionExperienceSurvey1Completed", true);
+        break;
       case "setPreTask2Completed":
         setPreTask2Completed(true);
         updateTaskStateInFirestore("preTask2Completed", true);

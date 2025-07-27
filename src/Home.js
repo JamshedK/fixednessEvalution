@@ -12,14 +12,19 @@ const Home = ({ onSelectItem }) => {
   const flowCtx = useContext(FlowContext);
   const taskCtx = useContext(TaskContext);
   const navigate = useNavigate();
-  const firstQuestionnaireText = taskCtx.getQuestionnaireText(
-    taskCtx.questionnaireOrder.firstQuestionnaire
-  );
-  const secondQuestionnaireText = taskCtx.getQuestionnaireText(
-    taskCtx.questionnaireOrder.secondQuestionnaire
-  );
+  var firstTask = taskCtx.tasks.firstTask;
+  var secondTask = taskCtx.tasks.secondTask;
 
-  console.log(firstQuestionnaireText, secondQuestionnaireText);
+  if (firstTask === 'chat'){
+    firstTask = "ChatGPT Task";
+    secondTask = "Search Engine Task";
+  } 
+  else{
+    firstTask = "Search Engine Task";
+    secondTask = "ChatGPT Task";
+  }
+  const firstTaskShort = taskCtx.tasks.firstTask;
+  const secondTaskShort = taskCtx.tasks.secondTask;
 
   const tasks = [
     {
@@ -30,34 +35,55 @@ const Home = ({ onSelectItem }) => {
       allowEntryUponCompletion: true,
       estimatedTime: "1-2 minutes",
     },
+    {title: firstTask, isText: true},
     {
-      title: `${firstQuestionnaireText}`,
-      isText: true,
-    },
-    {
-      title: `${firstQuestionnaireText} Questionnaire`,
+      title: "Pre-task Questionnaire",
       completed: flowCtx.preTask1Completed,
-      path: `/pre-task?firstTask=false&currentTask=${taskCtx.questionnaireOrder.firstQuestionnaire}&flowState=setPreTask1Completed`,
+      path: `/pre-task?firstTask=true&currentTask=${firstTaskShort}&flowState=setPreTask1Completed`,
       canNavigate: flowCtx.demographyCompleted,
       allowEntryUponCompletion: false,
       estimatedTime: "3-4 minutes",
     },
     {
-      title: "ChatGPT Task",
+      title: `Task: ${firstTaskShort} + Answer the Question`,
+      completed: flowCtx.task1Completed,
+      path: `/${firstTaskShort}?firstTask=true&flowState=setTask1Completed`,
+      canNavigate: flowCtx.preTask1Completed,
+      allowEntryUponCompletion: false,
+      estimatedTime: "15 minutes or above",
+    },
+    {
+      title: "Post-task Questionnaire",
+      completed: flowCtx.postTask1Completed,
+      path: `/post-task?firstTask=true&currentTask=${firstTaskShort}&flowState=setPostTask1Completed`,
+      canNavigate: flowCtx.task1Completed,
+      allowEntryUponCompletion: true,
+      estimatedTime: "3-4 minutes",
+    },
+    {
+      title: "Session Experience Survey",
+      completed: flowCtx.sessionExperienceSurvey1Completed,
+      path: `/session-experience?firstTask=true&currentTask=${firstTaskShort}&flowState=setSessionExperienceSurvey1Completed`,
+      canNavigate: flowCtx.postTask1Completed,
+      allowEntryUponCompletion: true,
+      estimatedTime: "1-2 minutes",
+    },
+    {
+      title: secondTask,
       isText: true,
     },
     {
       title: "Pre-task Questionnaire",
       completed: flowCtx.preTask2Completed,
-      path: `/pre-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}&flowState=setPreTask2Completed`,
-      canNavigate: flowCtx.preTask1Completed,
+      path: `/pre-task?firstTask=false&currentTask=${secondTaskShort}&flowState=setPreTask2Completed`,
+      canNavigate: flowCtx.sessionExperienceSurvey1Completed,
       allowEntryUponCompletion: false,
       estimatedTime: "3-4 minutes",
     },
     {
-      title: `Task: ${taskCtx.tasks.firstTask} + Answer the Question`,
+      title: `Task: ${secondTaskShort} + Answer the Question`,
       completed: flowCtx.task2Completed,
-      path: `/${taskCtx.tasks.firstTask}?firstTask=true&flowState=setTask2Completed`,
+      path: `/${secondTaskShort}?firstTask=false&flowState=setTask2Completed`,
       canNavigate: flowCtx.preTask2Completed,
       allowEntryUponCompletion: false,
       estimatedTime: "15 minutes or above",
@@ -65,7 +91,7 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Post-task Questionnaire",
       completed: flowCtx.postTask2Completed,
-      path: `/post-task?firstTask=true&currentTask=${taskCtx.tasks.firstTask}&flowState=setPostTask2Completed`,
+      path: `/post-task?firstTask=false&currentTask=${secondTask}&flowState=setPostTask2Completed`,
       canNavigate: flowCtx.task2Completed,
       allowEntryUponCompletion: true,
       estimatedTime: "3-4 minutes",
@@ -73,22 +99,10 @@ const Home = ({ onSelectItem }) => {
     {
       title: "Session Experience Survey",
       completed: flowCtx.sessionExperienceSurvey2Completed,
-      path: `/session-experience?firstTask=true&currentTask=${taskCtx.tasks.firstTask}&flowState=setSessionExperienceSurvey2Completed`,
+      path: `/session-experience?firstTask=false&currentTask=${secondTaskShort}&flowState=setSessionExperienceSurvey2Completed`,
       canNavigate: flowCtx.postTask2Completed,
       allowEntryUponCompletion: true,
       estimatedTime: "1-2 minutes",
-    },
-    {
-      title: `${secondQuestionnaireText}`,
-      isText: true,
-    },
-    {
-      title: `${secondQuestionnaireText} Questionnaire`,
-      completed: flowCtx.preTask3Completed,
-      path: `/pre-task?firstTask=false&currentTask=${taskCtx.questionnaireOrder.secondQuestionnaire}&flowState=setPreTask3Completed`,
-      canNavigate: flowCtx.sessionExperienceSurvey2Completed,
-      allowEntryUponCompletion: false,
-      estimatedTime: "3-4 minutes",
     },
     {
       title: "End of Study",

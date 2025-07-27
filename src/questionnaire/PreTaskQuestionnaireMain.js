@@ -18,7 +18,6 @@ import { FlowContext } from "../context/flow-context";
 import { useNavigate } from "react-router-dom";
 import InstructionsPopUp from "./InstructionsPopUp";
 import { useLocation } from "react-router-dom";
-import IntroPage from "./IntroPage";
 
 let instructionText =
   "Read the intention on the left, answer the two survey questions below it, then click the next intention for more questions. Complete all listed intentions.";
@@ -29,7 +28,6 @@ const QuestionnnaireMain = () => {
   const [showInstructions, setShowInstructions] = useState(true);
   const [localTopology, setLocalTopology] = useState(topologyJSON);
   const [startedTs, setStartedTs] = useState(Timestamp.now());
-  const [showIntroPage, setShowIntroPage] = useState(false);
 
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
@@ -45,14 +43,6 @@ const QuestionnnaireMain = () => {
     instructionText =
       "Please reflect on your personal experience of using virtual assistants (e.g. Siri, Cortana, Google Assistant, Amazon Alexa), and answer the following questions (see left sidebar).";
   }
-  // For showing the intro page
-  useEffect(() => {
-    const currentTask = new URLSearchParams(location.search).get("currentTask");
-    if (currentTask !== "chat") {
-      setShowIntroPage(true);
-    }
-  }, []);
-
   // get ratings from firebase
   useEffect(() => {
     const fetchData = async () => {
@@ -170,12 +160,6 @@ const QuestionnnaireMain = () => {
 
   return (
     <div>
-      {showIntroPage ? (
-        <IntroPage
-          currentTask={currentTask}
-          setShowIntroPage={setShowIntroPage}
-        />
-      ) : (
         <>
           <div className="flex flex-row bg-[#FFFFFF] items-center pt-4">
             <div className="flex flex-col w-[30%] h-screen">
@@ -232,7 +216,6 @@ const QuestionnnaireMain = () => {
             )}
           </div>
         </>
-      )}
     </div>
   );
 };
