@@ -11,7 +11,7 @@ import { Navigate } from "react-router-dom";
 import DemographyMain from "./questionnaire/BackgroundMain";
 import Logout from "./common/Logout";
 import Home from "./Home";
-import MainSearchTask from "./bing/MainSearchTask";
+import MainSearchTask from "./search/MainSearchTask";
 import ExperienceSurveyMain from "./questionnaire/ExperienceSurveyMain";
 import EndOfStudy from "./questionnaire/EndOfStudy";
 import ConsentForm from "./common/Consent";

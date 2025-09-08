@@ -1,30 +1,35 @@
 import ai_profile from "../assets/chatbox/ai_profile.svg";
 
-const SingleResultContainer = ({ name, displayUrl, snippet, onClick }) => {
+const SingleResultContainer = ({ displayUrl, name, snippet, favicon, onClick }) => {
   return (
-    <div className="p-4 bg-[#e3e3e3] text-black rounded-lg">
-      <div className="flex gap-2 items-center">
-        <img src={ai_profile} alt="Profile" className="h-6 w-6" />
-        <a
-          href={displayUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          onClick={() => onClick(displayUrl)}
-          className="text-black hover:text-black-300 hover:underline text-sm font-[14px]"
-        >
-          {displayUrl}
-        </a>
+    <div 
+      className="border rounded-lg p-4 cursor-pointer hover:bg-gray-50 transition-colors"
+      onClick={onClick}
+    >
+      <div className="flex items-start space-x-3">
+        {/* Favicon */}
+        <img 
+          src={favicon} 
+          alt="Site icon"
+          className="w-4 h-4 mt-1 flex-shrink-0"
+        />
+        
+        {/* Content */}
+        <div className="flex-1 min-w-0">
+          {/* URL */}
+          <p className="text-sm text-green-600 truncate">{displayUrl}</p>
+          
+          {/* Title */}
+          <h3 className="text-lg font-medium text-blue-600 hover:underline line-clamp-2">
+            {name}
+          </h3>
+          
+          {/* Snippet */}
+          <p className="text-sm text-gray-600 mt-1 line-clamp-3">
+            {snippet}
+          </p>
+        </div>
       </div>
-      <a
-        href={displayUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        onClick={() => onClick(displayUrl)}
-        className="text-black hover:text-black-300 hover:underline text-md font-medium"
-      >
-        {name}
-      </a>
-      <p className="text-[14px]">{snippet}</p>
     </div>
   );
 };

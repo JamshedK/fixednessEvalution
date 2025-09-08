@@ -4,7 +4,6 @@ import Chatbox from "./chatbox";
 import NoteBar from "./NoteBar";
 import TaskContext from "../context/task-context";
 import EndTaskPopUp from "./EndTaskPopUp";
-import MainSearchPage from "../bing/SearchPage";
 import InstructionsPopUp from "../questionnaire/InstructionsPopUp";
 import { Timestamp, setDoc, doc, getDoc } from "firebase/firestore";
 import AuthContext from "../context/auth-context";

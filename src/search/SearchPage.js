@@ -18,7 +18,7 @@ import { getFunctions, httpsCallable } from "firebase/functions";
 import SingleResultContainer from "./SingleResultContainer";
 import EditNoteReminder from "../chat/EditNoteReminder";
 import RatePrompt from "../chat/RatePrompt";
-import RateSearchResults from "../bing/RateSearchResults";
+import RateSearchResults from "../search/RateSearchResults";
 import { click } from "@testing-library/user-event/dist/click";
 
 const SearchPage = () => {
@@ -151,50 +151,59 @@ const SearchPage = () => {
   };
 
   const search = async () => {
-    if (!query) return;
-    if (taskCtx.isRatingNeeded) {
-      taskCtx.setShowRatingPopUp(true);
-      return;
-    } else if (taskCtx.showEditNoteReminder) {
-      taskCtx.setShowPopUp(true);
-      return;
+  if (!query) return;
+  if (taskCtx.isRatingNeeded) {
+    taskCtx.setShowRatingPopUp(true);
+    return;
+  } else if (taskCtx.showEditNoteReminder) {
+    taskCtx.setShowPopUp(true);
+    return;
+  }
+  setIsLoading(true);
+  setTypingStartTime(null);
+  taskCtx.setQueryCount();
+  const qID = uid();
+  setQueryID(qID);
+  
+  try {
+    // Use Firebase Cloud Function instead of direct API call
+    const braveSearch = httpsCallable(functions, "braveSearch");
+    const result = await braveSearch({ query: query });
+    const data = result.data;
+    
+    console.log("Brave Search Results:", data);
+    
+    // Check if web results exist
+    if (!data.web || !data.web.results) {
+      throw new Error("No web results found in Brave Search response");
     }
-    setIsLoading(true); // Start loading
-    setTypingStartTime(null);
-    taskCtx.setQueryCount();
-    const qID = uid();
-    setQueryID(qID);
-    const subscriptionKey = process.env.REACT_APP_BING_API_KEY;
-    const endpoint = "https://api.bing.microsoft.com/v7.0/search";
-    const params = new URLSearchParams({ q: query, mkt: "en-US" });
 
-    try {
-      const response = await fetch(`${endpoint}?${params}`, {
-        headers: { "Ocp-Apim-Subscription-Key": subscriptionKey },
-      });
+    // Transform Brave Search results to match the expected format
+    const localSearchResults = data.web.results.map((result) => ({
+      title: result.title,
+      url: result.url,
+      snippet: result.description,
+      displayUrl: result.url,
+      name: result.title,
+      customID: uid(),
+      favicon: result.meta_url?.favicon,
+    }));
 
-      if (!response.ok) {
-        throw new Error("Search API request failed");
-      }
+    // print the first favicon for testing
+    console.log("First favicon URL:", localSearchResults[0]?.favicon);
 
-      const data = await response.json();
-      console.log(data.webPages);
-      const localSearchResults = data.webPages.value.map((result) => ({
-        ...result,
-        customID: uid(),
-      }));
-
-      setSearchResults(localSearchResults); // Store the search results
-      // Update the context to show the pop-up
-      taskCtx.setIsRatingNeeded(true);
-      taskCtx.setShowEditNoteReminder(true);
-      await storeSearchResults(query, localSearchResults, qID);
-    } catch (error) {
-      console.error("Error fetching search results:", error);
-    } finally {
-      setIsLoading(false); // Stop loading regardless of the outcome
-    }
-  };
+    setSearchResults(localSearchResults); // Store the search results
+    // Update the context to show the pop-up
+    taskCtx.setIsRatingNeeded(true);
+    taskCtx.setShowEditNoteReminder(true);
+    await storeSearchResults(query, localSearchResults, qID);
+  } catch (error) {
+    console.error("Error fetching search results:", error);
+    alert("Search failed. Please try again.");
+  } finally {
+    setIsLoading(false);
+  }
+};
 
   return (
     <div className="p-4 w-full bg-[#FFFFFF]">
@@ -228,6 +237,7 @@ const SearchPage = () => {
               displayUrl={page.displayUrl}
               name={page.name}
               snippet={page.snippet}
+              favicon={page.favicon}
               onClick={() =>
                 handleSearchResultClick({
                   url: page.displayUrl,
