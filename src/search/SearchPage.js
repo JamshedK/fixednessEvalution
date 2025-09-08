@@ -215,7 +215,7 @@ const SearchPage = () => {
 };
 
   return (
-    <div className="p-4 w-full bg-[#FFFFFF]">
+    <div className="p-4 w-full bg-[#FFFFFF] overflow-y-auto ">
       <div className="flex flex-row space-x-6">
         <div className="rounded-3xl bg-[#e3e3e3] px-8 py-3 min-h-11 flex flex-grow items-center">
           <textarea
@@ -236,7 +236,7 @@ const SearchPage = () => {
           </button>
         </div>
       </div>
-      <div className="flex flex-col space-y-2 mt-4">
+      <div className="flex flex-col space-y-2 mt-4 overflow-y-auto">
         {isLoading ? (
           <p className="text-black text-center">Searching...</p>
         ) : (

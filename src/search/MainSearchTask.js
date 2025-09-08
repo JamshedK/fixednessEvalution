@@ -35,7 +35,9 @@ const MainSearchTask = () => {
   return (
     <div className="flex flex-row w-screen">
       <Navbar setShowInstructions={setShowInstructions} />
-      <SearchPage />
+      <div className="w-[80%] h-screen">
+       <SearchPage />
+      </div>
       <NoteBar />
       {taskCtx.showEndTaskPopUp && (
         <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center">

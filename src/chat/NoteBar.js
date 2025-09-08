@@ -28,12 +28,13 @@ const NoteBar = (props) => {
         "You can end the task only after 4 interactions with the search engine utilizing 'Search the web..'";
     }
     if (taskCtx.queryCount >= 4) {
-      if (!taskCtx.allResponsesRated) {
+      if (taskCtx.firstTask === "chat" && !taskCtx.allResponsesRated) {
         alert(
           "Not all responses are rated! Please click the star next to the ChatGPT response before submitting the task."
         );
         return;
-      } else {
+      }
+      else {
         taskCtx.setShowEndTaskPopUp(true);
       }
     } else {
