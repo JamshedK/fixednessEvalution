@@ -41,3 +41,49 @@ exports.fetchAndStoreWebPage = functions.https.onCall(async (data, context) => {
     );
   }
 });
+
+exports.braveSearch = functions.https.onCall(async (data, context) => {
+  const { query } = data;
+  
+  if (!query) {
+    throw new functions.https.HttpsError('invalid-argument', 'Query is required');
+  }
+
+  // Get API key from Firebase config with fallback
+  const config = functions.config();
+  console.log('Full config:', JSON.stringify(config)); // Debug log
+
+  const apiKey = config.brave?.api_key || process.env.BRAVE_SEARCH_API_KEY;
+  
+  const endpoint = "https://api.search.brave.com/res/v1/web/search";
+  const params = new URLSearchParams({ 
+    q: query,
+    count: 20,
+    country: "US",
+    search_lang: "en",
+    ui_lang: "en-US",
+    safesearch: "moderate",
+    freshness: "none",
+    text_decorations: false,
+    spellcheck: true
+  });
+
+  try {
+    const response = await fetch(`${endpoint}?${params}`, {
+      headers: { 
+        "Accept": "application/json",
+        "X-Subscription-Token": apiKey 
+      },
+    });
+
+    if (!response.ok) {
+      throw new functions.https.HttpsError('internal', `Brave Search API request failed: ${response.status}`);
+    }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Brave Search API Error:", error);
+    throw new functions.https.HttpsError('internal', 'Search request failed');
+  }
+});
