@@ -10,10 +10,6 @@ export const FlowContext = createContext({
   task1Completed: false,
   postTask1Completed: false,
   sessionExperienceSurvey1Completed: false,
-  preTask2Completed: false,
-  task2Completed: false,
-  postTask2Completed: false,
-  sessionExperienceSurvey2Completed: false,
   preTask3Completed: false,
   isLoading: false,
   isEndOfStudySurveyCompleted: false,
@@ -23,10 +19,6 @@ export const FlowContext = createContext({
   setTask1Completed: () => {},
   setPostTask1Completed: () => {},
   setSessionExperienceSurvey1Completed: () => {},
-  setPreTask2Completed: () => {},
-  setTask2Completed: () => {},
-  setPostTask2Completed: () => {},
-  setSessionExperienceSurvey2Completed: () => {},
   setPreTask3Completed: () => {},
   setIsLoading: () => {},
   setIsEndOfStudySurveyCompleted: () => {},
@@ -42,13 +34,6 @@ export const FlowContextProvider = ({ children }) => {
   const [
     sessionExperienceSurvey1Completed,
     setSessionExperienceSurvey1Completed,
-  ] = useState(false);
-  const [preTask2Completed, setPreTask2Completed] = useState(false);
-  const [task2Completed, setTask2Completed] = useState(false);
-  const [postTask2Completed, setPostTask2Completed] = useState(false);
-  const [
-    sessionExperienceSurvey2Completed,
-    setSessionExperienceSurvey2Completed,
   ] = useState(false);
   const [preTask3Completed, setPreTask3Completed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -74,14 +59,8 @@ export const FlowContextProvider = ({ children }) => {
           setPreTask1Completed(data.preTask1Completed || false);
           setTask1Completed(data.task1Completed || false);
           setPostTask1Completed(data.postTask1Completed || false);
-          setPreTask2Completed(data.preTask2Completed || false);
-          setTask2Completed(data.task2Completed || false);
-          setPostTask2Completed(data.postTask2Completed || false);
           setSessionExperienceSurvey1Completed(
             data.sessionExperienceSurvey1Completed || false
-          );
-          setSessionExperienceSurvey2Completed(
-            data.sessionExperienceSurvey2Completed || false
           );
           setPreTask3Completed(data.preTask3Completed || false);
           setIsEndOfStudySurveyCompleted(
@@ -129,22 +108,6 @@ export const FlowContextProvider = ({ children }) => {
         setSessionExperienceSurvey1Completed(true);
         updateTaskStateInFirestore("sessionExperienceSurvey1Completed", true);
         break;
-      case "setPreTask2Completed":
-        setPreTask2Completed(true);
-        updateTaskStateInFirestore("preTask2Completed", true);
-        break;
-      case "setTask2Completed":
-        setTask2Completed(true);
-        updateTaskStateInFirestore("task2Completed", true);
-        break;
-      case "setPostTask2Completed":
-        setPostTask2Completed(true);
-        updateTaskStateInFirestore("postTask2Completed", true);
-        break;
-      case "setSessionExperienceSurvey2Completed":
-        setSessionExperienceSurvey2Completed(true);
-        updateTaskStateInFirestore("sessionExperienceSurvey2Completed", true);
-        break;
       case "setPreTask3Completed":
         setPreTask3Completed(true);
         updateTaskStateInFirestore("preTask3Completed", true);
@@ -161,10 +124,6 @@ export const FlowContextProvider = ({ children }) => {
     task1Completed,
     postTask1Completed,
     sessionExperienceSurvey1Completed,
-    preTask2Completed,
-    task2Completed,
-    postTask2Completed,
-    sessionExperienceSurvey2Completed,
     preTask3Completed,
     isLoading,
     isEndOfStudySurveyCompleted,
@@ -188,22 +147,6 @@ export const FlowContextProvider = ({ children }) => {
     setSessionExperienceSurvey1Completed: (value) => {
       setSessionExperienceSurvey1Completed(value);
       updateTaskStateInFirestore("sessionExperienceSurvey1Completed", value);
-    },
-    setPreTask2Completed: (value) => {
-      setPreTask2Completed(value);
-      updateTaskStateInFirestore("preTask2Completed", value);
-    },
-    setTask2Completed: (value) => {
-      setTask2Completed(value);
-      updateTaskStateInFirestore("task2Completed", value);
-    },
-    setPostTask2Completed: (value) => {
-      setPostTask2Completed(value);
-      updateTaskStateInFirestore("postTask2Completed", value);
-    },
-    setSessionExperienceSurvey2Completed: (value) => {
-      setSessionExperienceSurvey2Completed(value);
-      updateTaskStateInFirestore("sessionExperienceSurvey2Completed", value);
     },
     setPreTask3Completed: (value) => {
       setPreTask3Completed(value);

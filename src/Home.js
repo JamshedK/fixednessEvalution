@@ -13,18 +13,14 @@ const Home = ({ onSelectItem }) => {
   const taskCtx = useContext(TaskContext);
   const navigate = useNavigate();
   var firstTask = taskCtx.tasks.firstTask;
-  var secondTask = taskCtx.tasks.secondTask;
 
   if (firstTask === 'chat'){
     firstTask = "ChatGPT Task";
-    secondTask = "Search Engine Task";
   } 
   else{
     firstTask = "Search Engine Task";
-    secondTask = "ChatGPT Task";
   }
   const firstTaskShort = taskCtx.tasks.firstTask;
-  const secondTaskShort = taskCtx.tasks.secondTask;
 
   const tasks = [
     {
@@ -69,42 +65,6 @@ const Home = ({ onSelectItem }) => {
       estimatedTime: "1-2 minutes",
     },
     {
-      title: secondTask,
-      isText: true,
-    },
-    {
-      title: "Pre-task Questionnaire",
-      completed: flowCtx.preTask2Completed,
-      path: `/pre-task?firstTask=false&currentTask=${secondTaskShort}&flowState=setPreTask2Completed`,
-      canNavigate: flowCtx.sessionExperienceSurvey1Completed,
-      allowEntryUponCompletion: false,
-      estimatedTime: "3-4 minutes",
-    },
-    {
-      title: `Task: ${secondTaskShort} + Answer the Question`,
-      completed: flowCtx.task2Completed,
-      path: `/${secondTaskShort}?firstTask=false&flowState=setTask2Completed`,
-      canNavigate: flowCtx.preTask2Completed,
-      allowEntryUponCompletion: false,
-      estimatedTime: "15 minutes or above",
-    },
-    {
-      title: "Post-task Questionnaire",
-      completed: flowCtx.postTask2Completed,
-      path: `/post-task?firstTask=false&currentTask=${secondTask}&flowState=setPostTask2Completed`,
-      canNavigate: flowCtx.task2Completed,
-      allowEntryUponCompletion: true,
-      estimatedTime: "3-4 minutes",
-    },
-    {
-      title: "Session Experience Survey",
-      completed: flowCtx.sessionExperienceSurvey2Completed,
-      path: `/session-experience?firstTask=false&currentTask=${secondTaskShort}&flowState=setSessionExperienceSurvey2Completed`,
-      canNavigate: flowCtx.postTask2Completed,
-      allowEntryUponCompletion: true,
-      estimatedTime: "1-2 minutes",
-    },
-    {
       title: "End of Study",
       isText: true,
     },
@@ -112,7 +72,7 @@ const Home = ({ onSelectItem }) => {
       title: "End of Study Survey",
       completed: flowCtx.isEndOfStudySurveyCompleted,
       path: "/end",
-      canNavigate: flowCtx.preTask3Completed,
+      canNavigate: flowCtx.sessionExperienceSurvey1Completed,
       allowEntryUponCompletion: true,
       estimatedTime: "~1 minute",
     },

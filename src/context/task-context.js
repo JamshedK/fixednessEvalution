@@ -57,8 +57,6 @@ export const TaskContextProvider = (props) => {
   const [tasks, setTasksState] = useState({
     firstTask: null,
     firstTaskTopic: null,
-    secondTask: null,
-    secondTaskTopic: null,
   });
   const [allResponsesRated, setAllResponsesRatedState] = useState(false);
   const authCtx = useContext(AuthContext);
@@ -108,22 +106,18 @@ const setTasks = (user) => {
     const latinSquareTopics = generateLatinSquare(tasksJSON);
     console.log(latinSquareTopics);
     const firstTaskObj = selectRandomTask(latinSquareTopics);
-    let secondTaskObj = selectRandomTask(latinSquareTopics);
-    while (firstTaskObj.title === secondTaskObj.title) {
-      secondTaskObj = selectRandomTask(latinSquareTopics);
-    }
+
+    // Randomly assign firstTask to be either "chat" or "search"
     const taskTypes = ["chat", "search"];
     const firstTaskIndex = Math.floor(Math.random() * taskTypes.length);
     const firstTask = taskTypes[firstTaskIndex];
-    const secondTask = taskTypes[firstTaskIndex === 0 ? 1 : 0]; // Ensure the second task is different
+
     const obj = {
       firstTask,
       firstTaskTopic: firstTaskObj.title,
-      firstTaskDescription: firstTaskObj.description,
-      secondTask,
-      secondTaskTopic: secondTaskObj.title,
-      secondTaskDescription: secondTaskObj.description,
+      firstTaskDescription: firstTaskObj.description
     };
+
     console.log(obj);
     try {
       if (user && user.uid) {

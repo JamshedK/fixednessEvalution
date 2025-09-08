@@ -36,64 +36,73 @@ const SearchPage = () => {
   const textRef = useRef();
 
   const handleSearchResultClick = async (clickedObj) => {
-    // Prepare to invoke the Cloud Function
-    const fetchAndStoreWebPage = httpsCallable(
-      functions,
-      "fetchAndStoreWebPage"
-    );
 
-    // Call the Cloud Function with the URL and customID
-    fetchAndStoreWebPage({ url: clickedObj.url, customID: clickedObj.customID })
-      .then((result) => {
-        console.log(result.data); // Handle success
-      })
-      .catch((error) => {
-        console.error("Error:", error); // Handle error
-      });
-
-    // Reference to the searchTask document
-    const searchTaskRef = doc(db, "searchTask", user.uid);
-
-    // Transaction to ensure atomic update
-    await runTransaction(db, async (transaction) => {
-      const searchTaskDoc = await transaction.get(searchTaskRef);
-      if (!searchTaskDoc.exists()) {
-        console.error("Document does not exist!");
-        return;
-      }
-
-      // Extract current data
-      const data = searchTaskDoc.data();
-      const { queryInteractions } = data;
-
-      // Find the specific query interaction, assuming `query` is unique per interaction
-      const interactionIndex = queryInteractions.findIndex(
-        (interaction) => interaction.query === query
+    try {
+      
+      // Prepare to invoke the Cloud Function
+      const fetchAndStoreWebPage = httpsCallable(
+        functions,
+        "fetchAndStoreWebPage"
       );
-      if (interactionIndex === -1) {
-        console.error("Query interaction not found!");
-        return;
-      }
 
-      // Clone the interactions to avoid direct mutation
-      const updatedQueryInteractions = [...queryInteractions];
+      // Call the Cloud Function with the URL and customID
+      fetchAndStoreWebPage({ url: clickedObj.url, customID: clickedObj.customID })
+        .then((result) => {
+          console.log(result.data); // Handle success
+        })
+        .catch((error) => {
+          console.error("Error:", error); // Handle error
+        });
 
-      // Update the clickedResults for the specific query interaction
-      const interaction = updatedQueryInteractions[interactionIndex];
-      console.log(interaction);
-      const updatedClickedResults = interaction.clickedResults
-        ? [...interaction.clickedResults, clickedObj]
-        : [clickedObj];
-      updatedQueryInteractions[interactionIndex] = {
-        ...interaction,
-        clickedResults: updatedClickedResults,
-      };
+      // Reference to the searchTask document
+      const searchTaskRef = doc(db, "searchTask", user.uid);
 
-      // Update the document with the new interactions
-      transaction.update(searchTaskRef, {
-        queryInteractions: updatedQueryInteractions,
+      // Transaction to ensure atomic update
+      await runTransaction(db, async (transaction) => {
+        const searchTaskDoc = await transaction.get(searchTaskRef);
+        if (!searchTaskDoc.exists()) {
+          console.error("Document does not exist!");
+          return;
+        }
+
+        // Extract current data
+        const data = searchTaskDoc.data();
+        const { queryInteractions } = data;
+
+        // Find the specific query interaction, assuming `query` is unique per interaction
+        const interactionIndex = queryInteractions.findIndex(
+          (interaction) => interaction.query === query
+        );
+        if (interactionIndex === -1) {
+          console.error("Query interaction not found!");
+          return;
+        }
+
+        // Clone the interactions to avoid direct mutation
+        const updatedQueryInteractions = [...queryInteractions];
+
+        // Update the clickedResults for the specific query interaction
+        const interaction = updatedQueryInteractions[interactionIndex];
+        console.log(interaction);
+        const updatedClickedResults = interaction.clickedResults
+          ? [...interaction.clickedResults, clickedObj]
+          : [clickedObj];
+        updatedQueryInteractions[interactionIndex] = {
+          ...interaction,
+          clickedResults: updatedClickedResults,
+        };
+
+        // Update the document with the new interactions
+        transaction.update(searchTaskRef, {
+          queryInteractions: updatedQueryInteractions,
+        });
       });
-    });
+      // Open URL in new tab
+      window.open(clickedObj.url, "_blank");
+    } catch (error) {
+      console.error("Error recording click or opening webpage:", error);
+      alert("Failed to record click or open webpage. Please try again.");
+    }
   };
 
   const storeSearchResults = async (query, searchResults, queryID) => {
