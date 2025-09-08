@@ -67,13 +67,13 @@ const Navbar = (props) => {
         <div className="pl-8 text-[14px] text-black mb-2">
           <label className="">{currentTask}</label>
         </div>
-        <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-4 py-4 w-fit text-md lg:text-[14px] text-black">
+        <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-4 py-4 w-fit text-md lg:text-[14px] text-black select-none">
           <label className="">{task}</label>
         </div>
         <div className="pl-8 text-black md:text-[16px] mt-4 mb-2">
           <label className="">Full task description</label>
         </div>
-        <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-4 py-4 w-fit text-md lg:text-[14px] text-black">
+        <div className="bg-[#FFFFFF] h-fit rounded-xl mx-5 px-4 py-4 w-fit text-md lg:text-[14px] text-black select-none">
           <label className="">{taskDescription}</label>
         </div>
       </div>
