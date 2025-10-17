@@ -15,6 +15,8 @@ import MainSearchTask from "./search/MainSearchTask";
 import ExperienceSurveyMain from "./questionnaire/ExperienceSurveyMain";
 import EndOfStudy from "./questionnaire/EndOfStudy";
 import ConsentForm from "./common/Consent";
+import InsertTasks from "./admin/InsertTasks";
+import ShowCurrentTasks from "./admin/InsertTasks/ShowCurrentTasks";
 
 function App() {
   const authCtx = useContext(AuthContext);
@@ -58,6 +60,7 @@ function App() {
         <Route path="/post-task" element={<PostTaskQuestionnaireMain />} />
         <Route path="/demography" element={<DemographyMain />} />
         <Route path="/chat" element={<MainChatTask />} />
+        <Route path="/admin/insert-tasks" element={<InsertTasks />} />
       </Routes>
     </div>
   );
