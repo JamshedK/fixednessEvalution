@@ -50,12 +50,20 @@ const AdminDashboard = () => {
             <h1 className="text-2xl font-bold text-gray-800">Admin Dashboard</h1>
             <p className="text-gray-600">Welcome, {authCtx.adminInfo?.email || 'Administrator'}</p>
           </div>
-          <button
-            onClick={handleLogout}
-            className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
-          >
-            Logout
-          </button>
+          <div className="flex gap-3">
+            <button
+              onClick={() => navigate("/")}
+              className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              Switch to Participant View
+            </button>
+            <button
+              onClick={handleLogout}
+              className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors"
+            >
+              Logout
+            </button>
+          </div>
         </div>
       </div>
 

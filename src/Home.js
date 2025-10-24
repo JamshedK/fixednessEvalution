@@ -6,11 +6,13 @@ import { FlowContext } from "./context/flow-context";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import TaskContext from "./context/task-context";
+import AuthContext from "./context/auth-context";
 import { get } from "firebase/database";
 
 const Home = ({ onSelectItem }) => {
   const flowCtx = useContext(FlowContext);
   const taskCtx = useContext(TaskContext);
+  const authCtx = useContext(AuthContext);
   const navigate = useNavigate();
   var firstTask = taskCtx.tasks.firstTask;
 
@@ -103,6 +105,18 @@ const Home = ({ onSelectItem }) => {
 
   return (
     <div className="flex flex-col justify-center w-screen h-screen items-center">
+      {/* Admin Panel Button - Only shown for admins */}
+      {authCtx.isAdmin && (
+        <div className="fixed top-4 right-4 z-50">
+          <button
+            onClick={() => navigate("/admin")}
+            className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors"
+          >
+            Switch to Admin Panel
+          </button>
+        </div>
+      )}
+      
       <div className="task-list w-[40%] overflow-y-auto mt-10">
         {tasks.map((task, index) => {
           if (task.isText) {
