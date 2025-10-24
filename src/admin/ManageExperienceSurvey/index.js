@@ -1,6 +1,5 @@
 import React, { useState, useContext } from "react";
 import AuthContext from "../../context/auth-context";
-import ShowCurrentSurvey from "./ShowCurrentSurvey";
 import FormMode from "./FormMode";
 import JsonMode from "./JsonMode";
 import ViewMode from "./ViewMode";
