@@ -174,15 +174,25 @@ const PostTaskQuestionnaireMain = () => {
 
   // Calculate the progress percentage
   const progressPercentage = useMemo(() => {
+    if (topologyLoading || localTopology.length === 0) {
+      return 0;
+    }
+    
     const totalItems = localTopology.reduce(
       (acc, curr) => acc + curr.intention_list.length,
       0
     );
+    
+    if (totalItems === 0) {
+      return 0;
+    }
+    
     const completedItems = Object.values(ratings).filter(
       (rating) => rating.expectationRating !== undefined
     ).length;
+    
     return (completedItems / totalItems) * 100;
-  }, [ratings]);
+  }, [ratings, localTopology, topologyLoading]);
 
   // Check if all questions have been answered
   const allQuestionsAnswered = useMemo(() => {

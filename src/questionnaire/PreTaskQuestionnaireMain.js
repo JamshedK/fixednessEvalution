@@ -176,18 +176,28 @@ const QuestionnnaireMain = () => {
 
   // Calculate the progress percentage
   const progressPercentage = useMemo(() => {
+    if (topologyLoading || localTopology.length === 0) {
+      return 0;
+    }
+    
     var totalItems = localTopology.reduce(
       (acc, curr) => acc + curr.intention_list.length,
       0
     );
     // totalItems += 1; // Add one for the attention check
+    
+    if (totalItems === 0) {
+      return 0;
+    }
+    
     const completedItems = Object.values(ratings).filter(
       (rating) =>
         rating.expectationRating !== undefined &&
         rating.usageFrequencyRating !== undefined
     ).length;
+    
     return (completedItems / totalItems) * 100;
-  }, [ratings]);
+  }, [ratings, localTopology, topologyLoading]);
 
   // Check if all questions have been answered
   const allQuestionsAnswered = useMemo(() => {
