@@ -55,11 +55,14 @@ const validateDemographyQuestion = (question) => {
     throw new Error("Each question must have an 'options' array with at least one option");
   }
   
+  const cleanedOptions = question.options.map(opt => opt.toString().trim()).filter(opt => opt.length > 0);
+  const allowMultiple = question.allowMultipleSelections || false;
+  
   return {
     category: question.category.trim(),
-    options: question.options.map(opt => opt.toString().trim()).filter(opt => opt.length > 0),
+    options: cleanedOptions,
     required: question.required !== false, // Default to true
-    allowMultipleSelections: question.allowMultipleSelections || false,
-    selectUpto: question.selectUpto || null,
+    allowMultipleSelections: allowMultiple,
+    selectUpto: question.selectUpto || (allowMultiple ? cleanedOptions.length : 1),
   };
 };

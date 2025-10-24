@@ -105,17 +105,29 @@ const Home = ({ onSelectItem }) => {
 
   return (
     <div className="flex flex-col justify-center w-screen h-screen items-center">
-      {/* Admin Panel Button - Only shown for admins */}
-      {authCtx.isAdmin && (
-        <div className="fixed top-4 right-4 z-50">
+      {/* Top-right button group */}
+      <div className="fixed top-4 right-4 z-50 flex gap-3">
+        {/* Admin Panel Button - Only shown for admins */}
+        {authCtx.isAdmin && (
           <button
             onClick={() => navigate("/admin")}
             className="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-lg shadow-lg transition-colors"
           >
             Switch to Admin Panel
           </button>
-        </div>
-      )}
+        )}
+        
+        {/* Logout Button */}
+        <button
+          onClick={() => {
+            authCtx.logout();
+            navigate("/");
+          }}
+          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg shadow-lg transition-colors"
+        >
+          Logout
+        </button>
+      </div>
       
       <div className="task-list w-[40%] overflow-y-auto mt-10">
         {tasks.map((task, index) => {

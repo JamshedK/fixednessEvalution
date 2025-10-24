@@ -11,7 +11,7 @@ const FormMode = ({ onSave, isLoading }) => {
       options: [""], 
       required: true,
       allowMultipleSelections: false,
-      selectUpto: null
+      selectUpto: 1
     })));
   };
 
@@ -159,7 +159,14 @@ const FormMode = ({ onSave, isLoading }) => {
                     <input
                       type="checkbox"
                       checked={question.allowMultipleSelections}
-                      onChange={(e) => updateQuestion(qIdx, "allowMultipleSelections", e.target.checked)}
+                      onChange={(e) => {
+                        const isChecked = e.target.checked;
+                        updateQuestion(qIdx, "allowMultipleSelections", isChecked);
+                        // Set default selectUpto to number of options when enabling multiple selections
+                        if (isChecked && !question.selectUpto) {
+                          updateQuestion(qIdx, "selectUpto", question.options.filter(opt => opt.trim()).length || 1);
+                        }
+                      }}
                       className="mr-2"
                     />
                     Allow Multiple Selections

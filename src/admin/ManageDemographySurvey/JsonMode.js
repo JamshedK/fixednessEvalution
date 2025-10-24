@@ -53,7 +53,8 @@ const JsonMode = ({ onSave, isLoading }) => {
       "55-64",
       "65 or older"
     ],
-    "required": true
+    "required": true,
+    "allowMultipleSelections": false
   },
   {
     "category": "What is your primary purpose for using ChatGPT?",
