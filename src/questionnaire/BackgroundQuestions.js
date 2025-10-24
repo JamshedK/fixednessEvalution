@@ -4,16 +4,41 @@ import { FlowContext } from "../context/flow-context";
 import { db } from "../firebase-config";
 import { doc, updateDoc, Timestamp, getDoc } from "firebase/firestore";
 import { useNavigate } from "react-router-dom";
-import demographyJSON from "../demography.json";
 
 const DemographyQuestions = ({ onResponsesChange }) => {
   const [responses, setResponses] = useState({});
+  const [demographyQuestions, setDemographyQuestions] = useState([]);
+  const [loading, setLoading] = useState(true);
   const authCtx = useContext(AuthContext);
   const flowCtx = useContext(FlowContext);
   const [demographyStartedTs, setDemographyStartedTs] = useState(
     Timestamp.now()
   );
   const navigate = useNavigate();
+
+  // Load demography questions from Firebase admin/demographySurvey
+  useEffect(() => {
+    const fetchDemographyQuestions = async () => {
+      try {
+        const docRef = doc(db, "admin", "demographySurvey");
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const questions = data.questions || [];
+          setDemographyQuestions(questions);
+        }
+      } catch (error) {
+        console.error("Error fetching demography questions:", error);
+        // Fallback to empty state
+        setDemographyQuestions([]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDemographyQuestions();
+  }, []);
 
   // get saved data from firebase
   useEffect(() => {
@@ -29,8 +54,11 @@ const DemographyQuestions = ({ onResponsesChange }) => {
         console.error("Error getting document:", error);
       }
     };
-    fetchData();
-  }, [authCtx]);
+    
+    if (authCtx.user && demographyQuestions.length > 0) {
+      fetchData();
+    }
+  }, [authCtx, demographyQuestions]);
 
   const handleInputChange = (
     questionId,
@@ -74,7 +102,9 @@ const DemographyQuestions = ({ onResponsesChange }) => {
   };
 
   const validateForm = () => {
-    return demographyJSON.every((question) => {
+    if (demographyQuestions.length === 0) return false;
+    
+    return demographyQuestions.every((question) => {
       const response = responses[question.category];
       if (question.required) {
         if (question.allowMultipleSelections) {
@@ -107,12 +137,28 @@ const DemographyQuestions = ({ onResponsesChange }) => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="flex w-screen h-screen justify-center items-center">
+        <div className="text-lg">Loading demography questions...</div>
+      </div>
+    );
+  }
+
+  if (demographyQuestions.length === 0) {
+    return (
+      <div className="flex w-screen h-screen justify-center items-center">
+        <div className="text-lg text-red-600">No demography questions found. Please contact the administrator.</div>
+      </div>
+    );
+  }
+
   return (
     <div
       className="max-h-screen overflow-y-auto text-black py-20 flex flex-col scrollbar 
     scrollbar-thumb-[#d58d8d] scrollbar-thumb-rounded-full scrollbar-w-2"
     >
-      {demographyJSON.map((question, qIndex) => (
+      {demographyQuestions.map((question, qIndex) => (
         <div key={qIndex} className="bg-[#e3e3e3] py-6 px-16 rounded-md mb-4">
           <h1 className="text-[20px]">{question.category}</h1>
           {question.selectUpto && (
