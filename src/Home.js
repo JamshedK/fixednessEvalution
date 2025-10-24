@@ -37,7 +37,7 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.preTask1Completed,
       path: `/pre-task?firstTask=true&currentTask=${firstTaskShort}&flowState=setPreTask1Completed`,
       canNavigate: flowCtx.demographyCompleted,
-      allowEntryUponCompletion: false,
+      allowEntryUponCompletion: true,
       estimatedTime: "3-4 minutes",
     },
     {
@@ -45,7 +45,7 @@ const Home = ({ onSelectItem }) => {
       completed: flowCtx.task1Completed,
       path: `/${firstTaskShort}?firstTask=true&flowState=setTask1Completed`,
       canNavigate: flowCtx.preTask1Completed,
-      allowEntryUponCompletion: false,
+      allowEntryUponCompletion: true,
       estimatedTime: "15 minutes or above",
     },
     {
