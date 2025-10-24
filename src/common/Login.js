@@ -113,6 +113,12 @@ const Login = () => {
           >
             Create an account
           </button>
+          <button
+            className="text-black w-fit underline"
+            onClick={() => navigate("/admin/login")}
+          >
+            Admin Login
+          </button>
         </div>
       </div>
     </div>
