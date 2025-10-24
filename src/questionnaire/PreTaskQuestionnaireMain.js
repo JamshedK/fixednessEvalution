@@ -6,11 +6,12 @@ import {
   getDocs,
   query,
   where,
+  doc,
+  getDoc,
 } from "firebase/firestore";
 import AuthContext from "../context/auth-context";
 import { auth, db } from "../firebase-config";
 import IntentionBox from "./IntentionBox";
-import topologyJSON from "../topology.json";
 import IntentionTypeItem from "./IntentionTypeItem";
 import ProgressBar from "@ramonak/react-progress-bar";
 import Questions from "./PreTaskQuestions";
@@ -26,7 +27,8 @@ const QuestionnnaireMain = () => {
   const [selectedItem, setSelectedItem] = useState(null);
   const [ratings, setRatings] = useState({});
   const [showInstructions, setShowInstructions] = useState(true);
-  const [localTopology, setLocalTopology] = useState(topologyJSON);
+  const [localTopology, setLocalTopology] = useState([]);
+  const [topologyLoading, setTopologyLoading] = useState(true);
   const [startedTs, setStartedTs] = useState(Timestamp.now());
 
   const authCtx = useContext(AuthContext);
@@ -43,6 +45,31 @@ const QuestionnnaireMain = () => {
     instructionText =
       "Please reflect on your personal experience of using virtual assistants (e.g. Siri, Cortana, Google Assistant, Amazon Alexa), and answer the following questions (see left sidebar).";
   }
+
+  // Load topology data from Firebase admin/topology
+  useEffect(() => {
+    const fetchTopologyData = async () => {
+      try {
+        const docRef = doc(db, "admin", "topology");
+        const docSnap = await getDoc(docRef);
+        
+        if (docSnap.exists()) {
+          const data = docSnap.data();
+          const topology = data.topology || [];
+          setLocalTopology(topology);
+        }
+      } catch (error) {
+        console.error("Error fetching topology data:", error);
+        // Fallback to empty state
+        setLocalTopology([]);
+      } finally {
+        setTopologyLoading(false);
+      }
+    };
+
+    fetchTopologyData();
+  }, []);
+
   // get ratings from firebase
   useEffect(() => {
     const fetchData = async () => {
@@ -70,29 +97,38 @@ const QuestionnnaireMain = () => {
   }, [authCtx]);
 
   useEffect(() => {
+    // Only run this effect when topology has loaded and is not empty
+    if (topologyLoading || localTopology.length === 0) {
+      return;
+    }
+
     const topologyCopy = localTopology.map((section) => ({
       ...section,
       intention_list: [...section.intention_list],
     }));
-    const randomSectionIndex = 3; // Attention check needs to be in section index 3
-    const randomPos = Math.floor(
-      Math.random() * topologyCopy[randomSectionIndex].intention_list.length
-    );
-    const repeatedIntention = {
-      ...topologyCopy[randomSectionIndex].intention_list[randomPos],
-      short_text:
-        topologyCopy[randomSectionIndex].intention_list[randomPos].short_text +
-        " 2",
-      attentionCheck: true,
-    };
+    
+    // Make sure we have enough sections for the attention check
+    if (topologyCopy.length > 3) {
+      const randomSectionIndex = 3; // Attention check needs to be in section index 3
+      const randomPos = Math.floor(
+        Math.random() * topologyCopy[randomSectionIndex].intention_list.length
+      );
+      const repeatedIntention = {
+        ...topologyCopy[randomSectionIndex].intention_list[randomPos],
+        short_text:
+          topologyCopy[randomSectionIndex].intention_list[randomPos].short_text +
+          " 2",
+        attentionCheck: true,
+      };
 
-    topologyCopy[randomSectionIndex].intention_list.splice(
-      randomPos + 1,
-      0,
-      repeatedIntention
-    );
-    setLocalTopology(topologyCopy);
-  }, []);
+      topologyCopy[randomSectionIndex].intention_list.splice(
+        randomPos + 1,
+        0,
+        repeatedIntention
+      );
+      setLocalTopology(topologyCopy);
+    }
+  }, [localTopology, topologyLoading]);
 
   const handleSelectItem = (itemId) => {
     setSelectedItem(itemId);
@@ -157,6 +193,22 @@ const QuestionnnaireMain = () => {
   const allQuestionsAnswered = useMemo(() => {
     return progressPercentage === 100;
   }, [progressPercentage]);
+
+  if (topologyLoading) {
+    return (
+      <div className="flex w-screen h-screen justify-center items-center">
+        <div className="text-lg">Loading topology data...</div>
+      </div>
+    );
+  }
+
+  if (localTopology.length === 0) {
+    return (
+      <div className="flex w-screen h-screen justify-center items-center">
+        <div className="text-lg text-red-600">No topology data found. Please contact the administrator.</div>
+      </div>
+    );
+  }
 
   return (
     <div>
