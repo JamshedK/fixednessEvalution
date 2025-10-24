@@ -16,7 +16,12 @@ const AdminDashboard = () => {
       description: "Add, edit, or view research tasks",
     },
     {
-        title: "Manage Session experience survey", 
+        title: "Manage Demography Survey", 
+        path: "/admin/demography-survey",
+        description: "Create or modify demographic survey questions",
+    },
+    {
+        title: "Manage Session Experience Survey", 
         path: "/admin/experience-survey",
         description: "Create or modify the session experience survey",
     }

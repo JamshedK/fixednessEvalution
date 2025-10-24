@@ -20,6 +20,7 @@ import ShowCurrentTasks from "./admin/InsertTasks/ShowCurrentTasks";
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import ManageExperienceSurvey from "./admin/ManageExperienceSurvey";
+import ManageDemographySurvey from "./admin/ManageDemographySurvey";
 
 // Admin protected route component
 const AdminProtectedRoute = ({ component: Component }) => {
@@ -109,6 +110,10 @@ function App() {
         <Route 
           path="/admin/experience-survey" 
           element={<AdminProtectedRoute component={ManageExperienceSurvey} />} 
+        />
+        <Route 
+          path="/admin/demography-survey" 
+          element={<AdminProtectedRoute component={ManageDemographySurvey} />} 
         />
       </Routes>
     </div>
