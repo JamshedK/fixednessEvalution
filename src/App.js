@@ -21,6 +21,7 @@ import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import ManageExperienceSurvey from "./admin/ManageExperienceSurvey";
 import ManageDemographySurvey from "./admin/ManageDemographySurvey";
+import ManageTopology from "./admin/ManageTopology";
 
 // Admin protected route component
 const AdminProtectedRoute = ({ component: Component }) => {
@@ -114,6 +115,10 @@ function App() {
         <Route 
           path="/admin/demography-survey" 
           element={<AdminProtectedRoute component={ManageDemographySurvey} />} 
+        />
+        <Route 
+          path="/admin/topology" 
+          element={<AdminProtectedRoute component={ManageTopology} />} 
         />
       </Routes>
     </div>
