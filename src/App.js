@@ -17,12 +17,44 @@ import EndOfStudy from "./questionnaire/EndOfStudy";
 import ConsentForm from "./common/Consent";
 import InsertTasks from "./admin/InsertTasks";
 import ShowCurrentTasks from "./admin/InsertTasks/ShowCurrentTasks";
+import AdminLogin from "./admin/AdminLogin";
+import AdminDashboard from "./admin/AdminDashboard";
+import ManageExperienceSurvey from "./admin/ManageExperienceSurvey";
+
+// Admin protected route component
+const AdminProtectedRoute = ({ component: Component }) => {
+  const authCtx = useContext(AuthContext);
+  const isLoggedIn = authCtx.isLoggedIn;
+  const isAdmin = authCtx.isAdmin;
+  const isAuthLoading = authCtx.isAuthLoading; // Add loading state check
+  
+  console.log("AdminProtectedRoute - isLoggedIn:", isLoggedIn, "isAdmin:", isAdmin, "isAuthLoading:", isAuthLoading);
+  
+  // Show loading while authentication is being checked
+  if (isAuthLoading) {
+    console.log("Authentication still loading, showing loading state");
+    return <div className="flex justify-center items-center h-screen">Loading...</div>;
+  }
+  
+  // Only redirect if auth is complete and user is not admin
+  if (!isLoggedIn || !isAdmin) {
+    console.log("Redirecting to admin login");
+    return <Navigate to="/admin/login" replace />;
+  }
+  
+  console.log("Allowing access to admin component");
+  return <Component />;
+};
 
 function App() {
   const authCtx = useContext(AuthContext);
   const isLoggedIn = authCtx.isLoggedIn;
+  const isAdmin = authCtx.isAdmin;
   const flowCtx = useContext(FlowContext);
 
+  console.log("Loggin in as admin ans checking if logged in:", isAdmin, isLoggedIn);
+  console.log("Admin route condition:", isLoggedIn && isAdmin);
+  
   useEffect(() => {
     const handleBeforeUnload = (event) => {
       // Standard way to trigger the confirmation dialog
@@ -60,7 +92,24 @@ function App() {
         <Route path="/post-task" element={<PostTaskQuestionnaireMain />} />
         <Route path="/demography" element={<DemographyMain />} />
         <Route path="/chat" element={<MainChatTask />} />
-        <Route path="/admin/insert-tasks" element={<InsertTasks />} />
+        {/* Admin Routes */}
+        <Route path="/admin/login" element={<AdminLogin />} />
+        <Route 
+          path="/admin" 
+          element={<AdminProtectedRoute component={AdminDashboard} />} 
+        />
+        <Route 
+          path="/admin/dashboard" 
+          element={<AdminProtectedRoute component={AdminDashboard} />} 
+        />
+        <Route 
+          path="/admin/insert-tasks" 
+          element={<AdminProtectedRoute component={InsertTasks} />} 
+        />
+        <Route 
+          path="/admin/experience-survey" 
+          element={<AdminProtectedRoute component={ManageExperienceSurvey} />} 
+        />
       </Routes>
     </div>
   );
